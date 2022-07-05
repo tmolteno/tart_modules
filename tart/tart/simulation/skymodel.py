@@ -387,7 +387,7 @@ def from_state_vector(state):
         gps=gps,
         known_cosmic=known_cosmic,
     )
-    psky.n_sources = len(state_vector) / 4
+    psky.n_sources = len(state_vector) // 4
     psky.source_list = []
 
     for i in range(psky.n_sources):

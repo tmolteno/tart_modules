@@ -108,6 +108,7 @@ class Correlator(object):
 
 def corr_b(x, y, n):
     # num_not_same = (x ^ y).sum()
+    assert n == len(y)
     num_not_same = np.count_nonzero(x ^ y)  # alot faster than sum.
     ret = 1 - 2 * num_not_same / float(n)
     return ret

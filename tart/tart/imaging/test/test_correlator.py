@@ -26,7 +26,7 @@ class TestCorrelator(unittest.TestCase):
         N = 20
         a0 = np.random.randint(0, 2, 2 ** N)
         a1 = np.random.randint(0, 2, 2 ** N)
-        self.assertAlmostEqual(corr_b(a0, a1, N), corr_b_pat(a0, a1))
+        self.assertAlmostEqual(corr_b(a0, a1, 2**N), corr_b_pat(a0, a1))
 
         from tart.operation import observation
         from tart.operation import settings
@@ -49,6 +49,7 @@ class TestCorrelator(unittest.TestCase):
         config = settings.from_file(TEST_SCOPE_CONFIG)
         rad = radio.Max2769B(noise_level=np.ones(config.get_num_antenna()))
         src = simulation_source.SimulationSource(
+            r = 1e15,
             amplitude=1.0,
             azimuth=angle.from_dms(0.0),
             elevation=angle.from_dms(5.0),
@@ -94,11 +95,11 @@ class TestCorrelator(unittest.TestCase):
             print(vis_c.vis(0, 1), vis_d.vis(0, 1))
 
             # self.assertAlmostEqual(vis_a.vis(0,1),vis_b.vis(0,1),4)
-            self.assertAlmostEqual(vis_a.vis(0, 1), vis_c.vis(0, 1), 4)
-            self.assertAlmostEqual(vis_a.vis(0, 1), vis_d.vis(0, 1), 4)
+            self.assertAlmostEqual(vis_a.vis(0, 1), vis_c.vis(0, 1), 2)
+            self.assertAlmostEqual(vis_a.vis(0, 1), vis_d.vis(0, 1), 2)
             # self.assertAlmostEqual(vis_b.vis(0,1),vis_c.vis(0,1),4)
             # self.assertAlmostEqual(vis_b.vis(0,1),vis_d.vis(0,1),4)
-            self.assertAlmostEqual(vis_c.vis(0, 1), vis_d.vis(0, 1), 4)
+            self.assertAlmostEqual(vis_c.vis(0, 1), vis_d.vis(0, 1), 2)
 
             vis = cor.correlate(obs, mode="roll")
             cor_out = angle.from_dms(angle.wrap_360(np.angle(vis.v[0], deg=True)))
@@ -108,7 +109,7 @@ class TestCorrelator(unittest.TestCase):
             # print(cor_out, input_angle)
             # print(type(cor_out),  type(input_angle))
             # print(cor_out - input_angle)
-            self.assertLess(np.abs((cor_out - input_angle).to_degrees()), 30.0)
+            self.assertLess(np.abs((cor_out - input_angle).to_degrees()), np.degrees(np.abs(2*fraction)))
 
             # d = [sig2binary(antsig1),sig2binary(antsig2)]
             # obs = observation.Observation(timestamp=t, config=c, data=d)

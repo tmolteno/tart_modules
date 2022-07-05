@@ -3,7 +3,6 @@ import datetime
 from .gps_time import GpsTime
 from tart.util import utc
 
-import pytz
 
 def get_utc_hours(timestamp):
     sec = (

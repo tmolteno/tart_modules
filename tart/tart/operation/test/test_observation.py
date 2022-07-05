@@ -18,16 +18,6 @@ class TestObservation(unittest.TestCase):
         self.obs = Observation(timestamp=ts, config=self.config, data=self.data)
 
 
-    def test_load_save(self):
-        self.obs.save('data.txt')
-
-        nobs = Observation_Load('data.txt')
-
-        self.assertTrue((self.data == nobs.data).all())
-        self.assertTrue((self.obs.get_antenna(1) == nobs.get_antenna(1)).all())
-        self.assertEqual(self.obs.get_julian_date(), nobs.get_julian_date())
-
-
     def test_hdf5_load_save(self):
         self.obs.to_hdf5('data.hdf')
 
