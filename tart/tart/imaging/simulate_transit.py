@@ -37,7 +37,7 @@ def process_file(
         ).total_seconds()
 
         if simulate_vis == True:
-            utc_date = nobs.timestamp.replace(tzinfo=utc.UTC())
+            utc_date = nobs.timestamp.replace(tzinfo=utc.UTC)
             antenna_locations = antenna_locations = nobs.ant_positions
 
             sky, baselines, visibility = forward_map.forward_map(

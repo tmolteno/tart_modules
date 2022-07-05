@@ -16,6 +16,8 @@ from tart.imaging import tart_util
 
 from tart.operation import settings
 
+from tart.util.utc import to_utc
+
 def boolean_mean(x_bool_arr):
     '''Return mean of boolean array where -1 -> 0    and 1 -> 1'''
     ret = x_bool_arr.sum()/float(len(x_bool_arr))*2.-1
@@ -116,7 +118,7 @@ class Observation(object):
         with h5py.File(filename, "r") as h5f:
             config_json = np.string_(h5f['config'][0])
             config = settings.from_json(config_json)
-            timestamp = dateutil.parser.parse(h5f['timestamp'][0])
+            timestamp = to_utc(dateutil.parser.parse(h5f['timestamp'][0]))
             
             hdf_data = h5f['data'][:]
             unipolar_data = []
