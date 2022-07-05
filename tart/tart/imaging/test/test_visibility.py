@@ -41,6 +41,7 @@ class TestVisibility(unittest.TestCase):
         self.v_array[0].config.load_antenna_positions(
             cal_ant_positions_file=ANT_POS_FILE
         )
+        self.ant_pos=self.v_array[0].config.get_antenna_positions()
 
     def check_vis(self, dut, dut2):
         delta = np.sum(np.abs(np.array(dut.v) - np.array(dut2.v)))
@@ -55,36 +56,31 @@ class TestVisibility(unittest.TestCase):
     def test_load_save(self):
         dut = dummy_vis()
         visibility.Visibility_Save_JSON(self.v_array[0], "test_vis.json")
-
+        # TODO add tests here
         pass
 
     def test_list_load_save_hdf(self):
         dut_list = dummy_vis_list()
         fname = "test_vis_list_io.hdf"
-        visibility.list_save(dut_list, fname)
-        dut2_list = visibility.list_load(fname)
+        visibility.list_save(dut_list, ant_pos=self.ant_pos,
+                             cal_gain=[0], cal_ph=[0],
+                             filename=fname)  # ant_pos, cal_gain, cal_ph, filename
+        dut2_list = visibility.list_load(fname)['vis_list']
         for x, y in zip(dut_list, dut2_list):
             self.check_vis(x, y)
 
-    def test_list_load_save_pkl(self):
-        dut_list = dummy_vis_list()
-        fname = "test_vis_list_io.pkl"
-        visibility.list_save(dut_list, fname)
-        dut2_list = visibility.list_load(fname)
-        for dut, dut2 in zip(dut_list, dut2_list):
-            self.check_vis(dut, dut2)
 
     def test_hdf5(self):
         dut = dummy_vis()
-        visibility.to_hdf5([dut], "test_vis.hdf")
-        dut2 = visibility.from_hdf5("test_vis.hdf")
-        self.check_vis(dut, dut2[0])
+        fname = "test_vis.hdf"
+        visibility.to_hdf5([dut],  ant_pos=self.ant_pos,
+                           cal_gain=[0], cal_ph=[0],
+                           filename=fname)
+        dut2 = visibility.from_hdf5(fname)
+        print(dut2)
+        vl = dut2['vis_list']
+        self.check_vis(dut, vl[0])
 
-    def test_pkl(self):
-        dut = dummy_vis()
-        visibility.to_pkl(dut, "test_vis.pkl")
-        dut2 = visibility.from_pkl("test_vis.pkl")
-        self.check_vis(dut, dut2)
 
     def test_zero_rotation(self):
         v = self.v_array[0]

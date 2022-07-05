@@ -6,7 +6,7 @@ lint:
 	pylint tart
 
 test:
-	python3 setup.py test --test-suite=tart.imaging.test.test_visibility.TestVisibility
+	pytest-3 -k TestVisibility
 
 test_upload:
 	python3 setup.py sdist
