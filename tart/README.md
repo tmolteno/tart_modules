@@ -22,7 +22,8 @@ in which case changes to the source-code will be immediately available to projec
 
 Changelog:
 
-* 1.1.0b9 Switch to pytz based utc class
+* 1.1.0b9 Switch to new based utc class,
+		  Fix up some old tests
 * 1.1.0b8 Move to separate repository.
 		  Better tests.
 * 1.1.0b7 Better dealing with h5 files, returning a dict with sufficient information to generate calibrated visibilities.
