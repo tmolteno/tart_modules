@@ -147,7 +147,10 @@ class Synthesis_Imaging(object):
 
         for cal_vis in self.cal_vis_list:
             if self.fixed_zenith:
-                uu_a, vv_a, ww_a = cal_vis.get_all_uvw() / constants.L1_WAVELENGTH)
+                uu_a, vv_a, ww_a = cal_vis.get_all_uvw()
+                uu_a = uu_a / constants.L1_WAVELENGTH
+                vv_a = vv_a / constants.L1_WAVELENGTH
+                ww_a = ww_a / constants.L1_WAVELENGTH
                 vis_l, bls = cal_vis.get_all_visibility()
             else:
                 uu_l = []
