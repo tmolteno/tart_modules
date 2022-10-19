@@ -79,7 +79,7 @@ class CalibratedVisibility(object):
 
         bls = np.asarray(self.get_baselines())
         bl_pos = ant_p[bls]
-        uu_a, vv_a, ww_a = (bl_pos[:, 0] - bl_pos[:, 1]).T / constants.L1_WAVELENGTH
+        uu_a, vv_a, ww_a = (bl_pos[:, 0] - bl_pos[:, 1]).T
         return uu_a, vv_a, ww_a
 
     def get_unflagged_vis(self):

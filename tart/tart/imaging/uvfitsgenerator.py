@@ -87,9 +87,9 @@ class UVFitsGenerator(object):
                 [i, j] = b
                 # print((np.array(a1.enu) - np.array(a0.enu)), uu, vv, ww)
                 # arcane units of UVFITS require u,v,w in nanoseconds
-                baseline["UU"] = uu * constants.L1_WAVELENGTH / constants.V_LIGHT
-                baseline["VV"] = vv * constants.L1_WAVELENGTH / constants.V_LIGHT
-                baseline["WW"] = ww * constants.L1_WAVELENGTH / constants.V_LIGHT
+                baseline["UU"] = uu  / constants.V_LIGHT
+                baseline["VV"] = vv  / constants.V_LIGHT
+                baseline["WW"] = ww  / constants.V_LIGHT
                 baseline["BASELINE"] = encode_baseline(i + 1, j + 1)
                 baseline["DATE"] = datestamp
                 # DATE FIXME ?
