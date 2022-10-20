@@ -22,6 +22,8 @@ in which case changes to the source-code will be immediately available to projec
 
 Changelog:
 
+* 1.1.2b0 make h5 to json compatible with tart2ms json import.
+* 1.1.1b1 Make sure all get_all_uvw() return meters rather than wavelengths.
 * 1.1.0b9 Switch to new based utc class,
 		  Fix up some old tests
 * 1.1.0b8 Move to separate repository.

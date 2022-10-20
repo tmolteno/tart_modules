@@ -47,6 +47,9 @@ def vis_calibrated(vis_json, config, gains, phase_offset, flag_list=[]):
 
 
 def rotate_vis(rot_degrees, cv, reference_positions):
+    '''
+        Note. This rotates counter_clockwise (antennas in the north move towards the east)
+    '''
     conf = cv.vis.config
 
     new_positions = settings.rotate_location(

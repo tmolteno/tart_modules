@@ -44,6 +44,7 @@ in which case changes to the source-code will be immediately available to projec
     
 ## NEWS
 
+* Version 1.1.2b0 Make h5 to json compatible with tart2ms json import.
 * Version 1.1b.8 New versioning to match tart. Move to new repository
 
 * Version 0.2.0b14. Improve API handler code.
