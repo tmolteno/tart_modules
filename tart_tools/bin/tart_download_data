@@ -11,7 +11,7 @@ import os
 import urllib.request, urllib.error, urllib.parse
 import time
 
-from tart_tools.api_handler import APIhandler, download_file
+from tart_tools.api_handler import APIhandler, download_file, sha256_checksum
 
 logger = logging.getLogger()
 
@@ -62,7 +62,7 @@ if __name__ == "__main__":
     #api = AuthorizedAPIhandler(ARGS.api, ARGS.pw)
     api = APIhandler(ARGS.api)
 
-    logger.info(f"Downloading Raw Data from {ARGS.api}")
+    logger.info(f"Downloading Data from {ARGS.api}")
     os.makedirs(ARGS.dir, exist_ok=True)
 
     tart_endpoint = ARGS.api + "/"
