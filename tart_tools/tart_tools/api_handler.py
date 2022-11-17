@@ -56,12 +56,13 @@ class APIhandler(object):
 
     def catalog_url(
         self,
-        config,
+        lon,  # degrees
+        lat,
         catalog="https://tart.elec.ac.nz/catalog",
         datestr=datetime.datetime.utcnow().isoformat(),
     ):
         return "{}/catalog?lat={}&lon={}&date={}".format(
-            catalog, config.get_lat(), config.get_lon(), datestr
+            catalog, lat, lon, datestr
         )
 
     def get(self, path):

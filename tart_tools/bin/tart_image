@@ -234,7 +234,10 @@ if __name__ == "__main__":
 
         ts = api_imaging.vis_json_timestamp(vis_json)
         if ARGS.show_sources:
-            source_json = api.get_url(api.catalog_url(config, datestr=ts.isoformat()))
+            cat_url = api.catalog_url(lon=config.get_lon(),
+                                      lat=config.get_lat(),
+                                      datestr=ts.isoformat())
+            source_json = api.get_url(cat_url)
 
         logger.info("Data Download Complete")
 

@@ -44,19 +44,20 @@ in which case changes to the source-code will be immediately available to projec
     
 ## NEWS
 
-* Version 1.1.2b1 Fix a missing checksum call if a local file was partially downloaded (tart_download_data).
-* Version 1.1.2b0 Make h5 to json compatible with tart2ms json import.
-* Version 1.1b.8 New versioning to match tart. Move to new repository
+* 1.1.2b3 Change API of catalog_url to use lon and lat explicitly
+* 1.1.2b1 Fix a missing checksum call if a local file was partially downloaded (tart_download_data).
+* 1.1.2b0 Make h5 to json compatible with tart2ms json import.
+* 1.1b.8 New versioning to match tart. Move to new repository
 
-* Version 0.2.0b14. Improve API handler code.
-* Version 0.2.0b13. Clean up code to use other API endpoints.
-                    Add CLI to --ignore some antennas
-                    Add --n option to tart_download_data to stop after n downloads (used to grab the latest raw file)
-                    Add CLI to use the influxdb
-* Version 0.2.0b12. Fix bug in get-gains option.
-* Version 0.2.0b11. Add a tart_set_mode binary.
-* Version 0.2.0b9. Add a timeout to all HTTP requests.
-* Version 0.2.0b8. Add a put method to the authorized api handler.
-* Version 0.2.0b7. Fix typo in tart_calibrate that stopped calibration working.
-* Version 0.2.0. New tart_download_data function.
-* Version 0.1.5. Python3 compatability changes
+* 0.2.0b14. Improve API handler code.
+* 0.2.0b13. Clean up code to use other API endpoints.
+            Add CLI to --ignore some antennas
+            Add --n option to tart_download_data to stop after n downloads (used to grab the latest raw file)
+            Add CLI to use the influxdb
+* 0.2.0b12. Fix bug in get-gains option.
+* 0.2.0b11. Add a tart_set_mode binary.
+* 0.2.0b9. Add a timeout to all HTTP requests.
+* 0.2.0b8. Add a put method to the authorized api handler.
+* 0.2.0b7. Fix typo in tart_calibrate that stopped calibration working.
+* 0.2.0. New tart_download_data function.
+* 0.1.5. Python3 compatability changes
