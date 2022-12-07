@@ -7,12 +7,13 @@
 import datetime
 import json
 import os
-import requests
 import logging
 import shutil
 import hashlib
-
 import urllib.request, urllib.error, urllib.parse
+
+import requests
+
 
 from tart.operation import settings
 

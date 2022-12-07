@@ -4,7 +4,7 @@ with open('README.md') as f:
     readme = f.read()
 
 setup(name='tart_tools',
-    version='1.1.2b3',
+    version='1.1.2b4',
     description='Transient Array Radio Telescope Command Line Tools',
     long_description=readme,
     long_description_content_type="text/markdown",
@@ -12,7 +12,7 @@ setup(name='tart_tools',
     author='Tim Molteno',
     author_email='tim@elec.ac.nz',
     license='GPLv3',
-    install_requires=['numpy', 'matplotlib', 'healpy', 'astropy', 'tart'],
+    install_requires=['numpy', 'matplotlib', 'healpy', 'astropy', 'tart', 'requests'],
     packages=['tart_tools'],
     scripts=['bin/tart_image',
              'bin/tart_calibrate', 

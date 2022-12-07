@@ -20,6 +20,9 @@ class ElAz(object):
     def get_lm(self):
         return self.l, self.m
 
+    def __repr__(self):
+        return f"tart.imaging.ElAz(el={np.degrees(self.el_r) :5.2f}, az={np.degrees(self.az_r) :5.2f})"
+
     """
         Return the area of a unit-solid area of source dS
         in the l,m plane
