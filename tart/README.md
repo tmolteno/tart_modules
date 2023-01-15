@@ -22,7 +22,8 @@ in which case changes to the source-code will be immediately available to projec
 
 Changelog:
 
-* 1.1.2b5 Pass the lat and lon to catalog_url
+* 1.1.2b6 Pass the lat and lon to catalog_url
+* 1.1.2b5 Require the python-dateutil library
 * 1.1.2b4 Require the requests library
 * 1.1.2b3 Change API of catalog_url to use lon and lat explicitly
 * 1.1.2b0 make h5 to json compatible with tart2ms json import.
