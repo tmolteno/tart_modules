@@ -12,7 +12,13 @@ import time
 
 
 def van_vleck_correction(R):
-    return np.sin(np.pi / 2.0 * R)
+    '''
+        Correct the correlation for two-level quantization.
+        https://arxiv.org/abs/1608.04367
+        
+        - R the output of the digital correlator
+    '''
+    return np.sin((np.pi / 2.0) * R)
 
 
 def combine_real_imag(v_real, v_imag):
