@@ -168,7 +168,7 @@ class Skymodel(object):
                         # print('here')
 
         for src in self.known_objects:
-            print("extra", src)
+            # print("extra", src)
             # for src in self.get_src_objects(location.get_loc(config), utc_date):
             ra, declination = src.radec(utc_date)
             dx, dy = np.random.multivariate_normal(
@@ -192,7 +192,7 @@ class Skymodel(object):
                         sample_duration=radio.n_samples / radio.ref_freq,
                     )
                 )
-        print(len(sources))
+        #print(len(sources))
         return sources
 
     def gen_n_photons(self, config, utc_date, radio, n=10):
