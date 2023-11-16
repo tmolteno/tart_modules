@@ -3,8 +3,10 @@
 # To do this type
 #     make develop
 # in this directory.
-develop:
-	pip3 install -e .
+VENVDIR=~/.tartvenv
+
+develop: venv
+	$(VENV)/python3 -m pip install -e .
 
 lint:
 	pylint --extension-pkg-whitelist=numpy --ignored-modules=numpy --extension-pkg-whitelist=astropy tart_tools
@@ -16,3 +18,9 @@ test_upload:
 upload:
 	python3 setup.py sdist
 	twine upload --repository pypi dist/*
+
+include Makefile.venv
+
+$(VENV):
+	$(PY) -m venv --system-site-packages $(VENVDIR)
+	$(VENV)/python3 -m pip install --upgrade pip setuptools wheel
