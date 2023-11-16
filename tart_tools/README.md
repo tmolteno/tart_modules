@@ -44,6 +44,7 @@ in which case changes to the source-code will be immediately available to projec
     
 ## NEWS
 
+* 1.1.2b7 TART tools update. Add a command line switch to tart_download_data --file xxx.hdf
 * 1.1.2b6 Pass the lat and lon to catalog_url
 * 1.1.2b5 Require the python-dateutil library
 * 1.1.2b4 Require the requests library
