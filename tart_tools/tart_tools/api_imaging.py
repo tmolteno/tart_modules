@@ -20,7 +20,7 @@ from tart.imaging import elaz
 logger = logging.getLogger()
 
 def vis_json_timestamp(vis_json):
-    logger.info(f"Parsing {vis_json["timestamp"]}")
+    logger.info(f"Parsing {vis_json['timestamp']}")
     return dateutil.parser.parse(vis_json["timestamp"])
 
 

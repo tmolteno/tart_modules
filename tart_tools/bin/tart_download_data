@@ -43,6 +43,9 @@ if __name__ == "__main__":
     parser.add_argument(
         "--vis", action="store_true", help="Download Visibility Data in HDF format"
     )
+    parser.add_argument(
+        "--file", type=str, default=None, help="Set the name of the output file"
+    )
 
     ARGS = parser.parse_args()
 
@@ -70,6 +73,9 @@ if __name__ == "__main__":
     if not (ARGS.raw or ARGS.vis):
         raise RuntimeError("Either --raw or --vis must be specified")
 
+    if (ARGS.n > 1) and (ARGS.file is not None):
+        raise RuntimeError("Cannot specify both --n > 1 and --file")
+
     while True:
         resp_vis = []
         resp_raw = []
@@ -85,6 +91,9 @@ if __name__ == "__main__":
                     data_url = urllib.parse.urljoin(tart_endpoint, entry["filename"])
 
                     file_name = data_url.split("/")[-1]
+                    if ((ARGS.n == 1) and (ARGS.file is not None)):
+                        file_name = ARGS.file
+
                     file_path = os.path.join(ARGS.dir, file_name)
 
                     if os.path.isfile(file_path):
