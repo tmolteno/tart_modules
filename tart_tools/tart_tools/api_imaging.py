@@ -1,9 +1,10 @@
 """
     Image from the HTTP API
 
-    Tim Molteno & Max Scheel 2017-2021.
+    Tim Molteno & Max Scheel 2017-2023.
 """
 import os
+import logging
 import dateutil.parser
 import astropy.io.fits as pyfits
 
@@ -16,8 +17,10 @@ from tart.imaging import calibration
 from tart.imaging import synthesis
 from tart.imaging import elaz
 
+logger = logging.getLogger()
 
 def vis_json_timestamp(vis_json):
+    logger.info(f"Parsing {vis_json["timestamp"]}")
     return dateutil.parser.parse(vis_json["timestamp"])
 
 

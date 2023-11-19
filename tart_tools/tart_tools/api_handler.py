@@ -1,6 +1,6 @@
 """
   TART API handler class
-  Tim Molteno 2017-2021 - tim@elec.ac.nz
+  Tim Molteno 2017-2023 - tim@elec.ac.nz
   Max Scheel 2017 - max@max.ac.nz
 """
 
@@ -10,10 +10,12 @@ import os
 import logging
 import shutil
 import hashlib
-import urllib.request, urllib.error, urllib.parse
+
+import urllib.request
+import urllib.error
+import urllib.parse
 
 import requests
-
 
 from tart.operation import settings
 
@@ -31,7 +33,7 @@ def sha256_checksum(filename, block_size=65536):
 
 
 def download_file(url, checksum=0, file_path=None):
-    logger.info("Download_file({}, {}) -> {}".format(url, checksum, file_path))
+    logger.info(f"Download_file({url}, {checksum}) -> {file_path}")
 
     # Download the file from `url` and save it locally under `file_path`:
     with urllib.request.urlopen(url) as response, open(file_path, "wb") as out_file:
@@ -41,9 +43,7 @@ def download_file(url, checksum=0, file_path=None):
         downloaded_checksum = sha256_checksum(file_path)
         if downloaded_checksum != checksum:
             logger.info(
-                "Removing file: Checksum failed\n{}\n{}".format(
-                    checksum, downloaded_checksum
-                )
+                f"Removing file: Checksum failed\n{checksum}\n{downloaded_checksum}"
             )
             os.remove(file_path)
 
@@ -53,7 +53,7 @@ class APIhandler(object):
         self.token = None
 
     def url(self, path):
-        return "{}/api/v1/{}".format(self.root, path)
+        return f"{self.root}/api/v1/{path}"
 
     def catalog_url(
         self,
@@ -62,9 +62,7 @@ class APIhandler(object):
         catalog="https://tart.elec.ac.nz/catalog",
         datestr=datetime.datetime.utcnow().isoformat(),
     ):
-        return "{}/catalog?lat={}&lon={}&date={}".format(
-            catalog, lat, lon, datestr
-        )
+        return f"{catalog}/catalog?lat={lat}&lon={lon}&date={datestr}"
 
     def get(self, path):
         return self.get_url(self.url(path))
@@ -84,8 +82,10 @@ class AuthorizedAPIhandler(APIhandler):
         from tart_tools.api_handler import AuthorizedAPIhandler
 
         if __name__ == '__main__':
-            parser = argparse.ArgumentParser(description='Change telescope mode', formatter_class=argparse.ArgumentDefaultsHelpFormatter)
-            parser.add_argument('--api', required=False, default='https://tart.elec.ac.nz/signal', help="Telescope API server URL.")
+            parser = argparse.ArgumentParser(description='Change telescope mode', 
+                            formatter_class=argparse.ArgumentDefaultsHelpFormatter)
+            parser.add_argument('--api', required=False, default='https://tart.elec.ac.nz/signal', 
+                            help="Telescope API server URL.")
             parser.add_argument('--pw', default='password', type=str, help='API password')
             parser.add_argument('--mode', type=str, required=True, help='New mode (vis/raw)')
 
@@ -141,16 +141,15 @@ class AuthorizedAPIhandler(APIhandler):
 
     # TODO catch the requests result that corresponds to a failed login (authorization expired)
     # and re-authorize automatically.
-
     def put(self, path, **kwargs):
         r = requests.put(
             self.url(path), headers=self.__get_header(), timeout=TIMEOUT, **kwargs
         )
+        if r.status_code in (requests.codes.unauthorized, requests.codes.internal_server_error):
+            self.refresh_access_token()
+            return self.put(path, **kwargs)
+        logger.info(f"put response {r}")
         ret = json.loads(r.text)
-        if "status" in ret and "sub_status" in ret:
-            if (ret["status"] == 401) and (ret["sub_status"] == 101):
-                self.refresh_access_token()
-                return self.put(path, **kwargs)
         r.raise_for_status()
         return ret
 
@@ -158,14 +157,22 @@ class AuthorizedAPIhandler(APIhandler):
         r = requests.post(
             self.url(path), headers=self.__get_header(), timeout=TIMEOUT, **kwargs
         )
-        #logger.info(r)
+        if r.status_code in (requests.codes.unauthorized, requests.codes.internal_server_error):
+            self.refresh_access_token()
+            return self.post(path, **kwargs)
+        logger.info(f"post response {r}")
         ret = json.loads(r.text)
-        if "status" in ret and "sub_status" in ret:
-            if (ret["status"] == 401) and (ret["sub_status"] == 101):
-                self.refresh_access_token()
-                return self.post(path, **kwargs)
         r.raise_for_status()
         return ret
+
+        # #logger.info(r)
+        # ret = json.loads(r.text)
+        # if "status" in ret and "sub_status" in ret:
+        #     if (ret["status"] == 401) and (ret["sub_status"] == 101):
+        #         self.refresh_access_token()
+        #         return self.post(path, **kwargs)
+        # r.raise_for_status()
+        # return ret
 
     def post_with_token(self, path):
         return self.post(path)
@@ -194,4 +201,3 @@ def get_config(api):
     info = api.get("info")
     ant_pos = api.get("imaging/antenna_positions")
     return settings.from_api_json(info["info"], ant_pos)
-
