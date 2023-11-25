@@ -44,6 +44,7 @@ in which case changes to the source-code will be immediately available to projec
     
 ## NEWS
 
+* 1.1.2b8 Add an argument --rotate to tart_upload_antenna_positions (for first stage of calibration)
 * 1.1.2b7 Handle expiration of JWT tokens better (in tart_tools)
 * 1.1.2b7 TART tools update. Add a command line switch to specify output file for tart_download_data'
 * 1.1.2b6 Pass the lat and lon to catalog_url
