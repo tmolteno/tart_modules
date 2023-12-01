@@ -144,7 +144,6 @@ class Synthesis_Imaging(object):
     def get_uvplane(
         self, num_bin=1600, nw=36, grid_kernel_r_pixels=0.5, use_kernel=False
     ):
-
         for cal_vis in self.cal_vis_list:
             if self.fixed_zenith:
                 uu_a, vv_a, ww_a = cal_vis.get_all_uvw()
@@ -181,6 +180,9 @@ class Synthesis_Imaging(object):
 
         uu_edges = np.linspace(-nw, nw, num_bin + 1)
         vv_edges = np.linspace(-nw, nw, num_bin + 1)
+
+        # TODO: Throw an exception if the UV-plant does not have sufficient
+        # resolution to manage the baselines.
 
         if use_kernel == False:
 

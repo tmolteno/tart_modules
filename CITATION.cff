@@ -1,0 +1,16 @@
+cff-version: 1.2.0
+message: "If you use this software, please cite it as below."
+authors:
+- family-names: "Molteno"
+  given-names: "Timothy C.A."
+  orcid: "https://orcid.org/0000-0002-2022-0380"
+- family-names: "Scheel"
+  given-names: "Max"
+- family-names: "Suggate"
+  given-names: "Pat"
+- family-names: "Miller"
+  given-names: "Tim"
+title: "TART python modules"
+version: 0.9.5
+date-released: 2023-12-1
+url: "https://github.com/tmolteno/tart_modules"

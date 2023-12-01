@@ -16,5 +16,3 @@ For everyday use, these can simply be installed using PyPi
 * Max Scheel (max@max.ac.nz)
 * Tim Miller (timmiller83@gmail.com)
 * Pat Suggate (ihavenolimbs@gmail.com)
-
-
