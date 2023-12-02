@@ -2,7 +2,7 @@
     
 This module is used for the operation and imaging from the open-source Transient Array Radio Telescope (TART).
 
-For more information see the [TART Github repository](https://github.com/tmolteno/TART)
+For more information see the [TART Github repository](https://github.com/tmolteno/tart_modules), and (https://tart.elec.ac.nz)
 
 ## Authors
 
@@ -22,6 +22,7 @@ in which case changes to the source-code will be immediately available to projec
 
 Changelog:
 
+* 1.2.0b1 TART tools update (new tart_get_archive_data super-handy tool)
 * 1.1.2b8 TART tools update
 * 1.1.2b7 Handle expiration of JWT tokens better (in tart_tools)
 * 1.1.2b6 Pass the lat and lon to catalog_url
