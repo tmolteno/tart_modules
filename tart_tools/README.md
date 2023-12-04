@@ -44,6 +44,8 @@ in which case changes to the source-code will be immediately available to projec
     
 ## NEWS
 
+* 1.2.0b2 tart_get_archive_data: Use a five digit leading-zeros number for multiple downloads, 
+          default to all data if --n is not specified
 * 1.2.0b1 new tool: tart_get_archive_data super convenient to query the AWS cloud archive of TART data.
 * 1.1.2b8 Add an argument --rotate to tart_upload_antenna_positions (for first stage of calibration)
 * 1.1.2b7 Handle expiration of JWT tokens better (in tart_tools)
