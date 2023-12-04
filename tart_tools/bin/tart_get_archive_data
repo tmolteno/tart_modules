@@ -32,7 +32,7 @@ if __name__ == "__main__":
                         default='https://tart.elec.ac.nz/catalog', help="Catalog API URL.")
 
     parser.add_argument('--n', required=False, type=int,
-                        default=1, help="Number of HDF vis files. (-1 means all)")
+                        default=-1, help="Number of HDF vis files. (-1 means all)")
     
     parser.add_argument('--start', required=False, default="-60", help="Start time (negative means offset from now).")
     parser.add_argument('--duration', required=False,  default="0", help="Number of minutes to sample for")
@@ -50,7 +50,6 @@ if __name__ == "__main__":
     #     print(dir(o))
     #     break
 
-    N = ARGS.n
     
     start = ARGS.start
     duration_str = ARGS.duration
@@ -93,13 +92,19 @@ if __name__ == "__main__":
         if (o.last_modified >= start_datetime) and (o.last_modified <= stop_datetime):
             desired_objects.append(o)
 
-    steps = max(len(desired_objects) // N, 1)
-
-    index = 1
-    for item in tqdm(list(desired_objects)[::steps]):
+    N = ARGS.n
+    if N > 0:
+        steps = max(len(desired_objects) // N, 1)
+        data_to_get = list(desired_objects)[::steps]
+    else:
+        data_to_get = list(desired_objects)
+        
+    n = len(data_to_get)
+    index = 0
+    for item in tqdm(data_to_get):
 
         dirname, fname = os.path.split(item.object_name)
-        fname = f"obs_{index}.hdf"
+        fname = f"obs_{index:05d}.hdf"
         fname_out = os.path.join(output, fname)
         index = index+1
         client.fget_object(BUCKET_NAME, item.object_name, fname_out)
