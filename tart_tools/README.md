@@ -45,6 +45,7 @@ in which case changes to the source-code will be immediately available to projec
     
 ## NEWS
 
+* 1.2.0b3 Update links to the github repository.
 * 1.2.0b2 tart_get_archive_data: Use a five digit leading-zeros number for multiple downloads, 
           default to all data if --n is not specified
 * 1.2.0b1 new tool: tart_get_archive_data super convenient to query the AWS cloud archive of TART data.
