@@ -6,6 +6,7 @@ This module provides command line tools for operating Transient Array Radio Tele
 * tart_calibration_data
 * tart_download_antenna_positions
 * tart_upload_antenna_positions
+* tart_get_archive_data
 * tart_download_data
 * tart_download_gains
 * tart_image
@@ -19,7 +20,7 @@ on top of Signal-Hill near Dunedin New Zealand.
 
     tart_image --api https://tart.elec.ac.nz/signal --display
 
-For more information see the [TART Github repository](https://github.com/tmolteno/TART)
+For more information see the [TART website](https://tart.elec.ac.nz)
 
 ## Install Instructions
 
