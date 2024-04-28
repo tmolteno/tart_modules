@@ -4,11 +4,11 @@ with open('README.md') as f:
     readme = f.read()
 
 setup(name='tart',
-    version='1.2.0b1',
+    version='1.2.0b3',
     description='Transient Array Radio Telescope Imaging and Operation Library',
     long_description=readme,
     long_description_content_type="text/markdown",
-    url='http://github.com/tmolteno/TART',
+    url='http://github.com/tmolteno/tart_modules',
     author='Tim Molteno',
     author_email='tim@elec.ac.nz',
     license='GPLv3',
