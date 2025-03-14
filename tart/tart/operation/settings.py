@@ -1,16 +1,19 @@
 #
-# Settings for the telescope. This provides an accessor object for the data stored in
-# The telescope_config.json file.
+# Settings for the telescope. This provides an accessor object for the data
+# stored in the telescope_config.json file.
 #
-# Tim Molteno 2013-2017 tim@elec.ac.nz
+# Tim Molteno 2013-2015 tim@elec.ac.nz
 # Max Scheel 2017 max@max.ac.nz : do no derive any prober
 import json
 import numpy as np
 from tart.util import angle
 from tart.imaging import location
 
-'''Antenna positions are in 3D ENU coordinates in meters'''
+
 def rotate_location(array_orientation, localcoord):
+    '''
+    Antenna positions are in 3D ENU coordinates in meters
+    '''
     array_orientation = angle.from_dms(array_orientation)
     _e, _n, _u = localcoord
     c = array_orientation.cos()
@@ -20,10 +23,12 @@ def rotate_location(array_orientation, localcoord):
     u = _u
     return [e, n, u]
 
+
 def from_dict(configdict):
     ret = Settings()
     ret.Dict = configdict
     return ret
+
 
 def from_file(filename):
     f = open(filename, 'r')
@@ -31,10 +36,12 @@ def from_file(filename):
     f.close()
     return from_json(ret)
 
+
 def from_json(data):
     dic = json.loads(data)
     ret = from_dict(dic)
     return ret
+
 
 def from_api_json(config_json, ant_pos_json):
     ret = Settings()
@@ -47,24 +54,25 @@ def from_api_json(config_json, ant_pos_json):
     ret.set_geo(loc['lat'], loc['lon'], loc['alt'])
     return ret
 
+
 class Settings:
     def __init__(self):
         self.Dict = {}
 
     def set_antenna_positions(self, ant_pos):
-        self.Dict['antenna_positions'] = {'calibrated':ant_pos}
+        self.Dict['antenna_positions'] = {'calibrated': ant_pos}
         assert (self.Dict['num_antenna'] == len(ant_pos))
 
     def load_antenna_positions(self,
-                cal_ant_positions_file='calibrated_antenna_positions.json',
-                design_antenna_positions_file = None):
+                               cal_ant_positions_file='calibrated_antenna_positions.json',
+                               design_antenna_positions_file=None):
         ant_pos = {}
         try:
             with open(cal_ant_positions_file, 'r') as fr:
                 ant_pos['calibrated'] = json.loads(fr.read())
                 fr.close()
         except:
-                print('could not load ' + cal_ant_positions_file)
+            print('could not load ' + cal_ant_positions_file)
         try:
             if design_antenna_positions_file is not None:
                 with open(design_antenna_positions_file, 'r') as fr:
@@ -88,7 +96,7 @@ class Settings:
         return json_str
 
     def save(self, fname):
-        f=open(fname, "w")
+        f = open(fname, "w")
         f.write(self.to_json())
         f.close()
 
@@ -140,9 +148,9 @@ class Settings:
             labels = ['{0}'.format(i) for i in range(num_antennas)]
             ante = np.array([a[0] for a in ant_pos])
             antn = np.array([a[1] for a in ant_pos])
-            plt.scatter(ante, antn, marker='o', s = 50.0, color=c, label=label)
-            plt.xlim(-1.5,1.5)
-            plt.ylim(-1.5,1.5)
+            plt.scatter(ante, antn, marker='o', s=50.0, color=c, label=label)
+            plt.xlim(-1.5, 1.5)
+            plt.ylim(-1.5, 1.5)
             plt.xlabel('East [m]')
             plt.ylabel('North [m]')
             plt.tight_layout()

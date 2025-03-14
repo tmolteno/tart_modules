@@ -116,10 +116,10 @@ class Observation(object):
             in a portable HDF5 format
         '''
         with h5py.File(filename, "r") as h5f:
-            config_json = np.string_(h5f['config'][0])
+            config_json = np.bytes_(h5f['config'][0])
             config = settings.from_json(config_json)
             timestamp = to_utc(dateutil.parser.parse(h5f['timestamp'][0]))
-            
+
             hdf_data = h5f['data'][:]
             unipolar_data = []
             for i in hdf_data:

@@ -282,7 +282,7 @@ def from_hdf5(filename):
     ret = {}
 
     with h5py.File(filename, "r") as h5f:
-        config_json = np.string_(h5f["config"][0])
+        config_json = np.bytes_(h5f["config"][0])
         config = settings.from_json(config_json)
         hdf_baselines = h5f["baselines"][:].tolist()
         ant_pos = h5f["antenna_positions"][:]
