@@ -67,6 +67,7 @@ def param_to_json(x):
 
 def output_param(x, fp=None):
     ret = param_to_json(x)
+    print(ret)
     if fp is None:
         print(json.dumps(ret, indent=4, separators=(",", ": ")))
     else:
@@ -105,7 +106,7 @@ def calc_score_aux(opt_parameters, measurements, window_deg, original_positions)
             mask = np.zeros_like(ift_scaled)
 
             for s in src_list:
-                x0,y0 = s.get_px(n_fft)
+                x0, y0 = s.get_px(n_fft)
                 d = 2*s.deg_to_pix(n_fft, window_deg)
                 for y in range(mask.shape[0]):
                     for x in range(mask.shape[1]):
@@ -248,12 +249,12 @@ def bh_callback(x, f, accepted):
     print("BH f={} accepted {}".format(f, int(accepted)))
     output_param(x)
     if accepted:
-        bh_basin_progress.append([N_IT, f])
+        bh_basin_progress.append([N_IT, float(f)])
         with open("{}/bh_basin_progress.json".format(output_directory), "w") as fp:
             json.dump(bh_basin_progress, fp, indent=4, separators=(",", ": "))
 
         with open(
-            "{}/BH_basin_{:5.3f}_{}.json".format(output_directory, f, N_IT), "w"
+            "{}/BH_basin_{:5.3f}_{}.json".format(output_directory, float(f), N_IT), "w"
         ) as fp:
             output_param(x, fp)
 
@@ -377,7 +378,6 @@ if __name__ == "__main__":
         measurements.append([cv, ts, src_list])
         masks.append(None)
 
-
     N_IT = 0
     window_deg = 5.0
 
@@ -403,7 +403,8 @@ if __name__ == "__main__":
 
     bounds = [(-5, 5)]  # Bounds for the rotation parameter
     for i in range(46):
-        bounds.append((-1.2, 1.2)) # Bounds for all other parameters (real and imaginary components)
+        bounds.append((-1.2, 1.2))
+        # Bounds for all other parameters (real and imaginary components)
 
     zero_list = ARGS.ignore
     if zero_list is not None:

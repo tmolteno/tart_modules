@@ -3,7 +3,8 @@ from setuptools import setup, find_packages
 with open('README.md') as f:
     readme = f.read()
 
-setup(name='tart',
+setup(
+    name='tart',
     version='1.2.0b4',
     description='Transient Array Radio Telescope Imaging and Operation Library',
     long_description=readme,
@@ -12,9 +13,12 @@ setup(name='tart',
     author='Tim Molteno',
     author_email='tim@elec.ac.nz',
     license='GPLv3',
-    install_requires=['numpy', 'matplotlib', 'healpy', 'astropy', 'h5py', 'python-dateutil'],
-    packages=['tart', 'tart.imaging', 'tart.simulation', 'tart.operation', 'tart.util',\
-            'tart.test',  'tart.imaging.test', 'tart.simulation.test', 'tart.operation.test', 'tart.util.test'],
+    install_requires=['numpy', 'matplotlib',
+                      'healpy', 'astropy', 'h5py', 'python-dateutil'],
+    packages=['tart', 'tart.imaging', 'tart.simulation',
+              'tart.operation', 'tart.util',
+              'tart.test',  'tart.imaging.test', 'tart.simulation.test',
+              'tart.operation.test', 'tart.util.test'],
     classifiers=[
         "Development Status :: 4 - Beta",
         "Topic :: Scientific/Engineering",

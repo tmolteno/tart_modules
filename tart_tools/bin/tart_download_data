@@ -2,19 +2,19 @@
 #    Download Raw Data from a TART telescope
 #    The telescope should be in RAW mode if you want it to capture raw data every minute.
 #
-# Copyright (c) Tim Molteno 2017-2021.
+# Copyright (c) Tim Molteno 2017-2024.
 
 import argparse
-import json
 import logging
 import os
-import urllib.request, urllib.error, urllib.parse
+import urllib.request
+import urllib.error
+import urllib.parse
 import time
 
 from tart_tools.api_handler import APIhandler, download_file, sha256_checksum
 
 logger = logging.getLogger()
-
 
 
 if __name__ == "__main__":
