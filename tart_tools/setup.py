@@ -5,11 +5,11 @@ with open('README.md') as f:
 
 setup(
     name='tart_tools',
-    version='1.2.0b4',
+    version='1.2.0b5',
     description='Transient Array Radio Telescope Command Line Tools',
     long_description=readme,
     long_description_content_type="text/markdown",
-    url='http://github.com/tmolteno/tart_tools',
+    url='http://github.com/tmolteno/tart_modules',
     author='Tim Molteno',
     author_email='tim@elec.ac.nz',
     license='GPLv3',
