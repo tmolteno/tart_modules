@@ -9,11 +9,14 @@ import numpy as np
 
 class ElAz(object):
     def __init__(self, el, az):
+
+        self.el = el
+        self.az = az
         self.el_r = np.radians(el)
         self.az_r = np.radians(az)
 
-        # l,m are the cosines of the angle between the source vector and the u and v axes
-        # respectively.
+        # l,m are the cosines of the angle between the source vector and the
+        # u and v axes respectively.
         self.l = -np.sin(self.az_r) * np.cos(self.el_r)
         self.m = np.cos(self.az_r) * np.cos(self.el_r)
 
@@ -21,13 +24,12 @@ class ElAz(object):
         return self.l, self.m
 
     def __repr__(self):
-        return f"tart.imaging.ElAz(el={np.degrees(self.el_r) :5.2f}, az={np.degrees(self.az_r) :5.2f})"
+        return f"tart.imaging.ElAz(el={self.el:5.2f}, az={self.az:5.2f})"
 
-    """
+    '''
         Return the area of a unit-solid area of source dS
         in the l,m plane
-    """
-
+    '''
     def get_lm_area(self, dS=1.0):
         return dS * np.sqrt(1.0 - self.l * self.l - self.m * self.m)
 
@@ -37,7 +39,7 @@ class ElAz(object):
             image num_bins x num_bins essentially used as array
             indices.
         '''
-        n2 = num_bins / 2
+        n2 = num_bins // 2
         x_px = int(np.round(self.l * n2 + n2))
         y_px = num_bins - int(np.round(self.m * n2 + n2))
         return x_px, y_px

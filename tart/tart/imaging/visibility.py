@@ -31,6 +31,7 @@ class Visibility:
         self.config = obs.config
         self.timestamp = obs.timestamp
 
+
     def __init__(self, config, timestamp):
         self.phase_el = angle.from_dms(90.0)
         self.phase_az = angle.from_dms(0.0)
