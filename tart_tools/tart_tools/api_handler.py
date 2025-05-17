@@ -16,6 +16,8 @@ import urllib.error
 import urllib.parse
 
 import requests
+from requests.adapters import HTTPAdapter
+from urllib3.util.retry import Retry
 
 from tart.operation import settings
 
@@ -68,7 +70,15 @@ class APIhandler(object):
         return self.get_url(self.url(path))
 
     def get_url(self, url):
-        r = requests.get(url, timeout=TIMEOUT)
+
+        s = requests.Session()
+
+        retries = Retry(total=5,
+                        status_forcelist=[429, 500, 502, 503, 504])
+
+        s.mount('https://', HTTPAdapter(max_retries=retries))
+
+        r = s.get(url, timeout=TIMEOUT)
         r.raise_for_status()
         return json.loads(r.text)
 
