@@ -45,6 +45,7 @@ in which case changes to the source-code will be immediately available to projec
     
 ## NEWS
 
+* 1.2.2 Add a backoff factor. So that failed requests are delayed
 * 1.2.1 Add retry logic to the requests.get methods.
 * 1.2.0b3 Update links to the github repository.
 * 1.2.0b2 tart_get_archive_data: Use a five digit leading-zeros number for multiple downloads, 

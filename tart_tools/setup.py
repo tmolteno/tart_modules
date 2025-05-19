@@ -5,7 +5,7 @@ with open('README.md') as f:
 
 setup(
     name='tart_tools',
-    version='1.2.1',
+    version='1.2.1p1',
     description='Transient Array Radio Telescope Command Line Tools',
     long_description=readme,
     long_description_content_type="text/markdown",
