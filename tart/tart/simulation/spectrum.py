@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 import numpy as np
 from pylab import plot, show, title, xlabel, ylabel, subplot, legend
-from scipy import fft, arange
+from scipy import fft
 
 
 def plotSpectrum(y, Fs, c="red", label="powerspectrum"):
@@ -9,7 +9,7 @@ def plotSpectrum(y, Fs, c="red", label="powerspectrum"):
     Plots a Single-Sided Amplitude Spectrum of y(t)
     """
     n = len(y)  # length of the signal
-    k = arange(n)
+    k = np.arange(n)
     T = n / Fs
     frq = k / T  # two sides frequency range
     frq = frq[list(range(n / 2))]  # one side frequency range

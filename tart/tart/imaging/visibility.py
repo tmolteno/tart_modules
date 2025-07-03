@@ -260,11 +260,11 @@ def to_hdf5(vis_list, ant_pos, cal_gain, cal_ph, filename):
         )
         h5f.create_dataset("baselines", data=vis0.baselines)
 
-        h5f.create_dataset("vis", data=np.array(vis_data))
-        h5f.create_dataset("gains", data=np.array(cal_gain))
-        h5f.create_dataset("phases", data=np.array(cal_ph))
+        h5f.create_dataset("vis", data=np.array(vis_data, dtype=np.complex64))
+        h5f.create_dataset("gains", data=np.array(cal_gain, dtype=np.float32))
+        h5f.create_dataset("phases", data=np.array(cal_ph, dtype=np.float32))
 
-        h5f.create_dataset("antenna_positions", data=np.array(ant_pos))
+        h5f.create_dataset("antenna_positions", data=np.array(ant_pos, dtype=np.float32))
 
         h5f.create_dataset("timestamp", data=np.array(vis_ts, dtype=object), dtype=dt)
 
