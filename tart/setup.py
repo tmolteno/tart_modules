@@ -5,7 +5,7 @@ with open('README.md') as f:
 
 setup(
     name='tart',
-    version='1.2.0b5',
+    version='1.2.3',
     description='Transient Array Radio Telescope Imaging and Operation Library',
     long_description=readme,
     long_description_content_type="text/markdown",
