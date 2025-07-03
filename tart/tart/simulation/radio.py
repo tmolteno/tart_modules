@@ -212,20 +212,21 @@ if __name__ == "__main__":
     )
     obs_simp = rad.get_simplified_obs(ant_sigs_simp, utc_date, config)
 
-    from matplotlib import mlab
+    if False:
+        from matplotlib import mlab
 
-    power, freq = mlab.psd(rad_sig_full, Fs=rad.ref_freq, NFFT=8192)
-    plt.plot(freq / 1e6, 10.0 * np.log10(power), label="full_before_obs_obj", c="blue")
-    power, freq = mlab.psd(obs_full.get_antenna(0), Fs=rad.ref_freq, NFFT=8192)
-    plt.plot(freq / 1e6, 10.0 * np.log10(power), label="full", c="cyan")
-    power, freq = mlab.psd(obs_simp.get_antenna(0), Fs=rad.ref_freq, NFFT=8192)
-    plt.plot(freq / 1e6, 10.0 * np.log10(power), label="simp", c="red")
+        power, freq = mlab.psd(rad_sig_full, Fs=rad.ref_freq, NFFT=8192)
+        plt.plot(freq / 1e6, 10.0 * np.log10(power), label="full_before_obs_obj", c="blue")
+        power, freq = mlab.psd(obs_full.get_antenna(0), Fs=rad.ref_freq, NFFT=8192)
+        plt.plot(freq / 1e6, 10.0 * np.log10(power), label="full", c="cyan")
+        power, freq = mlab.psd(obs_simp.get_antenna(0), Fs=rad.ref_freq, NFFT=8192)
+        plt.plot(freq / 1e6, 10.0 * np.log10(power), label="simp", c="red")
 
-    # freqs, spec_full_before_obs = spectrum.plotSpectrum(rad_sig_full, rad.ref_freq, label='full_before_obs_obj', c='blue')
-    # freqs, spec_full = spectrum.plotSpectrum(obs_full.get_antenna(0), rad.ref_freq, label='full', c='cyan')
-    # freqs, spec_simp = spectrum.plotSpectrum(obs_simp.get_antenna(0), rad.ref_freq, label='simp', c='red')
-    plt.legend()
-    plt.show()
+        # freqs, spec_full_before_obs = spectrum.plotSpectrum(rad_sig_full, rad.ref_freq, label='full_before_obs_obj', c='blue')
+        # freqs, spec_full = spectrum.plotSpectrum(obs_full.get_antenna(0), rad.ref_freq, label='full', c='cyan')
+        # freqs, spec_simp = spectrum.plotSpectrum(obs_simp.get_antenna(0), rad.ref_freq, label='simp', c='red')
+        plt.legend()
+        plt.show()
 
     # assertTrue((spec_full_before_obs == spec_full).all(), True)
 

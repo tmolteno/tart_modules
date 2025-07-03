@@ -1,0 +1,54 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "tart"
+dynamic = ["version"]
+description = "Transient Array Radio Telescope Imaging and Operation Library"
+readme = "README.md"
+license = "GPL-3.0-or-later"
+authors = [
+    { name = "Tim Molteno", email = "tim@elec.ac.nz" },
+]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Science/Research",
+    "License :: OSI Approved :: GNU General Public License v3 (GPLv3)",
+    "Programming Language :: Python :: 3",
+    "Topic :: Communications :: Ham Radio",
+    "Topic :: Scientific/Engineering",
+]
+dependencies = [
+    "astropy",
+    "h5py",
+    "healpy",
+    "numpy",
+    "python-dateutil",
+]
+
+[project.urls]
+Homepage = "http://github.com/tmolteno/tart_modules"
+
+[tool.hatch.version]
+path = "tart/__init__.py"
+
+[tool.hatch.build.targets.sdist]
+include = [
+    "/tart",
+]
+
+[tool.hatch.envs.test]
+dependencies = [
+    "pytest",
+]
+
+[tool.hatch.envs.hatch-test]
+extra-dependencies = [
+  "pytest~=8.1",
+  "scipy",
+  "jsonrpclib",
+  "requests"
+]
+default-args = ["tart"]
+

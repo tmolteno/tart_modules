@@ -2,7 +2,6 @@ import unittest
 
 import numpy as np
 import datetime
-import matplotlib.pyplot as plt
 
 
 from tart.imaging import antenna_model
@@ -77,11 +76,11 @@ class TestSimulatedVisibility(unittest.TestCase):
         vis2 = self.cor.correlate(obs)
         self.sim_vis = np.array(vis2.v)
 
-        plt.figure(figsize=(4, 4))
-        plt.scatter(self.full_vis.real, self.full_vis.imag, label="full")
-        plt.scatter(self.sim_vis.real, self.sim_vis.imag, color="red", label="simpl")
-        plt.legend()
-        plt.show()
+#        plt.figure(figsize=(4, 4))
+#        plt.scatter(self.full_vis.real, self.full_vis.imag, label="full")
+#        plt.scatter(self.sim_vis.real, self.sim_vis.imag, color="red", label="simpl")
+#        plt.legend()
+#        plt.show()
 
     # def test_full_vis(self):
     #   self.assertGreater(self.full_vis.max(), 0.8)

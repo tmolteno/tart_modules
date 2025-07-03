@@ -42,7 +42,7 @@ class TestMax2769B(unittest.TestCase):
 
     def test_get_obs(self):
 
-        plt.figure()
+        # plt.figure()
         timebase = np.arange(0, self.rad.sample_duration, 1.0 / self.rad.sampling_rate)
         ant_sigs = antennas.antennas_signal(
             self.ants, self.ant_models, self.sources, timebase
@@ -61,22 +61,23 @@ class TestMax2769B(unittest.TestCase):
             ant_sigs_simp, self.utc_date, self.config
         )
 
-        freqs, spec_full_before_obs = spectrum.plotSpectrum(
-            rad_sig_full, self.rad.ref_freq, label="full_before_obs_obj", c="blue"
-        )
-        freqs, spec_full = spectrum.plotSpectrum(
-            obs_full.get_antenna(1), self.rad.ref_freq, label="full", c="cyan"
-        )
-        freqs, spec_simp = spectrum.plotSpectrum(
-            obs_simp.get_antenna(1), self.rad.ref_freq, label="simp", c="red"
-        )
-        plt.legend()
+        if False:
+            freqs, spec_full_before_obs = spectrum.plotSpectrum(
+                rad_sig_full, self.rad.ref_freq, label="full_before_obs_obj", c="blue"
+            )
+            freqs, spec_full = spectrum.plotSpectrum(
+                obs_full.get_antenna(1), self.rad.ref_freq, label="full", c="cyan"
+            )
+            freqs, spec_simp = spectrum.plotSpectrum(
+                obs_simp.get_antenna(1), self.rad.ref_freq, label="simp", c="red"
+            )
+            plt.legend()
 
         self.assertTrue((spec_full_before_obs == spec_full).all(), True)
 
-        plt.figure()
-        plt.plot(freqs, (spec_simp - spec_full) / spec_full)
-        plt.show()
+        # plt.figure()
+        # plt.plot(freqs, (spec_simp - spec_full) / spec_full)
+        # plt.show()
 
         print(len(obs_full.get_antenna(1)), obs_full.get_antenna(1).mean())
         print(len(obs_simp.get_antenna(1)), obs_simp.get_antenna(1).mean())

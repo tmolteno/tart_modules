@@ -1,5 +1,4 @@
 import os
-import jsonrpclib
 import datetime
 import numpy as np
 
@@ -15,6 +14,7 @@ from tart.imaging import sp3_interpolator
 class EphemeridesProxy(object):
     def __init__(self):
 
+        import jsonrpclib
         if "EPHEMERIS_SERVER_HOST" in os.environ:
             server_host = os.environ["EPHEMERIS_SERVER_HOST"]
         else:

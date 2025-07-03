@@ -140,19 +140,3 @@ class Settings:
             ant_positions.append(rotate_location(-self.Dict['array_orientation'], x))
         return ant_positions
 
-    def plot_antenna_positions(self, c='blue', label=''):
-        import matplotlib.pyplot as plt
-        num_antennas = self.Dict['num_antenna']
-        for key in self.Dict['antenna_positions']:
-            ant_pos = self.Dict['antenna_positions'][key]
-            labels = ['{0}'.format(i) for i in range(num_antennas)]
-            ante = np.array([a[0] for a in ant_pos])
-            antn = np.array([a[1] for a in ant_pos])
-            plt.scatter(ante, antn, marker='o', s=50.0, color=c, label=label)
-            plt.xlim(-1.5, 1.5)
-            plt.ylim(-1.5, 1.5)
-            plt.xlabel('East [m]')
-            plt.ylabel('North [m]')
-            plt.tight_layout()
-            for label, x, y in zip(labels, ante, antn):
-                plt.annotate(label, xy=(x+0.02, y-0.03), fontsize=15)

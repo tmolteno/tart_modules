@@ -97,30 +97,3 @@ def get_source_coordinates(source_list):
     return [x_list, y_list]
 
 
-if __name__ == "__main__":
-    el_range = np.radians([0, 5, 30, 60, 90])
-    az_range = np.radians(np.linspace(0, 360, 30, endpoint=False))
-
-    import matplotlib.pyplot as plt
-
-    old = []
-    new = []
-
-    for el in el_range:
-        for az in az_range:
-            s = ElAz(np.degrees(el), np.degrees(az))
-            new.append([s.l, s.m])
-            old.append(s.get_old_lm())
-
-    old = np.array(old)
-    new = np.array(new) * np.max(old)
-    print((new.shape, old.shape))
-    plt.figure()
-    plt.scatter(old[:, 0], old[:, 1], label="old", alpha=1.0)
-    plt.scatter(new[:, 0], new[:, 1], label="new", alpha=0.5)
-    plt.xlabel("Elevation")
-    plt.ylabel("Pixel Coordinate")
-    plt.grid(True)
-    plt.legend()
-    plt.savefig("Old_vs_new pixel coordinates")
-    plt.show()
