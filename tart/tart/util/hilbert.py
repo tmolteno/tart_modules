@@ -5,7 +5,6 @@ import numpy as np
 import pyfftw
 
 
-from pyfftw.interfaces.scipy_fftpack import hilbert as scipy_fftpack_hilbert
 
 def hilbert(s, debug=False):
     '''
@@ -117,6 +116,7 @@ def hilbert_fftw(s, debug=False, dtype='complex64'):
 
 
 if __name__ == '__main__':
+    from pyfftw.interfaces.scipy_fftpack import hilbert as scipy_fftpack_hilbert
     x = np.random.randint(0, 2, 2**21)*2-1
     start = time.time()
     a = -hilbert(x)

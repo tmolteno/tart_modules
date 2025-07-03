@@ -4,23 +4,32 @@ from pylab import plot, show, title, xlabel, ylabel, subplot, legend
 from scipy import fft
 
 
-def plotSpectrum(y, Fs, c="red", label="powerspectrum"):
+def getSpectrum(y, Fs):
     """
-    Plots a Single-Sided Amplitude Spectrum of y(t)
+    Get a Single-Sided Amplitude Spectrum of y(t)
     """
     n = len(y)  # length of the signal
     k = np.arange(n)
     T = n / Fs
     frq = k / T  # two sides frequency range
-    frq = frq[list(range(n / 2))]  # one side frequency range
+    frq = frq[list(range(n // 2))]  # one side frequency range
 
-    Y = fft(y) / n  # fft computing and normalization
-    Y = Y[list(range(n / 2))]
+    Y = fft.fft(y) / n  # fft computing and normalization
+    Y = Y[list(range(n // 2))]
 
-    plot(frq, abs(Y), c=c, label=label)  # plotting the spectrum
+    return (frq, np.array(abs(Y)))
+
+
+def plotSpectrum(y, Fs, c="red", label="powerspectrum", doPlot=False):
+    """
+    Plots a Single-Sided Amplitude Spectrum of y(t)
+    """
+    frq, absY = getSpectrum(y, Fs)
+        
+    plot(frq, absY, c=c, label=label)  # plotting the spectrum
     xlabel("Freq (Hz)")
     ylabel("|Y(freq)|")
-    return (frq, np.array(abs(Y)))
+    return (frq, absY)
 
 
 if __name__ == "__main__":

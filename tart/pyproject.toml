@@ -48,7 +48,9 @@ extra-dependencies = [
   "pytest~=8.1",
   "scipy",
   "jsonrpclib",
-  "requests"
+  "requests",
+  "ephem",
+  "pyfftw"
 ]
 default-args = ["tart"]
 
