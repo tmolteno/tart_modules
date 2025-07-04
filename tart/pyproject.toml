@@ -8,6 +8,7 @@ version = "1.2.3.2"
 description = "Transient Array Radio Telescope Imaging and Operation Library"
 readme = "README.md"
 license = "GPL-3.0-or-later"
+requires-python = ">= 3.9"
 authors = [
     { name = "Tim Molteno", email = "tim@elec.ac.nz" },
 ]
