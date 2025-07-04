@@ -11,7 +11,6 @@ from tart.simulation import simulation_source
 
 import numpy as np
 import healpy as hp
-import matplotlib.pyplot as plt
 
 import requests
 import json
@@ -373,7 +372,7 @@ class Skymodel(object):
         r = 90.0 - np.degrees(l_el)
         x = r * np.sin(l_az)
         y = r * np.cos(l_az)
-        plt.scatter(x, y, color="white", s=50)
+        # plt.scatter(x, y, color="white", s=50)
 
 
 def from_state_vector(state):
