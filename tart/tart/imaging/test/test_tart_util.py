@@ -1,8 +1,6 @@
-import datetime
 import unittest
 
 from astropy import time
-from astropy.time import Time
 
 from tart.imaging.tart_util import *
 from tart.util.utc import now

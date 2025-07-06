@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "tart"
-version = "1.2.3.2"
+version = "1.3.0"
 description = "Transient Array Radio Telescope Imaging and Operation Library"
 readme = "README.md"
 license = "GPL-3.0-or-later"
@@ -21,9 +21,7 @@ classifiers = [
     "Topic :: Scientific/Engineering",
 ]
 dependencies = [
-    "astropy",
     "h5py",
-    "healpy",
     "numpy",
     "python-dateutil",
 ]
@@ -52,7 +50,7 @@ extra-dependencies = [
   "requests",
   "ephem",
   "pyfftw",
-  "matplotlib"
+  "matplotlib",
+  "astropy"
 ]
 default-args = ["tart"]
-

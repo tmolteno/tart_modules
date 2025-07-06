@@ -14,7 +14,7 @@ import numpy as np
 # np.array((N+1,N))
 
 
-class NelderMead(object):
+class NelderMead:
     def __init__(self, f, debug=False):
          self.fun = f
          self.debug = debug
@@ -28,9 +28,9 @@ class NelderMead(object):
         return y
 
     ''' A Nelder Mead minimization algorithm
-    \param func A function pointer to the function to be minimized
-    \param start A starting simplex
-    \param tolerance The tolerance of the solution. 
+    \\param func A function pointer to the function to be minimized
+    \\param start A starting simplex
+    \\param tolerance The tolerance of the solution. 
     \return The minimum
     '''
     def solve(self, start, tolerance, max_iterations=500):
@@ -59,9 +59,9 @@ class NelderMead(object):
             # Test for convergence
             test = np.abs(f[largest_vertex] - f[smallest_vertex])/(tolerance+np.abs(f[largest_vertex]) + np.abs(f[smallest_vertex]))
             if test <= tolerance:
-                print('convergence tolerance reached {}'.format(test))
+                print(f'convergence tolerance reached {test}')
                 break
-    
+
             centroid_pt = np.zeros(n)
             for m in range(n+1):
                 if (m != largest_vertex):
@@ -71,13 +71,13 @@ class NelderMead(object):
             # reflect largest_vertex to new vertex reflect_point
             reflect_point = centroid_pt + (centroid_pt - amoeba[largest_vertex])*reflection_coefficient
             f_reflect = self.func(reflect_point)
-    
+
             if f_reflect < f[smallest_vertex]:
                 # We have the best point, now try expansion
 
                 expansion_point = centroid_pt + (reflect_point-centroid_pt)*expansion_coefficient
                 f_expand = self.func(expansion_point)
-    
+
                 if (f_expand < f_reflect):
                     if (self.debug):
                         print("Improved by reflection and expansion %f" % f_expand)
@@ -85,7 +85,7 @@ class NelderMead(object):
                     amoeba[largest_vertex] = expansion_point
                     f[largest_vertex] = f_expand
                     continue
-                
+
             # OK expansion did not succeed (or was not tried). Check to see if reflection is OK
             if f_reflect < f[largest_vertex]:
                 if (self.debug):
@@ -94,7 +94,7 @@ class NelderMead(object):
                 amoeba[largest_vertex] = reflect_point
                 f[largest_vertex] = f_reflect
                 continue
-            
+
             # Now try contraction
             contraction_point = centroid_pt + (reflect_point-centroid_pt)*contraction_coefficient
             f_contract = self.func(contraction_point)
@@ -102,7 +102,7 @@ class NelderMead(object):
                 amoeba[largest_vertex] = contraction_point
                 f[largest_vertex] = f_contract
                 continue
-            
+
             # finally try a shrink step
             if (self.debug):
                 print("Doing a shrink step")
@@ -112,13 +112,13 @@ class NelderMead(object):
                 if (vertex != smallest_vertex):
                     amoeba[vertex] = center + (amoeba[vertex]-center)*half
                     f[vertex] = self.func(amoeba[vertex])
-                
+
         print("Nelder-Mead Complete")
         print("Iteration Count: " + str(iteration_count))
         print("Function Evaluations: " + str(self.function_eval_count))
 
         return amoeba[smallest_vertex]
-    
+
 if __name__ == '__main__':
     def ftest(x):
         d = np.array([0, 1.0, -1.0])

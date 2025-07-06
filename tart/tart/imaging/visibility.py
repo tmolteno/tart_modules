@@ -1,8 +1,7 @@
 import json
-import h5py
-import dateutil
 import os
 
+import h5py
 import numpy as np
 
 try:
@@ -10,33 +9,33 @@ try:
 except:
     import pickle
 
-from tart.util import angle
-from tart.util import skyloc
-from tart.util import constants
-
-from tart.operation import observation
-from tart.operation import settings
-
+from tart.operation import observation, settings
 from tart.simulation.simulation_source import HorizontalSource
+from tart.util import angle, utc
 
 
 class Visibility:
     """
     A container class for visibilities from a single observation.
     """
-
-    def __init__(self, obs, phase_el, phase_az):
+    def __init__(self, config, timestamp,
+                    phase_el, phase_az):
         self.phase_el = phase_el
         self.phase_az = phase_az
-        self.config = obs.config
-        self.timestamp = obs.timestamp
-
-
-    def __init__(self, config, timestamp):
-        self.phase_el = angle.from_dms(90.0)
-        self.phase_az = angle.from_dms(0.0)
         self.config = config
         self.timestamp = timestamp
+
+    @classmethod
+    def from_obs(cls, obs, phase_el, phase_az):
+        config = obs.config
+        timestamp = obs.timestamp
+        return cls(config, timestamp, phase_el, phase_az)
+
+    @classmethod
+    def from_config(cls, config, timestamp):
+        phase_el = angle.from_dms(90.0)
+        phase_az = angle.from_dms(0.0)
+        return cls(config, timestamp, phase_el, phase_az)
 
     def set_visibilities(self, v, b):
         if not isinstance(b, list):
@@ -101,13 +100,13 @@ class Visibility:
 
     def vis(self, i, j):
         if j == i:
-            raise "Baseline [%d,%d] is invalid" % (i, j)
+            raise RuntimeError("Baseline [%d,%d] is invalid" % (i, j))
         if j < i:  # The first index should be before the second
             return np.conjugate(self.vis(j, i))
         for k, b in enumerate(self.baselines):
             if b == [i, j]:
                 return self.v[k]
-        raise "Baseline [%d,%d] is invalid" % (i, j)
+        raise RuntimeError("Baseline [%d,%d] is invalid" % (i, j))
 
     def get_closure_phase(self, i, j, k):
         return (
@@ -123,7 +122,7 @@ class Visibility:
         return ret
 
     def __repr__(self):
-        return "vis(ts={})".format(self.timestamp)
+        return f"vis(ts={self.timestamp})"
 
 
 def Visibility_Lsq(vis1, vis2):
@@ -141,7 +140,7 @@ def Visibility_Lsq(vis1, vis2):
 
 def Visibility_From_Conf(config, timestamp, phase_el, phase_az):
     obs = observation.Observation(timestamp=timestamp, config=config)
-    vis = Visibility(obs, phase_el, phase_az)
+    vis = Visibility.from_obs(obs, phase_el, phase_az)
     return vis
 
 
@@ -173,22 +172,20 @@ def Visibility_Save_JSON(vis, filename):
 def list_save(vis_list, ant_pos, cal_gain, cal_ph, filename):
     _, file_extension = os.path.splitext(filename)
 
-    if ".pkl" == file_extension:
+    if file_extension == ".pkl" or file_extension == ".vis":
         to_pkl(vis_list, filename)
-    elif ".vis" == file_extension:
-        to_pkl(vis_list, filename)
-    elif ".hdf" == file_extension:
+    elif file_extension == ".hdf":
         to_hdf5(vis_list, ant_pos, cal_gain, cal_ph, filename)
     else:
         raise RuntimeError(
-            "Unknown visibility file extension {}".format(file_extension)
+            f"Unknown visibility file extension {file_extension}"
         )
 
 
 def list_load(filename):
     _, file_extension = os.path.splitext(filename)
 
-    if ".pkl" == file_extension:
+    if file_extension == ".pkl":
         vis_list = from_pkl(filename)
         err_count = 0
         ret = []
@@ -199,20 +196,20 @@ def list_load(filename):
                 ret.append(v)
         if err_count > 0:
             print(
-                (
+
                     "Warning. Visibility file: %s had %i visibilities missing"
                     % (filename, err_count)
-                )
+
             )
         return ret
-    elif ".vis" == file_extension:
+    elif file_extension == ".vis":
         vis_list = from_pkl(filename)
         return vis_list
-    elif ".hdf" == file_extension:
+    elif file_extension == ".hdf":
         vis_list = from_hdf5(filename)
         return vis_list
     else:
-        raise RuntimeError("Unknown file extension {}".format(file_extension))
+        raise RuntimeError(f"Unknown file extension {file_extension}")
 
 
 """
@@ -290,12 +287,12 @@ def from_hdf5(filename):
         hdf_phase_elaz = h5f["phase_elaz"][:]
 
         hdf_timestamps = h5f["timestamp"]
-        timestamps = [dateutil.parser.parse(x) for x in hdf_timestamps]
+        timestamps = [utc.parse(x) for x in hdf_timestamps]
 
         hdf_vis = h5f["vis"][:]
         config.set_antenna_positions(ant_pos)
         for ts, v in zip(timestamps, hdf_vis):
-            vis = Visibility(config=config, timestamp=ts)
+            vis = Visibility.from_config(config=config, timestamp=ts)
             vis.set_visibilities(v=v, b=hdf_baselines)
             vis.phase_el = hdf_phase_elaz[0]
             vis.phase_az = hdf_phase_elaz[1]

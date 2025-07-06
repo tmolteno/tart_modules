@@ -1,18 +1,14 @@
-# -*- coding: utf-8 -*-
 #
 # Copyright (c) Tim Molteno 2013. tim@elec.ac.nz
+
 import numpy as np
-import math
-import time
 import scipy.signal
 
-
 from tart.operation import observation
-from tart.simulation import antennas
-from tart.simulation import butter_filter
+from tart.simulation import antennas, butter_filter
 
 
-class Radio(object):
+class Radio:
     def sampled_signal(ant_signal):
         raise RuntimeError(
             "Radio must implement a function sampled_signal() that returns the sampled signal."
@@ -172,18 +168,16 @@ class Max2769B(Radio):
 
 
 if __name__ == "__main__":
-    import numpy as np
     import datetime
+
     import matplotlib.pyplot as plt
+    import numpy as np
 
-    from tart.operation import settings
-    from tart.simulation import simulation_source
-    from tart.simulation import antennas
-    from tart.simulation import spectrum
     from tart.imaging import antenna_model
-    from tart.util import angle
-
+    from tart.operation import settings
+    from tart.simulation import antennas, simulation_source
     from tart.simulation.radio import *
+    from tart.util import angle
 
     config = settings.Settings("../test/test_telescope_config.json")
     num_ant = config.get_num_antenna()

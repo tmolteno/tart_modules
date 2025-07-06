@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 
 
 def telescope_signals(ref_freq, freq_mult, sample_duration, baseline, angle_1, angle_2):

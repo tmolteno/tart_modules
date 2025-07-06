@@ -4,25 +4,19 @@
 #
 # Copyright (c) Tim Molteno 2013-2019. tim@elec.ac.nz
 #
-import traceback
 import argparse
-import math
-import utc
-
-import numpy as np
+import datetime
+import traceback
 from multiprocessing import Pool
 
-
-import datetime
-
-import matplotlib.pyplot as plt
-from tart.util import angle
-
 import forward_map
+import matplotlib.pyplot as plt
+import numpy as np
+import utc
 
-from .visibility import *
-from . import location
 from ..operation import observation
+from . import location
+from .visibility import *
 
 
 def process_file(

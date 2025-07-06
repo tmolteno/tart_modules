@@ -1,11 +1,9 @@
-from tart.operation import observation
-from tart.imaging import visibility
-from tart.util import angle
-
 import numpy as np
 from scipy.signal import hilbert
 
 from tart.imaging.correlator import *
+from tart.operation import observation
+from tart.util import angle
 
 TEST_SCOPE_CONFIG = "tart/test/test_telescope_config.json"
 
@@ -14,23 +12,19 @@ import unittest
 
 class TestCorrelator(unittest.TestCase):
     def test_correlator_simp(self):
-        from tart.operation import settings
-        from tart.simulation import simulation_source
-        from tart.util import angle
-        from tart.util import constants
-        from tart.simulation import radio
         import datetime
 
         import numpy as np
+
+        from tart.operation import settings
+        from tart.simulation import radio, simulation_source
 
         N = 20
         a0 = np.random.randint(0, 2, 2 ** N)
         a1 = np.random.randint(0, 2, 2 ** N)
         self.assertAlmostEqual(corr_b(a0, a1, 2**N), corr_b_pat(a0, a1))
 
-        from tart.operation import observation
-        from tart.operation import settings
-        import datetime
+
 
         t = datetime.datetime.utcnow()
         c = settings.from_file(TEST_SCOPE_CONFIG)

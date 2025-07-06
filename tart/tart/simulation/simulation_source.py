@@ -1,13 +1,13 @@
-# -*- coding: utf-8 -*-
 # This module takes an array of amplitudes of length X and returns an array of
 # X independent random sources of required amplitudes and sample length n
 
 import numpy as np
-from tart.util import constants
 from scipy import interpolate
 
+from tart.util import constants
 
-class HorizontalSource(object):
+
+class HorizontalSource:
     def __init__(self, r, azimuth, elevation):
         self.r = r
         self.azimuth = azimuth
@@ -26,7 +26,6 @@ class SimulationSource(HorizontalSource):
         max_time = max_baseline / constants.V_LIGHT
         F_noise = 1.0e6 * np.power(np.pi, 3) / 2.9 / 3.7123 * 2.5
 
-        from tart.simulation import butter_filter
 
         noisetime = np.arange(-max_time, self.duration + max_time, 1.0 / (F_noise))
         randnoise = np.random.uniform(-1.0, 1.0, len(noisetime))
@@ -43,10 +42,12 @@ class SimulationSource(HorizontalSource):
 
 
 if __name__ == "__main__":
-    from . import spectrum
-    import pylab
-    from tart.util import angle
     import matplotlib.pyplot as plt
+    import pylab
+
+    from tart.util import angle
+
+    from . import spectrum
 
     crab = SimulationSource(
         r=1e10,

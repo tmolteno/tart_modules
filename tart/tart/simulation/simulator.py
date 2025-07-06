@@ -1,8 +1,9 @@
 """Copyright (C) Max Scheel 2016. All rights reserved"""
-import numpy as np
 from multiprocessing import Pool
+
+import numpy as np
+
 from tart.simulation import antennas
-import time
 
 try:
     import cPickle as pickle

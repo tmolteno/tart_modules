@@ -1,12 +1,11 @@
 # Copyright (C) Tim Molteno 2008-2019. All rights reserved
 
-import datetime
 import math
 
 from tart.util import utc
 
 
-class GpsTime(object):
+class GpsTime:
     SEC_PER_DAY = 86400.0
 
     def __init__(self, y, m, d, h, minutes, seconds):

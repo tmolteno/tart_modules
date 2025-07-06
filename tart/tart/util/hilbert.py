@@ -5,7 +5,6 @@ import numpy as np
 import pyfftw
 
 
-
 def hilbert(s, debug=False):
     '''
     http://au.mathworks.com/help/signal/ref/hilbert.html

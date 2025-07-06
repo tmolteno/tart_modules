@@ -1,20 +1,15 @@
 """Copyright (C) Max Scheel 2013. All rights reserved"""
 
-from tart.util import angle
-
-# from tart.imaging import sun
-from tart.imaging import radio_source
-from tart.imaging import gps_satellite
-from tart.imaging import location
-
-from tart.simulation import simulation_source
+import datetime
+import json
 
 import numpy as np
-import healpy as hp
-
 import requests
-import json
-import datetime
+
+# from tart.imaging import sun
+from tart.imaging import gps_satellite, location, radio_source
+from tart.simulation import simulation_source
+from tart.util import angle
 
 
 def get_L1_srcs(ts=None):
@@ -40,20 +35,16 @@ def get_L1_srcs(ts=None):
     if ts is None:
         ts = datetime.datetime.utcnow()
         r = requests.get(
-            "{}/catalog?lat=-45.851820&lon=170.545448&date={}".format(
-                catalog_server, ts.isoformat()
-            )
+            f"{catalog_server}/catalog?lat=-45.851820&lon=170.545448&date={ts.isoformat()}"
         )
     else:
         r = requests.get(
-            "{}/catalog?lat=-45.851820&lon=170.545448&date={}".format(
-                catalog_server, ts.isoformat()
-            )
+            f"{catalog_server}/catalog?lat=-45.851820&lon=170.545448&date={ts.isoformat()}"
         )
     return np.array(json.loads(r.text))
 
 
-class Skymodel(object):
+class Skymodel:
     """Ensemble of sources and their visibilities"""
 
     def __init__(
@@ -293,65 +284,6 @@ class Skymodel(object):
                 print("no position", src)
         return l_el, l_az, l_name
 
-    def true_image(self, location, utc_date, nside):
-        """Plot current sky."""
-
-        l_el, l_az, l_name = self.get_src_positions(location, utc_date)
-
-        m = np.zeros(hp.nside2npix(nside)) * hp.UNSEEN
-        th = -np.array(l_el) + np.pi / 2.0
-        l_phi = -np.array(l_az)
-        pix = hp.pixelfunc.ang2pix(nside, th, l_phi)
-        m[pix] = 1  # [src.jansky(utc_date) for src in self.known_objects]
-        m = hp.sphtfunc.smoothing(m, fwhm=3.0 * np.pi / 180.0)
-        # plt.figure()
-        # hp.visufunc.orthview(m, title="", rot=(0,90,0), )
-        return m
-
-    def true_image_overlay(self, location, utc_date):
-        """Plot current sky.
-        Theta is colatitude and measured from North pole. 0 .. pi
-         (straight up) |  el:  pi/2   | theta 0
-         (horizon)     |  el:  0      | theta pi/2
-        Th = pi/2 - el
-
-        flip : {'astro', 'geo''}, optional
-        Defines the convention of projection : 'astro'' (default, east towards left, west towards right) or 'geo' (east towards right, west towards left)
-        """
-        l_el, l_az, l_name = self.get_src_positions(location, utc_date)
-
-        th = np.pi / 2.0 - np.array(l_el)
-        l_phi = -np.array(l_az)
-        # _ = [hp.projtext(i, j, n, rot=(0,90,0), color='black', weight='light', ha='left', va='center') for i, j, n in zip(th, l_phi, l_name)]
-        _ = [
-            hp.projtext(
-                i,
-                j,
-                n,
-                rot=(0, 90, 0),
-                color="gray",
-                alpha=0.8,
-                weight="bold",
-                ha="center",
-                va="bottom",
-            )
-            for i, j, n in zip(th, l_phi, l_name)
-        ]
-        _ = [
-            hp.projscatter(i, j, rot=(0, 90, 0), color="black", alpha=1.0, s=25)
-            for i, j, n in zip(th, l_phi, l_name)
-        ]
-        _ = [
-            hp.projscatter(i, j, rot=(0, 90, 0), color="white", alpha=1.0, s=10)
-            for i, j, n in zip(th, l_phi, l_name)
-        ]
-
-        hp.projtext(np.pi / 2, 0.0, "N", rot=(0, 90, 0), va="top", ha="center")
-        hp.projtext(np.pi / 2, -np.pi / 2.0, "E", rot=(0, 90, 0), va="center")
-        hp.projtext(np.pi / 2, -np.pi, "S", rot=(0, 90, 0), ha="center")
-        hp.projtext(
-            np.pi / 2, -np.pi * 3.0 / 2.0, "W", rot=(0, 90, 0), ha="right", va="center"
-        )
 
     def true_FFT_overlay(self, utc_date, nw, num_bin):
         """Plot current sky.
@@ -395,6 +327,7 @@ def from_state_vector(state):
         gs = radio_source.CosmicSource(
             ra,
             dec,
+            r = 1.0e20,
             jy=state_vector[i + (2 * psky.n_sources)],
             width=state_vector[i + (3 * psky.n_sources)],
         )

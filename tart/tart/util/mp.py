@@ -1,5 +1,6 @@
 from multiprocessing import Pool
 
+
 def parallelized_for_i_in(ilist, func):
     pool = Pool()
     result_list = []

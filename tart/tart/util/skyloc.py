@@ -1,5 +1,5 @@
 
-class Skyloc(object):
+class Skyloc:
     """
     A class representing a location in the sky in equatorial co-ordinates.
     Holds Right Ascension and Declination

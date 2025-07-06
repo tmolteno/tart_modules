@@ -24,7 +24,7 @@ dt = dt_ant - dt_0
 
 print(simplify(dt))
 
-from math import sin, cos
+from math import cos, sin
 
 
 def delay(r, el, az, a_n, a_e, a_z):

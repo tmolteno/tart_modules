@@ -4,8 +4,11 @@
 # Copyright (c) Tim Molteno 2013. tim@elec.ac.nz
 #
 import math
+
 import numpy as np
+
 from tart.util import constants
+
 
 def deg_to_rad(x):
     return x * math.pi / 180.0
@@ -30,7 +33,7 @@ def wrap_180(x):
 
 # from functools import total_ordering
 # @total_ordering
-class Angle(object):
+class Angle:
 
     def __init__(self, deg=0, minute=0, sec=0):
         dec_deg = deg + float(minute)/60.0 + float(sec) / 3600.0
@@ -71,7 +74,7 @@ class Angle(object):
 
     def to_hms(self):
         dd = self.to_degrees()
-        
+
         hour,rem = divmod(dd, 15)   # 15 Degrees in an hour
         mnt,sec = divmod(rem*3600/15,60)  # 60 Minutes in an hour
         return hour,mnt,sec

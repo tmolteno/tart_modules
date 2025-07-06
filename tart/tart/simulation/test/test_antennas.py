@@ -1,19 +1,16 @@
 import unittest
+
 import numpy as np
 
-from tart.util import utc
-from tart.util import angle
-from tart.util import constants
-
+from tart.imaging import antenna_model, location
 from tart.simulation.antennas import (
     Antenna,
-    get_UVW,
-    get_geo_delay_horizontal,
     antennas_signal,
+    get_geo_delay_horizontal,
+    get_UVW,
 )
 from tart.simulation.simulation_source import HorizontalSource, SimulationSource
-from tart.imaging import location
-from tart.imaging import antenna_model
+from tart.util import angle, constants, utc
 
 
 def get_src(el, az):

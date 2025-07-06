@@ -1,7 +1,5 @@
-import math
 import datetime
-from .gps_time import GpsTime
-from tart.util import utc
+import math
 
 
 def get_utc_hours(timestamp):

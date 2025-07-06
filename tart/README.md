@@ -1,5 +1,5 @@
 # TART: Radio-telescope operating software
-    
+
 This module is used for the operation and imaging from the open-source Transient Array Radio Telescope (TART).
 
 For more information see the [TART Github repository](https://github.com/tmolteno/tart_modules), and (https://tart.elec.ac.nz)
@@ -17,11 +17,12 @@ If you are developing this package, this should be installed using
 ```
 in which case changes to the source-code will be immediately available to projects using it.
 
-    
+
 ## NEWS
 
 Changelog:
 
+* 1.3.0   Huge refactor to get tests going again.
 * 1.2.0b4 Fix up the loading of config data.
 * 1.2.0b1 TART tools update (new tart_get_archive_data super-handy tool)
 * 1.1.2b8 TART tools update

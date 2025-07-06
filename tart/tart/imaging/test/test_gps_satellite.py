@@ -1,19 +1,13 @@
 # from tart.imaging import radio_source
 # from tart.imaging.ephemerides_proxy import EphemeridesProxy
-from tart.imaging import location
-
 # from tart.util import utc
 # from tart.util import constants
 # from tart.util import vector
-
-import datetime
-import numpy as np
-
 import unittest
-from tart.util import utc
-from tart.util import angle
 
+from tart.imaging import location
 from tart.imaging.gps_satellite import *
+from tart.util import angle, utc
 
 
 class TestGpsSatellite(unittest.TestCase):

@@ -1,10 +1,9 @@
-import numpy as np
 
-
-from tart.simulation.skymodel import *
-from tart.imaging import location
 
 import unittest
+
+from tart.imaging import location
+from tart.simulation import skymodel
 
 
 class TestSkymodel(unittest.TestCase):
@@ -12,9 +11,9 @@ class TestSkymodel(unittest.TestCase):
 
     def test_from_to_state_vector(self):
         """Generate Model from state vector. Then generate state vector from model and compare"""
-        sm = Skymodel(5, location.Dunedin)
+        sm = skymodel.Skymodel(5, location.Dunedin)
         state = sm.get_state_vector()
-        sm2 = from_state_vector(state)
+        sm2 = skymodel.from_state_vector(state)
         state2 = sm2.get_state_vector()
         print(state)
         print(state2)

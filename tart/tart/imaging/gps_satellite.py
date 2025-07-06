@@ -1,14 +1,13 @@
 """
 A class for GPS satellites.
 """
+import datetime
+
+import numpy as np
+
 from tart.imaging import radio_source
 from tart.imaging.ephemerides_proxy import EphemeridesProxy
-from tart.util import constants
-from tart.util import vector
-from tart.util import angle
-
-import datetime
-import numpy as np
+from tart.util import angle, constants, vector
 
 
 class GpsSatellite(radio_source.RadioSource):

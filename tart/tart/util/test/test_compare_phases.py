@@ -1,7 +1,9 @@
 import unittest
+
 import numpy as np
 
-from tart.util.compare_phases import unwrap, compare_phases
+from tart.util.compare_phases import compare_phases, unwrap
+
 
 class TestComparePhases(unittest.TestCase):
     def test_unwrap(self):
@@ -16,7 +18,7 @@ class TestComparePhases(unittest.TestCase):
         self.assertAlmostEqual(ret, np.pi)
         ret = unwrap(-9*np.pi)
         self.assertAlmostEqual(ret, np.pi)
-    
+
     def test_compare_phases(self):
         torad = np.pi/180.
         ret = compare_phases(350*torad, 0)

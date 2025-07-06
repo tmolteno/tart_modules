@@ -10,7 +10,7 @@ class Sp3Interpolator:
     def lagrange_numerator(self, t_i, i, t):
         n = len(t_i)
         ret = 1.0
-        for j in range(0, n):
+        for j in range(n):
             if j != i:
                 ret *= t - t_i[j]
         return ret
@@ -18,7 +18,7 @@ class Sp3Interpolator:
     def lagrange_denominator(self, t_i, i):
         n = len(t_i)
         ret = 1.0
-        for j in range(0, n):
+        for j in range(n):
             if j != i:
                 ret *= t_i[i] - t_i[j]
         return ret
@@ -26,7 +26,7 @@ class Sp3Interpolator:
     def lagrange_interpolate(self, t_i, y_i, t):
         ret = 0.0
         n = len(t_i)
-        for i in range(0, n):
+        for i in range(n):
             ret += y_i[i] * (
                 self.lagrange_numerator(t_i, i, t) / self.lagrange_denominator(t_i, i)
             )
@@ -40,7 +40,7 @@ class Sp3Interpolator:
         dt0 = 999999.0
         i_close = 0
         n = len(inter)
-        for j in range(0, n):
+        for j in range(n):
             i = inter[j]
             test = abs(i[0] - sow)
             if (i[0] <= sow) and (test < dt0):

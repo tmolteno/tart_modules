@@ -2,6 +2,7 @@ import numpy as np
 
 from tart.util import angle
 
+
 def unit_vector(vector):
     """ Returns the unit vector of the vector.    """
     return vector / np.linalg.norm(vector)

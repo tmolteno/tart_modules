@@ -1,18 +1,13 @@
-from tart.imaging import location
-from tart.imaging import sun
-from tart.util import angle
-from tart.imaging import tart_util
-
-from tart.util import utc
-
 import datetime
-import numpy as np
 import unittest
 
+import numpy as np
 from astropy import coordinates as coord
-from astropy import units as u
 from astropy import time
-from astropy.time import Time
+from astropy import units as u
+
+from tart.imaging import location, sun, tart_util
+from tart.util import angle, utc
 
 Dunedin = location.Dunedin
 Aachen = location.Aachen
@@ -220,9 +215,8 @@ class TestLocation(unittest.TestCase):
 
     def test_horizontal_to_equatorial_astropy(self):
         from astropy import coordinates as coord
-        from astropy import units as u
         from astropy import time
-        from astropy.time import Time
+        from astropy import units as u
 
         utc_date = datetime.datetime.utcnow()
         loc = Dunedin

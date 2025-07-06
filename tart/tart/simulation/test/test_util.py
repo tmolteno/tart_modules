@@ -1,7 +1,8 @@
 import unittest
 
-from tart.simulation.util import *
 import numpy as np
+
+from tart.simulation.util import *
 
 
 class TestUtil(unittest.TestCase):

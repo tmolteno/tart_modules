@@ -6,16 +6,11 @@ Some bright cosmic radio sources
 #
 # Copyright (c) Tim Molteno 2013. tim@elec.ac.nz
 #
-import datetime
 
-from tart.util import angle
-from tart.imaging import location
-from tart.util import skyloc
-
-import numpy as np
+from tart.util import angle, skyloc
 
 
-class RadioSource(object):
+class RadioSource:
     """This is the base class for all possible radio sources"""
 
     def __init__(self, r, jy=1000.0, width=0.01):

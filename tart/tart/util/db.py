@@ -5,12 +5,12 @@
     Copyright GPLv3
 '''
 
-import sqlite3
 import os
+import sqlite3
 
 try:
     import psycopg2
-except Exception as e:
+except Exception:
     pass
 
 
@@ -38,7 +38,7 @@ def db_connect(dbfile=None, table='gps_data'):
         db_host= os.environ['POSTGRES_HOST']
         db_password = os.environ['POSTGRES_PASSWORD']
         db_user = os.environ['POSTGRES_USER']
-        conn_parameter = "host='{}' dbname=tart2 user={} password='{}'".format(db_host, db_user, db_password)
+        conn_parameter = f"host='{db_host}' dbname=tart2 user={db_user} password='{db_password}'"
 
         conn = psycopg2.connect(conn_parameter)
         paramstyle = psycopg2.paramstyle

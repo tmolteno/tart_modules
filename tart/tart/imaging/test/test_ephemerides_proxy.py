@@ -1,16 +1,19 @@
 import unittest
+import datetime
 import numpy as np
-from tart.imaging.ephemerides_proxy import *
+
+from tart.util import utc
+from tart.imaging import ephemerides_proxy
 
 
 class TestEphemeridesProxy(unittest.TestCase):
     def setUp(self):
-        self.ep = EphemeridesProxy.Instance()
+        self.ep = ephemerides_proxy.EphemeridesProxy.Instance()
 
     def test_proxying(self):
         t = utc.utc_datetime(2013, 9, 21, 0, 59, 3)
         sv = 21
-        for i in range(0, 100):
+        for i in range(100):
             t = t + datetime.timedelta(seconds=1.0)
             pos = self.ep.get_sv_position(t, sv)
             pos_remote = self.ep.get_remote_position(t, sv)
@@ -37,7 +40,7 @@ class TestEphemeridesProxy(unittest.TestCase):
         t = utc.utc_datetime(2013, 9, 21, 0, 59, 3)
         sv = 21
         p1 = self.ep.get_sv_position(t1, sv)
-        for i in range(0, 100):
+        for i in range(100):
             t = t + datetime.timedelta(seconds=1.0)
             p2 = self.ep.get_sv_position(t, sv)
             diff = np.array(p2) - np.array(p1)
@@ -49,7 +52,7 @@ class TestEphemeridesProxy(unittest.TestCase):
     def test_sp3_proxying(self):
         t = utc.utc_datetime(2013, 9, 21, 0, 59, 3)
         sv = 21
-        for i in range(0, 100):
+        for i in range(100):
             t = t + datetime.timedelta(seconds=1.0)
             pos = self.ep.get_sv_position_sp3(t, sv)
             pos_remote = self.ep.get_remote_position(t, sv)

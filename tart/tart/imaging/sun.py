@@ -6,12 +6,9 @@ Calculate the position in horizontal coordinates for the sun.
 #
 # Copyright (c) Tim Molteno 2013. tim@elec.ac.nz
 #
-import datetime
 import math
 
-from tart.imaging import location
-from tart.imaging import radio_source
-from tart.imaging import tart_util
+from tart.imaging import radio_source, tart_util
 from tart.util import angle
 
 

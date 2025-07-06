@@ -1,9 +1,10 @@
-import unittest
 import datetime
+import unittest
+
 import numpy as np
 
-from tart.operation.observation import Observation, Observation_Load
 from tart.operation import settings
+from tart.operation.observation import Observation
 
 
 class TestObservation(unittest.TestCase):

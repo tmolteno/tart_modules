@@ -1,22 +1,19 @@
-import numpy as np
-import datetime
-
 import os
+
+import numpy as np
 
 try:
    import cPickle as pickle
 except:
    import pickle
-import math
 import gzip
+
 import h5py
-import dateutil.parser
 
 from tart.imaging import tart_util
-
 from tart.operation import settings
+from tart.util import utc
 
-from tart.util.utc import to_utc
 
 def boolean_mean(x_bool_arr):
     '''Return mean of boolean array where -1 -> 0    and 1 -> 1'''
@@ -24,15 +21,15 @@ def boolean_mean(x_bool_arr):
     return ret
 
 
-class Observation(object):
+class Observation:
     '''Antenna positions are going to be in meters from the array reference position.
     They will be in 3D ENU co-ordinates'''
-    
-    
+
+
     def __init__(self, timestamp, config, data=None, savedata=None):
         '''
             Create an observation from binary (boolean 0...1) data
-            
+
         '''
         self.timestamp = timestamp
         self.config = config
@@ -86,14 +83,14 @@ class Observation(object):
     def to_hdf5(self, filename):
         ''' Save the Observation object,
             in a portable HDF5 format
-            
+
             obs = observation.Observation(t_stmp, config, savedata=ant_data)
             obs.to_hdf5(filename)
 
         '''
         with h5py.File(filename, "w") as h5f:
             dt = h5py.special_dtype(vlen=bytes)
-            
+
             conf_dset = h5f.create_dataset('config', (1,), dtype=dt)
             conf_dset[0] = self.config.to_json()
 
@@ -118,7 +115,7 @@ class Observation(object):
         with h5py.File(filename, "r") as h5f:
             config_json = np.bytes_(h5f['config'][0])
             config = settings.from_json(config_json)
-            timestamp = to_utc(dateutil.parser.parse(h5f['timestamp'][0]))
+            timestamp = utc.parse(h5f['timestamp'][0])
 
             hdf_data = h5f['data'][:]
             unipolar_data = []
@@ -133,7 +130,7 @@ class Observation(object):
 def Observation_Load(filename):
     _, file_extension = os.path.splitext(filename)
 
-    if ('.pkl' == file_extension):
+    if (file_extension == '.pkl'):
         try:
             load_data = gzip.open(filename, 'rb')
             d = pickle.load(load_data)
@@ -151,7 +148,7 @@ def Observation_Load(filename):
             # this is an array of unipolar 0,1 radio signals.
 
         return Observation(timestamp=d['timestamp'], config=settings.from_dict(d['config']), data=unipolar_data)
-    if ('.hdf' == file_extension):
+    if (file_extension == '.hdf'):
         return Observation.from_hdf5(filename)
-    
-    raise RuntimeError("Unknown file extension {}".format(file_extension))
+
+    raise RuntimeError(f"Unknown file extension {file_extension}")

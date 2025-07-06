@@ -1,21 +1,19 @@
-from tart.operation import observation
+import numpy as np
+
 from tart.imaging import visibility
 from tart.util import angle
-
-import numpy as np
 
 # import pyfftw
 # from pyfftw.interfaces.scipy_fftpack import hilbert as fftw_hilbert
 # from scipy.fftpack import hilbert as fftw_hilbert
 # from tart.util.hilbert import hilbert_fftw as fftw_hilbert
-import time
 
 
 def van_vleck_correction(R):
     '''
         Correct the correlation for two-level quantization.
         https://arxiv.org/abs/1608.04367
-        
+
         - R the output of the digital correlator
     '''
     return np.sin((np.pi / 2.0) * R)
@@ -25,13 +23,13 @@ def combine_real_imag(v_real, v_imag):
     return v_real - 1j * v_imag
 
 
-class Correlator(object):
+class Correlator:
     def __init__(self, van_vleck_corr=True):
         self.vv = van_vleck_corr
 
     def correlate(self, obs, debug=False, mode="roll"):
         visibilities, baselines = self.compute_complex_vis(obs, debug=debug, mode=mode)
-        vis = visibility.Visibility(obs.config, obs.timestamp)
+        vis = visibility.Visibility.from_config(obs.config, obs.timestamp)
         vis.set_visibilities(visibilities, baselines)
         return vis
 
@@ -48,7 +46,6 @@ class Correlator(object):
             data.append(ant_i - mean_i)
 
         if "fftw" in mode:
-            import pyfftw
             from pyfftw.interfaces.scipy_fftpack import hilbert as fftw_hilbert
 
         for i, d in enumerate(data):
@@ -61,7 +58,7 @@ class Correlator(object):
                 h_i = -np.sign(fftw_hilbert(d))
                 data_hilb.append(h_i)
 
-        for i in range(0, num_antenna):
+        for i in range(num_antenna):
             for j in range(i + 1, num_antenna):
                 v.append(self.V(data[i], data[j], data_hilb[j]))
                 baselines.append([i, j])
@@ -107,7 +104,7 @@ class Correlator(object):
     # v_com = combine_real_imag(v_real,v_imag)
     # v.append(v_com)
     # baselines.append([i,j])
-    # vis = visibility.Visibility(obs.config, obs.timestamp)
+    # vis = visibility.Visibility.from_config(obs.config, obs.timestamp)
     # vis.set_visibilities(v, baselines)
     # return vis
 
@@ -208,9 +205,9 @@ class FxCorrelator(Correlator):
     def get_linewidth(self):
         return self.linewidth
 
-    def correlate(obs):
+    def correlate(self, obs):
         data = self.convert_to_baseband(obs)
-        vis = visibility.Visibility(obs, angle.from_dms(90), angle.from_dms(0))
+        vis = visibility.Visibility.from_obs(obs, angle.from_dms(90), angle.from_dms(0))
         visibilities, baselines = self.compute_complex_vis(obs)
         vis.set_visibilities(visibilities, baselines)
         return vis

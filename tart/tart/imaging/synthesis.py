@@ -1,23 +1,15 @@
+import copy
+import os
 import pickle
-
-from tart.imaging import uvfitsgenerator
-from tart.imaging import radio_source
-from tart.imaging import location
-
-from tart.simulation import antennas
-from tart.util import skyloc
-from tart.util import constants
-from tart.util import angle
 
 import numpy as np
 
 # import pyfftw.interfaces.numpy_fft as fft
-import numpy.fft as fft
-import time
+from numpy import fft
 
-import os
-import copy
-
+from tart.imaging import location, radio_source
+from tart.simulation import antennas
+from tart.util import angle, constants
 
 cc = np.concatenate
 
@@ -27,7 +19,7 @@ def get_max_ang(nw, num_bin):
     return ret
 
 
-class Synthesis_Imaging(object):
+class Synthesis_Imaging:
     def __init__(self, cal_vis_list, fixed_zenith=True):
         self.cal_vis_list = cal_vis_list
         self.fixed_zenith = fixed_zenith
@@ -46,34 +38,6 @@ class Synthesis_Imaging(object):
     def set_grid_file(self, fpath):
         self.grid_file = fpath
 
-    def get_uvfits(self):
-        gen = uvfitsgenerator.UVFitsGenerator(
-            copy.deepcopy(self.cal_vis_list), self.phase_center
-        )
-        return gen
-
-    def get_difmap_movie(self, base_index, frames):
-        os.system("rm out.uvfits")
-        fits_name = "out.uvfits"  # self.fname + ".uvfits"
-        for i_frame in frames:
-            v_list = copy.deepcopy(self.cal_vis_list)
-            vis_indexes = base_index + i_frame
-            vis_part = [v_list[ni] for ni in vis_indexes]
-
-            # ra, dec = vis_part[0].config.get_loc().horizontal_to_equatorial(vis_part[0].timestamp, angle.from_dms(90.), angle.from_dms(0.))
-            # self.phase_center = radio_source.CosmicSource(ra, dec)
-            # print(ra, dec)
-
-            uvgen = uvfitsgenerator.UVFitsGenerator(
-                vis_part, self.phase_center
-            )  # FIXME
-            uvgen.write(fits_name)
-            difcmd = get_difmap(fits_name, i_frame)
-            f = open("difmap_cmds", "w")
-            f.write(difcmd)
-            f.close()
-            os.system("difmap < difmap_cmds")
-            os.system("rm out.uvfits")
 
     def get_uuvvwwvis_zenith(self):
         vis_l = []

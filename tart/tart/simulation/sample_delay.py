@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 import numpy as np
 
 # Displacement is the (+/-) displacement of an antenna from the origin

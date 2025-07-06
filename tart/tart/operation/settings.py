@@ -5,9 +5,9 @@
 # Tim Molteno 2013-2015 tim@elec.ac.nz
 # Max Scheel 2017 max@max.ac.nz : do no derive any prober
 import json
-import numpy as np
-from tart.util import angle
+
 from tart.imaging import location
+from tart.util import angle
 
 
 def rotate_location(array_orientation, localcoord):
@@ -31,7 +31,7 @@ def from_dict(configdict):
 
 
 def from_file(filename):
-    f = open(filename, 'r')
+    f = open(filename)
     ret = f.read()
     f.close()
     return from_json(ret)
@@ -68,14 +68,14 @@ class Settings:
                                design_antenna_positions_file=None):
         ant_pos = {}
         try:
-            with open(cal_ant_positions_file, 'r') as fr:
+            with open(cal_ant_positions_file) as fr:
                 ant_pos['calibrated'] = json.loads(fr.read())
                 fr.close()
         except:
             print('could not load ' + cal_ant_positions_file)
         try:
             if design_antenna_positions_file is not None:
-                with open(design_antenna_positions_file, 'r') as fr:
+                with open(design_antenna_positions_file) as fr:
                     ant_pos['design'] = json.loads(fr.read())
                     fr.close()
         except:

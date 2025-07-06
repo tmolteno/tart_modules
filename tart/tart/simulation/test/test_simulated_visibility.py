@@ -1,17 +1,12 @@
+import datetime
 import unittest
 
 import numpy as np
-import datetime
 
-
-from tart.imaging import antenna_model
-from tart.operation import settings
-from tart.operation import observation
-from tart.simulation import simulation_source
-from tart.simulation import radio
-from tart.simulation import antennas
+from tart.imaging import antenna_model, correlator
+from tart.operation import observation, settings
+from tart.simulation import antennas, radio, simulation_source
 from tart.util import angle
-from tart.imaging import correlator
 
 TEST_CONFIG = "./tart/test/test_telescope_config.json"
 TEST_ANTENNA_POSITIONS = "./tart/test/test_calibrated_antenna_positions.json"

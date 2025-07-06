@@ -1,11 +1,8 @@
-# -*- coding: utf-8 -*-
 
 import numpy as np
-from tart.simulation import radio
-from tart.simulation import antennas
-from tart.simulation import simulation_source
-from tart.operation import settings
 
+from tart.operation import settings
+from tart.simulation import antennas, radio, simulation_source
 
 if __name__ == "__main__":
     import numpy as np
@@ -28,7 +25,7 @@ if __name__ == "__main__":
 
     num_radio_samples = (len(rad.timebase) / rad.freq_mult) + 1
     sampled_signals = np.zeros((config.get_num_antenna(), num_radio_samples))
-    for i in range(0, config.get_num_antenna()):
+    for i in range(config.get_num_antenna()):
         sampled_signals[i, :] = rad.sampled_signal(ant_sigs[i, :])
 
     print("The (truncated) array of radio signals is; ", sampled_signals[:, :10])

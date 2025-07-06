@@ -7,10 +7,9 @@
 import json
 
 import numpy as np
-from tart.util import constants
 
 
-class CalibratedVisibility(object):
+class CalibratedVisibility:
     def __init__(self, vis):
         self.vis = vis
         self.flagged_baselines = []
@@ -149,10 +148,10 @@ class CalibratedVisibility(object):
     def to_json(self, filename="gain_calibration.json"):
         calib_dict = {}
         calib_dict["gain"] = [
-            int(1e5 * self.get_gain(i)) / float(1e5) for i in range(len(self.gain))
+            int(1e5 * self.get_gain(i)) / 1e5 for i in range(len(self.gain))
         ]
         calib_dict["phase_offset"] = [
-            int(1e5 * self.get_phase_offset(i)) / float(1e5)
+            int(1e5 * self.get_phase_offset(i)) / 1e5
             for i in range(len(self.gain))
         ]
         calib_dict["flagged_baselines"] = self.flagged_baselines
@@ -189,7 +188,6 @@ def from_JSON_file(vis, filename="gain_calibration.json"):
 import argparse
 
 from tart.imaging import visibility
-
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(

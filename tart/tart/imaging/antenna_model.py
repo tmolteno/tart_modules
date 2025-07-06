@@ -1,18 +1,15 @@
 """
     Antenna Models for TART
-    
+
     Author: Tim Molteno 2014-2019 tim@elec.ac.nz
     Copyright GPLv3
 """
 import numpy as np
-import healpy as hp
 
-from tart.imaging import location
-from tart.util import angle
-from tart.util.db import db_connect, db_remove_antenna_measurements, db_insert_row
+from tart.util.db import db_connect, db_insert_row, db_remove_antenna_measurements
 
 
-class AntennaModel(object):
+class AntennaModel:
     """Base class for all Antenna models."""
 
     def get_gain(self, el, az):
@@ -49,26 +46,26 @@ class GpsPatchAntenna(AntennaModel):
         return 1.0
 
 
-def hp_interpolator(map_, el, az, n_pix=4):
-    NSide = hp.pixelfunc.get_nside(map_)
-    direction = np.array([np.pi / 2.0 - el.to_rad(), az.to_rad()])
-    steplength = hp.pixelfunc.max_pixrad(NSide)
-    for i, r in enumerate(np.arange(steplength, np.pi, steplength)):
-        pixels = np.array(
-            hp.query_disc(NSide, hp.ang2vec(direction[0], direction[1]), r)
-        )
-        filled = np.where(map_[pixels] > -1.0)[0]
-        l = len(filled)
-        if l >= n_pix:
-            # print(i, l)
-            filled_pixel = pixels[filled]
-            filled_pixel_directions = hp.pix2vec(NSide, filled_pixel)
-            angular_distance = hp.rotator.angdist(direction, filled_pixel_directions)
-            if angular_distance.min() == 0.0:  # do we really want this?
-                return map_[filled_pixel[angular_distance.argmin()]]
-            return np.average(
-                map_[filled_pixel], weights=np.power(1.0 / angular_distance, 2)
-            )
+# def hp_interpolator(map_, el, az, n_pix=4):
+#     NSide = hp.pixelfunc.get_nside(map_)
+#     direction = np.array([np.pi / 2.0 - el.to_rad(), az.to_rad()])
+#     steplength = hp.pixelfunc.max_pixrad(NSide)
+#     for i, r in enumerate(np.arange(steplength, np.pi, steplength)):
+#         pixels = np.array(
+#             hp.query_disc(NSide, hp.ang2vec(direction[0], direction[1]), r)
+#         )
+#         filled = np.where(map_[pixels] > -1.0)[0]
+#         l = len(filled)
+#         if l >= n_pix:
+#             # print(i, l)
+#             filled_pixel = pixels[filled]
+#             filled_pixel_directions = hp.pix2vec(NSide, filled_pixel)
+#             angular_distance = hp.rotator.angdist(direction, filled_pixel_directions)
+#             if angular_distance.min() == 0.0:  # do we really want this?
+#                 return map_[filled_pixel[angular_distance.argmin()]]
+#             return np.average(
+#                 map_[filled_pixel], weights=np.power(1.0 / angular_distance, 2)
+#             )
 
 
 # def hp_spheric_harmonics(hp_alm, el, az, mmax=-1):
@@ -250,7 +247,7 @@ class EmpiricalAntenna(AntennaModel):
     def from_json(self, filename):
         import json
 
-        f = open(filename, "r")
+        f = open(filename)
         data = f.read()
         x = json.loads(data)
         f.close()
@@ -265,7 +262,7 @@ class EmpiricalAntenna(AntennaModel):
     @classmethod
     def from_data(self, antenna_num, el, az, gain, dates, svs):
         ret = EmpiricalAntenna(antenna_num)
-        print("Ant # {}. Data has {} entries".format(antenna_num, len(el)))
+        print(f"Ant # {antenna_num}. Data has {len(el)} entries")
 
         points = []
         sv = []
@@ -302,7 +299,7 @@ class EmpiricalAntenna(AntennaModel):
         # c.execute(sql("SELECT el, az, correlation, date FROM gps_signals WHERE (antenna=%(ph)s) AND date<%(ph)s"), (antenna_num, "2013-11-25"))
         pval = c.fetchall()
         conn.close()
-        print("Database has {} entries".format(len(pval)))
+        print(f"Database has {len(pval)} entries")
         points = []
         sv = []
         values = []

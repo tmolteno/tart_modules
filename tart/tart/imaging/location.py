@@ -6,10 +6,11 @@
 #
 
 import math
+
 import numpy as np
 
-from tart.util import angle
 from tart.imaging import tart_util
+from tart.util import angle
 
 
 def get_loc(Settings):
@@ -23,28 +24,28 @@ def get_loc(Settings):
 """ Future class structure going in here"""
 
 
-class ENU(object):
+class ENU:
     def __init__(self, e, n, u):
         self.e = e
         self.n = n
         self.u = u
 
 
-class Horizontal(object):
+class Horizontal:
     def __init__(self, r, el, az):
         self.r = r
         self.el = el
         self.az = az
 
 
-class ECEF(object):
+class ECEF:
     def __init__(self, x, y, z):
         self.x = x
         self.y = y
         self.z = z
 
 
-class ECI(object):
+class ECI:
     def __init__(self, x, y, z):
         self.x = x
         self.y = y
@@ -80,7 +81,7 @@ def ecef_to_eci(utc_date, x_in, y_in, z_in):
     ]
 
 
-class Location(object):
+class Location:
     R_EARTH = 6378137.0  # earth semimajor axis in meters
     F_RECIP = 1.0 / 298.257223563  # reciprocal flattening
     E2 = 2.0 * F_RECIP - F_RECIP * F_RECIP  # eccentricity squared

@@ -1,12 +1,10 @@
 """Models of Antennas"""
 
 import numpy as np
-from tart.util import angle
-from tart.util import constants
-from tart.operation import observation
-from tart.imaging import location
+
 from tart.imaging import visibility
 from tart.simulation.simulation_source import HorizontalSource
+from tart.util import constants
 
 
 def antennas_signal(antennas, ant_models, sources, timebase):
@@ -60,7 +58,7 @@ def antennas_simp_vis(antennas, ant_models, sources, utc_date, config, noise_lvl
         )
     else:
         noise = np.zeros(num_ant)
-    for i in range(0, num_ant):
+    for i in range(num_ant):
         for j in range(i + 1, num_ant):
             vi = noise[i] + noise[j]
             # print(vi)
@@ -83,12 +81,12 @@ def antennas_simp_vis(antennas, ant_models, sources, utc_date, config, noise_lvl
                 vi = 1.0 * vi / np.abs(vi)
             vis.append(vi)
             baselines.append([i, j])
-    vis_o = visibility.Visibility(config, utc_date)
+    vis_o = visibility.Visibility.from_config(config, utc_date)
     vis_o.set_visibilities(vis, baselines)
     return vis_o
 
 
-class Antenna(object):
+class Antenna:
     """Holds position of the Antenna and can calculate the geometric
     delay for given horizontal (el, az) or equatorial (time, RA, DEC) coordinates"""
 

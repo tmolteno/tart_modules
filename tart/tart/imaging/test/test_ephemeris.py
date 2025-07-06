@@ -1,15 +1,12 @@
-from tart.simulation.util import Util
-from tart.imaging import gps_time
-from tart.util import utc
-
-import jsonrpclib
 import datetime
-import numpy as np
-
 import unittest
 
-from tart.imaging.ephemeris import *
+import numpy as np
+
+from tart.imaging import gps_time
 from tart.imaging.ephemerides_proxy import EphemeridesProxy
+from tart.imaging.ephemeris import Ephemeris
+from tart.util import utc
 
 
 class TestEphemeris(unittest.TestCase):
@@ -34,7 +31,7 @@ class TestEphemeris(unittest.TestCase):
         pos2 = eph.get_sv_position(gpst)
 
         t = self.t
-        for i in range(0, 100):
+        for i in range(100):
             t = t + datetime.timedelta(seconds=200.0)
             gpst = gps_time.GpsTime.from_time(t)
             pos = eph.get_sv_position(gpst)

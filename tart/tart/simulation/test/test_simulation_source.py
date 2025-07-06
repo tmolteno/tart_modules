@@ -1,10 +1,10 @@
 import unittest
 
+import matplotlib.pyplot as plt
 import numpy as np
-import datetime
-from tart.util import angle
 
-from tart.simulation.simulation_source import *
+from tart.simulation.simulation_source import SimulationSource
+from tart.util import angle
 
 
 class TestSimulationSource(unittest.TestCase):
@@ -46,7 +46,7 @@ class TestSimulationSource(unittest.TestCase):
         plt.plot(samp_time2, crab_s_baseband2, label="sampled")
 
         plt.legend()
-        # plt.show()
+        plt.show()
 
     def test_signal_deterministic(self):
         samp_freq = 16.0e6

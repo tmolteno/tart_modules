@@ -1,10 +1,11 @@
 # Copyright (C) Tim Molteno 2008-2019. All rights reserved
 
 import math
+
 from tart.simulation.util import Util
 
 
-class Ephemeris(object):
+class Ephemeris:
     GM = 3.986005e14  # earth's universal gravitational parameter m^3/s^2
     WGS84_EARTH_ROTATION_RATE = 7.2921151467e-5
     # earth rotation rate, rad/s
@@ -64,9 +65,7 @@ class Ephemeris(object):
 
     def to_s(self):
         return (
-            "Ephemeris: SV={}, toe={}, toc={}, a0={}, ecc={}, m0={}, roota={}".format(
-                self.svprn, self.toe, self.toc, self.a0, self.ecc, self.m0, self.roota
-            )
+            f"Ephemeris: SV={self.svprn}, toe={self.toe}, toc={self.toc}, a0={self.a0}, ecc={self.ecc}, m0={self.m0}, roota={self.roota}"
         )
 
     def to_hash(self):
@@ -155,7 +154,7 @@ class Ephemeris(object):
         y = self.m0 - (x - self.ecc * math.sin(x))
         x1 = x
         x = y
-        for i in range(0, 15):
+        for i in range(15):
             x2 = x1
             x1 = x
             y1 = y
@@ -174,7 +173,7 @@ class Ephemeris(object):
         y = mk - (x - self.ecc * math.sin(x))
         x1 = x
         x = y
-        for i in range(0, 15):
+        for i in range(15):
             x2 = x1
             x1 = x
             y1 = y
@@ -184,7 +183,7 @@ class Ephemeris(object):
             x = (x2 * y - x * y1) / (y - y1)
         ek = x
 
-        print(("    E0 -> {}".format(ek)))
+        print(f"    E0 -> {ek}")
         return ek
 
     def getE(self, sow):
@@ -197,7 +196,7 @@ class Ephemeris(object):
         # test = self.getE0(sow)
         m = Util.rem2pi(m + Util.PI2)
         e = m
-        for i in range(0, 15):
+        for i in range(15):
             e_old = e
             e = m + self.ecc * math.sin(e_old)
             dE = Util.rem2pi(e - e_old)
@@ -239,7 +238,7 @@ class Ephemeris(object):
             - Ephemeris.WGS84_EARTH_ROTATION_RATE * self.toe
         )
         om = Util.rem2pi(om + Util.PI2)
-        print(("w_c={}, wdot={}, om={}".format(self.omega_c, self.omegadot, om)))
+        print(f"w_c={self.omega_c}, wdot={self.omegadot}, om={om}")
         x1 = math.cos(u) * r
         y1 = math.sin(u) * r
 
@@ -247,11 +246,9 @@ class Ephemeris(object):
         y = x1 * math.sin(om) + y1 * math.cos(i) * math.cos(om)
         z = y1 * math.sin(i)
         print(
-            (
-                "ephemeris.get_location({}) tk={}, {} -> x:{}".format(
-                    sow, tk, self.to_s(), x
-                )
-            )
+
+                f"ephemeris.get_location({sow}) tk={tk}, {self.to_s()} -> x:{x}"
+
         )
         return [x, y, z]
 

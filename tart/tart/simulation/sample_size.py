@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 
 # This module calculates the length of sample required from each
 # astronomical radio noise source given parameters including
@@ -26,7 +25,7 @@ def sample_size(ref_freq, freq_mult, sample_duration, sample_delay):
 
     # Calculate the sample size given the offsets
     sizes = np.ones(extrema.shape[1])  # blank array to hold sample sizes
-    for sig in range(0, extrema.shape[1]):
+    for sig in range(extrema.shape[1]):
         sizes[sig] = base_size + extrema[0, sig] - extrema[1, sig]  # Row 1 -ve vals
 
     max_size = sizes.max(0)

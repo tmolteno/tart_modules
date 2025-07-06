@@ -1,14 +1,16 @@
-import unittest
-import numpy as np
 import datetime
+import unittest
 
-from tart.imaging.antenna_model import *
-from tart.util.db import *
+import numpy as np
+
+from tart.imaging import antenna_model
+from tart.util import db
+from tart.util import angle
 
 
 def create_empirical_antenna():
     sv = 1
-    ant = EmpiricalAntenna(1)
+    ant = antenna_model.EmpiricalAntenna(1)
     for e in np.arange(0.0, 89.0, 2.0):
         for a in np.arange(0.0, 359.0, 5.0):
             el = angle.from_dms(e)
@@ -27,14 +29,14 @@ class TestAntennaModel(unittest.TestCase):
 
     def test_gps(self):
         """Test the GPS patch antenna."""
-        ant = GpsPatchAntenna()
+        ant = antenna_model.GpsPatchAntenna()
         self.assertEqual(ant.get_gain(angle.from_dms(120), angle.from_dms(120)), 0.0)
         self.assertEqual(ant.get_gain(angle.from_dms(80), angle.from_dms(120)), 1.0)
         self.assertEqual(ant.get_gain(angle.from_dms(-80), angle.from_dms(120)), 0.0)
 
     def test_ideal(self):
         """Test the ideal hemispherical antenna"""
-        ant = IdealHemisphericalAntenna()
+        ant = antenna_model.IdealHemisphericalAntenna()
         self.assertEqual(ant.get_gain(angle.from_dms(120), angle.from_dms(120)), 0.0)
         self.assertEqual(ant.get_gain(angle.from_dms(80), angle.from_dms(120)), 1.0)
         self.assertEqual(ant.get_gain(angle.from_dms(-80), angle.from_dms(120)), 0.0)
@@ -56,7 +58,7 @@ class TestAntennaModel(unittest.TestCase):
     def test_json_load(self):
         ant = create_empirical_antenna()
         ant.to_json("test.json")
-        ant2 = EmpiricalAntenna.from_json("test.json")
+        ant2 = antenna_model.EmpiricalAntenna.from_json("test.json")
         for e in np.arange(0, 89, 3.0):
             for a in np.arange(0, 359, 8.0):
                 el = angle.from_dms(e)
@@ -66,7 +68,7 @@ class TestAntennaModel(unittest.TestCase):
     def test_db_load(self):
         ant = create_empirical_antenna()
         ant.to_db(utc_date=datetime.datetime.utcnow(), db_file="test.db")
-        ant2 = EmpiricalAntenna.from_db(antenna_num=ant.antenna_num, db_file="test.db")
+        ant2 = antenna_model.EmpiricalAntenna.from_db(antenna_num=ant.antenna_num, db_file="test.db")
         for e in np.arange(0, 89, 3.0):
             for a in np.arange(0, 359, 8.0):
                 el = angle.from_dms(e)

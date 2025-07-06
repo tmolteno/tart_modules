@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 # Code reproduced from
 # http://www.scipy.org/Cookbook/ButterworthBandpass
 
@@ -20,8 +19,8 @@ def butter_bandpass_filter(data, lowcut, highcut, fs, order=5):
 
 
 if __name__ == "__main__":
-    import numpy as np
     import matplotlib.pyplot as plt
+    import numpy as np
     from scipy.signal import freqz
 
     # Sample rate and desired cutoff frequencies (in Hz).

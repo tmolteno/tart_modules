@@ -1,14 +1,11 @@
-import unittest
 import datetime
-import h5py
+import unittest
+
 import numpy as np
-import time
 
-from tart.util import skyloc
-from tart.util import angle
-
-import tart.operation.settings as settings
-import tart.imaging.visibility as visibility
+from tart.imaging import visibility
+from tart.operation import settings
+from tart.util import angle, skyloc, utc
 
 VIS_DATA_FILE = "tart/test/test_data/fpga_2019-02-22_05_11_41.765212.vis"
 ANT_POS_FILE = "tart/test/test_calibrated_antenna_positions.json"
@@ -16,7 +13,7 @@ ANT_POS_FILE = "tart/test/test_calibrated_antenna_positions.json"
 
 def dummy_vis():
     config = settings.from_file("tart/test/test_telescope_config.json")
-    ret = visibility.Visibility(config=config, timestamp=datetime.datetime.utcnow())
+    ret = visibility.Visibility.from_config(config=config, timestamp=utc.now())
     b = []
     v = []
     for j in range(24):
@@ -57,7 +54,6 @@ class TestVisibility(unittest.TestCase):
         dut = dummy_vis()
         visibility.Visibility_Save_JSON(self.v_array[0], "test_vis.json")
         # TODO add tests here
-        pass
 
     def test_list_load_save_hdf(self):
         dut_list = dummy_vis_list()

@@ -1,6 +1,5 @@
-# -*- coding: utf-8 -*-
 import numpy as np
-from pylab import plot, show, title, xlabel, ylabel, subplot, legend
+from pylab import plot, show, subplot, xlabel, ylabel
 from scipy import fft
 
 
@@ -25,7 +24,7 @@ def plotSpectrum(y, Fs, c="red", label="powerspectrum", doPlot=False):
     Plots a Single-Sided Amplitude Spectrum of y(t)
     """
     frq, absY = getSpectrum(y, Fs)
-        
+
     plot(frq, absY, c=c, label=label)  # plotting the spectrum
     xlabel("Freq (Hz)")
     ylabel("|Y(freq)|")

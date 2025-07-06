@@ -1,5 +1,5 @@
 # TART: Radio-telescope command line tools
-    
+
 This module provides command line tools for operating Transient Array Radio Telescope (TART). These tools are
 
 * tart_calibrate
@@ -35,20 +35,20 @@ tart_tools is available from standard python package repositories. Try:
 * Max Scheel (max@max.ac.nz)
 
 ## Development work
-    
+
 If you are developing this package, this should be installed using
 ```
 	make develop
 ```
 in which case changes to the source-code will be immediately available to projects using it.
 
-    
-## NEWS
 
+## NEWS
+* 1.3.0 Huge refactor to get tests going again.
 * 1.2.2 Add a backoff factor. So that failed requests are delayed
 * 1.2.1 Add retry logic to the requests.get methods.
 * 1.2.0b3 Update links to the github repository.
-* 1.2.0b2 tart_get_archive_data: Use a five digit leading-zeros number for multiple downloads, 
+* 1.2.0b2 tart_get_archive_data: Use a five digit leading-zeros number for multiple downloads,
           default to all data if --n is not specified
 * 1.2.0b1 new tool: tart_get_archive_data super convenient to query the AWS cloud archive of TART data.
 * 1.1.2b8 Add an argument --rotate to tart_upload_antenna_positions (for first stage of calibration)
