@@ -1,13 +1,13 @@
 """Copyright (C) Max Scheel 2013. All rights reserved"""
 
-import datetime
 import json
-
-import numpy as np
 import requests
 
-# from tart.imaging import sun
+import numpy as np
+
+from tart.imaging import sun
 from tart.imaging import gps_satellite, location, radio_source
+from tart.imaging import synthesis
 from tart.simulation import simulation_source
 from tart.util import angle
 
@@ -33,7 +33,7 @@ def get_L1_srcs(ts=None):
 
     catalog_server = "http://localhost/catalog"
     if ts is None:
-        ts = datetime.datetime.utcnow()
+        ts = utc.now()
         r = requests.get(
             f"{catalog_server}/catalog?lat=-45.851820&lon=170.545448&date={ts.isoformat()}"
         )
@@ -103,7 +103,7 @@ class Skymodel:
         ra, dec = location.get_loc(config).horizontal_to_equatorial(
             utc_date_init, angle.from_dms(el_deg), angle.from_dms(az_deg)
         )
-        src = radio_source.CosmicSource(ra, dec)
+        src = radio_source.CosmicSource(ra, dec, r=20000.0)
         el, az = src.to_horizontal(location.get_loc(config), utc_date_obs)
         sources.append(
             simulation_source.SimulationSource(
