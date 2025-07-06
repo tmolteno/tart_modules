@@ -20,6 +20,7 @@ from requests.adapters import HTTPAdapter
 from urllib3.util.retry import Retry
 
 from tart.operation import settings
+from tart.util import utc
 
 # Default timeout
 TIMEOUT = 15.0
@@ -62,7 +63,7 @@ class APIhandler(object):
         lon,  # degrees
         lat,
         catalog="https://tart.elec.ac.nz/catalog",
-        datestr=datetime.datetime.utcnow().isoformat(),
+        datestr=utc.now().isoformat(),
     ):
         return f"{catalog}/catalog?lat={lat}&lon={lon}&date={datestr}"
 

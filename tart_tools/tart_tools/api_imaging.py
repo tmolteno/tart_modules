@@ -9,7 +9,6 @@ import dateutil.parser
 import astropy.io.fits as pyfits
 
 import numpy as np
-import healpy as hp
 
 from tart.operation import settings
 from tart.imaging import visibility
@@ -134,6 +133,7 @@ def make_healpix_image(plt, img, title, num_bins, source_json=None):
     """
     Writes out an image as a healpy image
     """
+    import healpy as hp
     nside = hp.pixelfunc.get_min_valid_nside(num_bins * num_bins * 3 / 4)
     npix = hp.nside2npix(nside)
 

@@ -13,7 +13,7 @@ setup(
     author='Tim Molteno',
     author_email='tim@elec.ac.nz',
     license='GPLv3',
-    install_requires=['numpy', 'matplotlib', 'healpy', 'astropy', 'tart',
+    install_requires=['numpy', 'tart',
                       'requests', 'tqdm', 'minio'],
     packages=['tart_tools'],
     scripts=['bin/tart_image',
