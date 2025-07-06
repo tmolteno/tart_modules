@@ -1,9 +1,9 @@
-import datetime
 import unittest
 
 import numpy as np
 
 from tart.operation.settings import from_file, rotate_location
+from tart.util import utc
 
 
 class TestSettings(unittest.TestCase):
@@ -21,6 +21,6 @@ class TestSettings(unittest.TestCase):
         self.assertAlmostEqual(r_n, 1, 5)
 
     def test_load(self):
-        ts = datetime.datetime.utcnow()
+        ts = utc.now()
         config = from_file('tart/test/test_telescope_config.json')
         self.assertTrue(config.Dict is not None)

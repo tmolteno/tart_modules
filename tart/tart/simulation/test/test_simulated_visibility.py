@@ -1,4 +1,3 @@
-import datetime
 import unittest
 
 import numpy as np
@@ -7,6 +6,8 @@ from tart.imaging import antenna_model, correlator
 from tart.operation import observation, settings
 from tart.simulation import antennas, radio, simulation_source
 from tart.util import angle
+from tart.util import utc
+
 
 TEST_CONFIG = "./tart/test/test_telescope_config.json"
 TEST_ANTENNA_POSITIONS = "./tart/test/test_calibrated_antenna_positions.json"
@@ -18,7 +19,7 @@ def relative_diff(l1, l2):
 
 class TestSimulatedVisibility(unittest.TestCase):
     def setUp(self):
-        self.utc_date = datetime.datetime.utcnow()
+        self.utc_date = utc.now()
         self.config = settings.from_file(TEST_CONFIG)
         self.config.load_antenna_positions(
             cal_ant_positions_file=TEST_ANTENNA_POSITIONS
@@ -97,7 +98,7 @@ class TestTelescope(unittest.TestCase):
     def setUp(self):
 
         # rad = radio.Max2769B(noise_level=0.)
-        utc_date = datetime.datetime.utcnow()
+        utc_date = utc.now()
         self.config = settings.from_file(TEST_CONFIG)
         self.config.load_antenna_positions(
             cal_ant_positions_file=TEST_ANTENNA_POSITIONS

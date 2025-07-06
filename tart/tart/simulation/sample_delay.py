@@ -7,7 +7,7 @@ import numpy as np
 
 
 def sample_delay(displacement, angle):
-    sample_delay = displacement * np.sin(angle * np.pi / 180) / 2.99793e8
+    sample_delay = displacement * np.sin(np.radians(angle)) / 2.99793e8
     return sample_delay
 
 

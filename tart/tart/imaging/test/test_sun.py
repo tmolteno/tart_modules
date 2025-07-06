@@ -9,10 +9,8 @@ Calculate the position in horizontal coordinates for the sun.
 import datetime
 import unittest
 
-from tart.imaging import sun
-from tart.imaging import location
-from tart.util import utc
-from tart.util import angle
+from tart.imaging import location, sun
+from tart.util import angle, utc
 
 
 class TestSun(unittest.TestCase):

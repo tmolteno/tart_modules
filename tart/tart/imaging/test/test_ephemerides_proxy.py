@@ -1,9 +1,10 @@
-import unittest
 import datetime
+import unittest
+
 import numpy as np
 
-from tart.util import utc
 from tart.imaging import ephemerides_proxy
+from tart.util import utc
 
 
 class TestEphemeridesProxy(unittest.TestCase):

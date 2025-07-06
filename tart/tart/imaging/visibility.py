@@ -177,9 +177,8 @@ def list_save(vis_list, ant_pos, cal_gain, cal_ph, filename):
     elif file_extension == ".hdf":
         to_hdf5(vis_list, ant_pos, cal_gain, cal_ph, filename)
     else:
-        raise RuntimeError(
-            f"Unknown visibility file extension {file_extension}"
-        )
+        err = f"Unknown visibility file extension {file_extension}"
+        raise RuntimeError(err)
 
 
 def list_load(filename):

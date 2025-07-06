@@ -5,13 +5,13 @@ import numpy as np
 
 from tart.operation import settings
 from tart.operation.observation import Observation
-
+from tart.util import utc
 
 class TestObservation(unittest.TestCase):
 
     def setUp(self):
 
-        ts = datetime.datetime.utcnow()
+        ts = utc.now()
         self.config = settings.from_file('tart/test/test_telescope_config.json')
         self.test_len = 2**8
         # generate some fake data

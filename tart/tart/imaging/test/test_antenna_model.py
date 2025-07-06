@@ -1,12 +1,10 @@
-import datetime
 import unittest
 
 import numpy as np
 
 from tart.imaging import antenna_model
-from tart.util import db
 from tart.util import angle
-
+from tart.util import utc
 
 def create_empirical_antenna():
     sv = 1
@@ -67,7 +65,7 @@ class TestAntennaModel(unittest.TestCase):
 
     def test_db_load(self):
         ant = create_empirical_antenna()
-        ant.to_db(utc_date=datetime.datetime.utcnow(), db_file="test.db")
+        ant.to_db(utc_date=utc.now(), db_file="test.db")
         ant2 = antenna_model.EmpiricalAntenna.from_db(antenna_num=ant.antenna_num, db_file="test.db")
         for e in np.arange(0, 89, 3.0):
             for a in np.arange(0, 359, 8.0):

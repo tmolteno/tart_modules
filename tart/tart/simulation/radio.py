@@ -194,7 +194,7 @@ if __name__ == "__main__":
     ]
     ants = [antennas.Antenna(config.get_loc(), pos) for pos in config.ant_positions]
     ant_models = [antenna_model.GpsPatchAntenna() for i in range(num_ant)]
-    utc_date = datetime.datetime.utcnow()
+    utc_date = utc.now()
 
     plt.figure()
     ant_sigs = antennas.antennas_signal(ants, ant_models, sources, rad.timebase)

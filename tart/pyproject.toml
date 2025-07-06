@@ -51,6 +51,7 @@ extra-dependencies = [
   "ephem",
   "pyfftw",
   "matplotlib",
-  "astropy"
+  "astropy",
+  "healpy"
 ]
 default-args = ["tart"]

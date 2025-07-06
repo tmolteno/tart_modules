@@ -9,6 +9,7 @@ from tart.operation import settings
 from tart.simulation import antennas, simulation_source, spectrum
 from tart.simulation.radio import *
 from tart.util import angle
+from tart.util import utc
 
 
 class TestMax2769B(unittest.TestCase):
@@ -35,7 +36,7 @@ class TestMax2769B(unittest.TestCase):
             for pos in self.config.get_antenna_positions()
         ]
         self.ant_models = [antenna_model.GpsPatchAntenna() for i in range(num_ant)]
-        self.utc_date = datetime.datetime.utcnow()
+        self.utc_date = utc.now()
 
     def test_get_obs(self):
 

@@ -1,9 +1,10 @@
 import numpy as np
 from scipy.signal import hilbert
 
-from tart.imaging.correlator import *
+from tart.imaging.correlator import corr_b, corr_b_pat, Correlator
 from tart.operation import observation
 from tart.util import angle
+from tart.util import utc
 
 TEST_SCOPE_CONFIG = "tart/test/test_telescope_config.json"
 
@@ -26,7 +27,7 @@ class TestCorrelator(unittest.TestCase):
 
 
 
-        t = datetime.datetime.utcnow()
+        t = utc.now()
         c = settings.from_file(TEST_SCOPE_CONFIG)
         c.Dict["num_antenna"] = 2
         d = [a0, a1]

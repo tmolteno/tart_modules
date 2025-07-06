@@ -2,7 +2,7 @@ import unittest
 
 import numpy as np
 
-from tart.simulation.util import *
+from tart.simulation.util import Util
 
 
 class TestUtil(unittest.TestCase):
@@ -24,7 +24,7 @@ class TestUtil(unittest.TestCase):
         self.assertEqual(Util.rem2pi(Util.PI / 10 - Util.PI2), Util.PI / 10)
 
     def test_idiv(self):
-        for k in range(1000):
+        for _k in range(1000):
             x = np.random.uniform(-1000, 1000)
             y = np.random.uniform(-100, 100)
             self.assertEqual(Util.idiv(x, y), x // y)
