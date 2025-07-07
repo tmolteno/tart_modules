@@ -24,6 +24,7 @@ dependencies = [
     "h5py",
     "numpy",
     "python-dateutil",
+    "scipy"
 ]
 
 [project.urls]
