@@ -14,16 +14,18 @@ def utc_datetime(year, month, day, hour=0, minute=0, second=0.0):
 
 def to_utc(dt):
     if dt.tzinfo is None:
-        dt = dt.replace(tzinfo=timezone.utc)
+        err = f"Attempting to convert non-utc timezone ({dt}) to utc: {dt.tzinfo}"
+        raise RuntimeError(err)
     if dt.tzinfo.utcoffset(dt).total_seconds() != 0:
-        raise RuntimeError(f"Attempting to convert non-utc timezone ({dt}) to utc: {dt.tzinfo}")
+        err = f"Attempting to convert non-utc timezone ({dt}) to utc: {dt.tzinfo}"
+        raise RuntimeError(err)
     return dt
 
 def now():
     return datetime.now(timezone.utc)
 
-def parse(timestamp):
-    return to_utc(parser.parse(timestamp))
+def from_string(repr):
+    return to_utc(parser.parse(repr))
 
-def as_string(timestamp):
+def to_string(timestamp):
     return timestamp.isoformat()

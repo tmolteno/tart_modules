@@ -115,7 +115,7 @@ class Observation:
         with h5py.File(filename, "r") as h5f:
             config_json = np.bytes_(h5f['config'][0])
             config = settings.from_json(config_json)
-            timestamp = utc.parse(h5f['timestamp'][0])
+            timestamp = utc.from_string(h5f['timestamp'][0])
 
             hdf_data = h5f['data'][:]
             unipolar_data = []

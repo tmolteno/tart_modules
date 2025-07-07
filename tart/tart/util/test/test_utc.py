@@ -33,20 +33,16 @@ class TestUTC(unittest.TestCase):
 
 
     def test_now(self):
-        now = utc.to_utc(datetime.datetime.now())
-
-        now_utc = utc.now()
-        print(now, now_utc)
-        self.assertAlmostEqual((now - now_utc).total_seconds(), 0.0, 3)
+        self.assertRaises(RuntimeError, utc.to_utc, datetime.datetime.now())
 
     def test_parsing(self):
         now = utc.now()
 
         # As used by create_direct_vis_dict
-        rep = now.isoformat()
+        rep = utc.to_string(now)
 
         # As used by observation.from_hdf5
-        timestamp = utc.to_utc(dateutil.parser.parse(rep))
+        timestamp = utc.from_string(rep)
 
         self.compare(timestamp, now)
-        self.assertEqual(timestamp.isoformat(), utc.to_utc(now).isoformat())
+        self.assertEqual(timestamp.isoformat(), now.isoformat())

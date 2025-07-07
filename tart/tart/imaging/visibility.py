@@ -286,7 +286,7 @@ def from_hdf5(filename):
         hdf_phase_elaz = h5f["phase_elaz"][:]
 
         hdf_timestamps = h5f["timestamp"]
-        timestamps = [utc.parse(x) for x in hdf_timestamps]
+        timestamps = [utc.from_string(x) for x in hdf_timestamps]
 
         hdf_vis = h5f["vis"][:]
         config.set_antenna_positions(ant_pos)
