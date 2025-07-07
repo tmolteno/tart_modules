@@ -4,23 +4,24 @@
 # Max Scheel 2017 tim@elec.ac.nz
 #
 
-from tart.imaging import visibility
 import argparse
 import json
 
+from tart.imaging import visibility
+from tart.util import utc
 
 def create_direct_vis_dict(vis):
     """ This function is provided with a visibility object. It returns a dictionary identical to the json response. """
     vis_dicts = []
     for visobj in vis["vis_list"]:
         vis_list = []
-        timestamp = visobj.timestamp.isoformat()[:-3] + "Z"
+        timestamp = utc.to_string(visobj.timestamp)
         for b, v in zip(visobj.baselines, visobj.v):
             i, j = b
             vis_el = {"i": i, "j": j, "re": v.real, "im": v.imag}
             vis_list.append(vis_el)
         vis_dicts.append({"data": [({"data": vis_list, "timestamp": timestamp},
-                                    [])], 
+                                    [])],
                           "timestamp": timestamp})
     return vis_dicts
 

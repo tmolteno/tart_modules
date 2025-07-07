@@ -16,7 +16,7 @@ from tart.imaging import calibration
 
 from tart_tools import api_handler
 from tart_tools import api_imaging
-
+from tart.util import utc
 
 def split_param(x):
     rot_degrees = x[0]
@@ -31,10 +31,10 @@ def load_data(api, config):
     print("Loading new data from {}...".format(api.root))
     vis_json = api.get("imaging/vis")
     ts = api_imaging.vis_json_timestamp(vis_json)
-    
+
     cat_url = api.catalog_url(lon=config.get_lon(),
                                 lat=config.get_lat(),
-                                datestr=ts.isoformat())
+                                datestr=utc.to_string(ts))
     print(f"Getting catalog from {cat_url}")
     src_json = api.get_url(cat_url)
 

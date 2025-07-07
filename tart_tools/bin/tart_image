@@ -23,6 +23,7 @@ from tart_tools import api_imaging
 from tart_tools import api_handler
 from tart.operation import settings
 from tart.imaging import elaz
+from tart.util import utc
 
 from copy import deepcopy
 
@@ -236,7 +237,7 @@ if __name__ == "__main__":
         if ARGS.show_sources:
             cat_url = api.catalog_url(lon=config.get_lon(),
                                       lat=config.get_lat(),
-                                      datestr=ts.isoformat())
+                                      datestr=utc.to_string(ts))
             source_json = api.get_url(cat_url)
 
         logger.info("Data Download Complete")
@@ -301,7 +302,7 @@ observe {}
 mapsize {}, {}
 docont=false
 mapcolor color
-integer clean_niter; 
+integer clean_niter;
 float clean_gain; clean_gain = 0.03
 float dynam;
 float flux_peak;
@@ -326,7 +327,7 @@ end while
 
 ! The following macro stops
 ! when the the in_frame RMS matches the
-! the V RMS OR if there is not improvement 
+! the V RMS OR if there is not improvement
 ! in the in_frame RMS
 
 #+deep_map_residual \

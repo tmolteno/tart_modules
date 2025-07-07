@@ -63,7 +63,7 @@ class APIhandler(object):
         lon,  # degrees
         lat,
         catalog="https://tart.elec.ac.nz/catalog",
-        datestr=utc.now().isoformat(),
+        datestr=utc.to_string(utc.now())
     ):
         return f"{catalog}/catalog?lat={lat}&lon={lon}&date={datestr}"
 
@@ -94,9 +94,9 @@ class AuthorizedAPIhandler(APIhandler):
         from tart_tools.api_handler import AuthorizedAPIhandler
 
         if __name__ == '__main__':
-            parser = argparse.ArgumentParser(description='Change telescope mode', 
+            parser = argparse.ArgumentParser(description='Change telescope mode',
                             formatter_class=argparse.ArgumentDefaultsHelpFormatter)
-            parser.add_argument('--api', required=False, default='https://tart.elec.ac.nz/signal', 
+            parser.add_argument('--api', required=False, default='https://tart.elec.ac.nz/signal',
                             help="Telescope API server URL.")
             parser.add_argument('--pw', default='password', type=str, help='API password')
             parser.add_argument('--mode', type=str, required=True, help='New mode (vis/raw)')
