@@ -144,7 +144,7 @@ class Synthesis_Imaging:
         # TODO: Throw an exception if the UV-plant does not have sufficient
         # resolution to manage the baselines.
 
-        if use_kernel == False:
+        if not use_kernel:
 
             n_arr = np.zeros((num_bin, num_bin), dtype=np.complex64)
             uu_comb = np.concatenate((uu_a, -uu_a))
