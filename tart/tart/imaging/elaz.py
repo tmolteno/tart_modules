@@ -2,18 +2,21 @@
 # An object that represents a location in the Elevation and Azimuth, and
 # handles projection into the l,m plane.
 #
+# Azimuth is measured clockwise from north (y - axis)
 # Tim Molteno 2017-2019
 #
 import numpy as np
+from tart.util.angle import wrap_180
+from tart.util.angle import wrap_2pi
 
 
 class ElAz:
     def __init__(self, el, az):
 
         self.el = el
-        self.az = az
-        self.el_r = np.radians(el)
-        self.az_r = np.radians(az)
+        self.az = wrap_180(az)
+        self.el_r = np.radians(self.el)
+        self.az_r = np.radians(self.az)
 
         # l,m are the cosines of the angle between the source vector and the
         # u and v axes respectively.
@@ -51,23 +54,31 @@ class ElAz:
         return d
 
     @classmethod
-    def from_pixels(cls, _x, _y, num_bins):
+    def from_pixels(cls, x_pix, y_pix, num_bins):
         ''' Create from pixel coordinates. The center (0,0) is
             in the middle.
         '''
-        r_max = num_bins // 2
-        x = _x - r_max
-        y = _y - r_max
-        print(f"from_pixels({x}, {y}")
+        # print(f"from_pixels({x_pix}, {y_pix})")
+        n2 = num_bins // 2
+        x = x_pix - n2
+        y = num_bins - y_pix - n2    # y_px = num_bins - int(np.round(self.m * n2 + n2))
+                                     # num_bins - y_px - n2 =  mn2
+                                     # num_bins - y_px - n2 =  mn2
+        # print(f"centred_pixels({x}, {y})")
         r = np.sqrt(x*x + y*y)
-        print(f"r=({r}, {r_max}")
+        # print(f"r=({r}, {n2})")
 
-        el_r = np.arccos(r/r_max)
-        az_r = np.arctan2(y,x)
+        if r < n2:
+            el_r = np.arccos(r/n2)
+        else:
+            el_r = 0.0
+        # print(f"    el_r = {el_r}")
+        atn = np.arctan2(y, x)
+        # print(f"    atn = {np.degrees(atn)}")
+        az_r = atn - np.radians(90)
+        # print(f"    az_r = {az_r}")
 
         return ElAz(np.degrees(el_r), np.degrees(az_r))
-
-
 
     def get_px_window(self, num_bins, window_deg):
         ''' Get a pixel window around a source with width window_deg

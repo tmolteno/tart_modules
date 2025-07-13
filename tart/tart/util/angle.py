@@ -13,23 +13,27 @@ from tart.util import constants
 def deg_to_rad(x):
     return x * math.pi / 180.0
 
+
 def wrap_2pi(x):
-    r = math.fmod(x,constants.TWO_PI)
+    r = math.fmod(x, constants.TWO_PI)
     if (r < 0.0):
         r += constants.TWO_PI
     return r
 
+
 def wrap_360(x):
-    r = math.fmod(x,360.0)
+    r = math.fmod(x, 360.0)
     if (r < 0.0):
         r += 360.0
     return r
 
+
 def wrap_180(x):
-    r = math.fmod(x,360.0)
+    r = math.fmod(x, 360.0)
     if (r > 180.0):
         r -= 360.0
     return r
+
 
 # from functools import total_ordering
 # @total_ordering
