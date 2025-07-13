@@ -19,6 +19,7 @@ class ElAz:
         # u and v axes respectively.
         self.l = -np.sin(self.az_r) * np.cos(self.el_r)
         self.m = np.cos(self.az_r) * np.cos(self.el_r)
+        self.n = np.sin(self.el_r)
 
     def get_lm(self):
         return self.l, self.m
@@ -48,6 +49,25 @@ class ElAz:
         pix_per_rad = num_bins / np.pi
         d = np.radians(deg) * pix_per_rad / 2
         return d
+
+    @classmethod
+    def from_pixels(cls, _x, _y, num_bins):
+        ''' Create from pixel coordinates. The center (0,0) is
+            in the middle.
+        '''
+        r_max = num_bins // 2
+        x = _x - r_max
+        y = _y - r_max
+        print(f"from_pixels({x}, {y}")
+        r = np.sqrt(x*x + y*y)
+        print(f"r=({r}, {r_max}")
+
+        el_r = np.arccos(r/r_max)
+        az_r = np.arctan2(y,x)
+
+        return ElAz(np.degrees(el_r), np.degrees(az_r))
+
+
 
     def get_px_window(self, num_bins, window_deg):
         ''' Get a pixel window around a source with width window_deg
@@ -95,5 +115,3 @@ def get_source_coordinates(source_list):
         y_list.append(src.m)
 
     return [x_list, y_list]
-
-
