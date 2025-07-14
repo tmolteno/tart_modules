@@ -1,4 +1,6 @@
 
+from tart.imaging import imaging
+
 import numpy as np
 import matplotlib.pyplot as plt
 import requests
@@ -28,44 +30,25 @@ print(f"Visibilities time: {visibility_data['timestamp']}")
 gains_complex = np.array(gains['gain']) * np.exp(1.0j*np.array(gains['phase_offset']))
 wavelength = 2.99793e8 / 1.57542e9   # wavelength is speed of light / frequency
 
-for v in visibility_data['data']:
+num_vis = len(visibility_data)
+v_calib = np.zeros(num_vis, dtype=np.complex64)
+baselines = np.zeros((num_vis, 3), dtype=np.float32)
+
+for k in range(num_vis):
+    v = visibiity_data[k]
     v_complex = v['re'] + v['im']*1.0j
     i = v['i']
     j = v['j']
-    v_calib = v_complex * gains_complex[i] * np.conj(gains_complex[j])
+    v_calib[k] = imaging.apply_complex_gains(v_complex, gains_complex, i, j)
     v['cal'] = v_calib
 
     # Work out the baselines
-    bl = ant_pos[j] - ant_pos[i]
-    v['bl'] = bl / wavelength
+    baselines[k, :] = imaging.ant_pos_to_uv(ant_pos, i, j) / wavelength
 
 N_FFT = 256
 uv_plane = np.zeros((N_FFT, N_FFT), dtype=np.complex64)
 
-uv_max = N_FFT / (1.2 * np.pi)
-middle = N_FFT // 2
-
-
-def uv_index(u):
-    ''' A little function to produce the index into the u-v array
-        for a given value (u, measured in wavelengths)
-    '''
-    pixels = (u / uv_max)*(N_FFT/2)
-    u_pix = middle + pixels
-    return int(u_pix)
-
-
-for v in visibility_data['data']:
-    uu, vv, ww = v['bl']
-    u_idx = uv_index(uu)
-    v_idx = uv_index(vv)
-    uv_plane[u_idx, v_idx] += v['cal']
-
-    # Place the conjugate visibility at -uu, -vv
-    u_idx = uv_index(-uu)
-    v_idx = uv_index(-vv)
-    uv_plane[u_idx, v_idx] += np.conj(v['cal'])
-
+uv_max = imaging.grid_visibility(uv_plane, v_calib, baselines)
 
 plt.figure(figsize=(4, 3), dpi=N_FFT/6)
 plt.title("U-V plane image")
