@@ -1,18 +1,22 @@
 ## Utility functions for imaging
 import numpy as np
 
+
 def ant_pos_to_uv(ant_pos, i, j):
     return ant_pos[j] - ant_pos[i]
 
+
 def apply_complex_gains(v_complex, gains_complex, i, j):
     return v_complex * gains_complex[i] * np.conj(gains_complex[j])
-    
+
+
 def ifft_imaging(uv_plane, module=np.fft):
     return module.fft.fftshift(
         module.fft.ifft2(
             module.fft.ifftshift(uv_plane)
             )
         )
+
 
 def uv_index(u, v, num_bins, uv_max):
     ''' A little function to produce the index into the u-v array
@@ -24,6 +28,7 @@ def uv_index(u, v, num_bins, uv_max):
     v_pix = middle + (v / uv_max)*(num_bins/2)
 
     return int(u_pix), int(v_pix)
+
 
 def grid_visibility(uv_plane, v_complex, baselines):
     num_bins = uv_plane.shape[0]

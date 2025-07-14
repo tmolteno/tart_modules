@@ -8,18 +8,19 @@ import numpy.fft as fft
 
 API_SERVER = 'https://api.elec.ac.nz/tart/tart-kenya'
 
+
 def get_api(api):
     url = f"{API_SERVER}/api/v1/{api}"
     print(f"Try it yourself: {url}")
     response = requests.get(url)
     return response.json()
 
+
 print(f"Downloading data from {API_SERVER}")
 mode = get_api('mode/current')
 
 if mode['mode'] != 'vis':
     print("ERROR: Telescope must be in visibility mode to allow imaging. Set via the web API")
-
 
 gains = get_api('calibration/gain')
 visibility_data = get_api('imaging/vis')
