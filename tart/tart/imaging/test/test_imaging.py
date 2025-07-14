@@ -30,12 +30,15 @@ print(f"Visibilities time: {visibility_data['timestamp']}")
 gains_complex = np.array(gains['gain']) * np.exp(1.0j*np.array(gains['phase_offset']))
 wavelength = 2.99793e8 / 1.57542e9   # wavelength is speed of light / frequency
 
-num_vis = len(visibility_data)
+vis_dat = visibility_data['data']
+num_vis = len(vis_dat)
+print(f"Num Vis: {num_vis}")
 v_calib = np.zeros(num_vis, dtype=np.complex64)
 baselines = np.zeros((num_vis, 3), dtype=np.float32)
 
+print(visibility_data)
 for k in range(num_vis):
-    v = visibiity_data[k]
+    v = vis_dat[k]
     v_complex = v['re'] + v['im']*1.0j
     i = v['i']
     j = v['j']

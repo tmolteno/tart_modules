@@ -7,7 +7,6 @@
 #
 import numpy as np
 from tart.util.angle import wrap_180
-from tart.util.angle import wrap_2pi
 
 
 class ElAz:
