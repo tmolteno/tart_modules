@@ -3,8 +3,8 @@ import unittest
 import numpy as np
 
 from tart.imaging import antenna_model
-from tart.util import angle
-from tart.util import utc
+from tart.util import angle, utc
+
 
 def create_empirical_antenna():
     sv = 1

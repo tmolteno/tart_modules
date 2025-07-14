@@ -1,7 +1,6 @@
 import datetime
 import unittest
 
-import dateutil
 from astropy import time
 
 from tart.util import utc

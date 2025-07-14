@@ -1,4 +1,3 @@
-import datetime
 import unittest
 
 import numpy as np
@@ -6,6 +5,7 @@ import numpy as np
 from tart.operation import settings
 from tart.operation.observation import Observation
 from tart.util import utc
+
 
 class TestObservation(unittest.TestCase):
 

@@ -12,6 +12,7 @@ Calculate the position in horizontal coordinates for the sun.
 
 
 import unittest
+
 import numpy as np
 
 from tart.imaging.elaz import ElAz

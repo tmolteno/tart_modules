@@ -1,10 +1,10 @@
 
-from tart.imaging import imaging
-
-import numpy as np
 import matplotlib.pyplot as plt
+import numpy as np
 import requests
-import numpy.fft as fft
+from numpy import fft
+
+from tart.imaging import imaging
 
 API_SERVER = 'https://api.elec.ac.nz/tart/tart-kenya'
 
@@ -79,7 +79,7 @@ img /= np.std(img)
 plt.figure(figsize=(4, 3), dpi=N_FFT/4)
 plt.title("Inverse FFT image")
 
-print("Dynamic Range: {}".format(np.max(img)))
+print(f"Dynamic Range: {np.max(img)}")
 
 plt.imshow(img, extent=[-1, 1, -1, 1])
 

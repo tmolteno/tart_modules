@@ -5,9 +5,7 @@ import numpy as np
 from tart.imaging import antenna_model, correlator
 from tart.operation import observation, settings
 from tart.simulation import antennas, radio, simulation_source
-from tart.util import angle
-from tart.util import utc
-
+from tart.util import angle, utc
 
 TEST_CONFIG = "./tart/test/test_telescope_config.json"
 TEST_ANTENNA_POSITIONS = "./tart/test/test_calibrated_antenna_positions.json"
