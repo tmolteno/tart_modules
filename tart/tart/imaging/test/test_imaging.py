@@ -1,96 +1,119 @@
+import unittest
+import logging
+import os
 
-import matplotlib.pyplot as plt
 import numpy as np
-import requests
-from numpy import fft
+from copy import deepcopy
 
+from tart.util import utc
+from tart.util import angle
+
+from tart.imaging import antenna_model
+from tart.imaging import radio_source
+from tart.imaging import location
+from tart.imaging import calibration
+from tart.imaging import elaz
 from tart.imaging import imaging
-
-API_SERVER = 'https://api.elec.ac.nz/tart/tart-kenya'
-
-
-def get_api(api):
-    url = f"{API_SERVER}/api/v1/{api}"
-    print(f"Try it yourself: {url}")
-    response = requests.get(url)
-    return response.json()
+from tart.simulation import skymodel
+from tart.simulation import antennas
+from tart.simulation import radio
+from tart.operation import settings
 
 
-print(f"Downloading data from {API_SERVER}")
-mode = get_api('mode/current')
+logger = logging.getLogger()
 
-if mode['mode'] != 'vis':
-    print("ERROR: Telescope must be in visibility mode to allow imaging. Set via the web API")
-
-gains = get_api('calibration/gain')
-visibility_data = get_api('imaging/vis')
-ant_pos = get_api('imaging/antenna_positions')
-ant_pos = np.array(ant_pos)
-
-print(f"Visibilities time: {visibility_data['timestamp']}")
-gains_complex = np.array(gains['gain']) * np.exp(1.0j*np.array(gains['phase_offset']))
+TESTCONFIG_FILENAME = os.path.join(os.path.dirname(__file__), '../../test/test_telescope_config.json')
+ANT_POS_FILE = os.path.join(os.path.dirname(__file__), '../../test/test_calibrated_antenna_positions.json')
 
 
+class TestSettings(unittest.TestCase):
 
-wavelength = 2.99793e8 / 1.57542e9   # wavelength is speed of light / frequency
+    def setUp(self):
+        self.config = settings.from_file(TESTCONFIG_FILENAME)
+        self.config.load_antenna_positions(
+            cal_ant_positions_file=ANT_POS_FILE
+        )
+        self.ant_pos = self.config.get_antenna_positions()
+        print(self.ant_pos)
 
-vis_dat = visibility_data['data']
-num_vis = len(vis_dat)
-print(f"Num Vis: {num_vis}")
-v_calib = np.zeros(num_vis, dtype=np.complex64)
-baselines = np.zeros((num_vis, 3), dtype=np.float32)
+    def get_fake_vis(self):
 
-print(visibility_data)
+        loc = location.Location(angle.from_dms(self.config.get_lat()),
+                                angle.from_dms(self.config.get_lon()),
+                                self.config.get_alt())
 
-for k in range(num_vis):
-    v = vis_dat[k]
-    v_complex = v['re'] + v['im']*1.0j
-    i = v['i']
-    j = v['j']
-    v_calib[k] = imaging.apply_complex_gains(v_complex, gains_complex, i, j)
-    v['cal'] = v_calib[k]
+        ANTS = [antennas.Antenna(loc, pos) for pos in self.ant_pos]
+        num_ant = len(ANTS)
+        ANT_MODELS = [antenna_model.GpsPatchAntenna() for i in range(num_ant)]
+        NOISE_LVLS = np.zeros(num_ant)
+        RAD = radio.Max2769B(n_samples=2**12, noise_level=NOISE_LVLS)
 
-    # Work out the baselines
-    bl = imaging.ant_pos_to_uv(ant_pos, i, j) / wavelength
-    print(f"Baseline: {bl}")
-    baselines[k, :] = bl
+        sim_sky = skymodel.Skymodel(0, location=loc, gps=0, thesun=0, known_cosmic=0)
 
-N_FFT = 128
-uv_plane = np.zeros((N_FFT, N_FFT), dtype=np.complex64)
+        timestamp = utc.now()
 
-uv_max = imaging.grid_visibility(uv_plane, v_calib, baselines)
+        # ############## HOUR HAND ###########################
+        #
+        # The pattern rotates once every 12 hours
+        #
+        hour_hand = timestamp.hour*30.0 + timestamp.minute/2.0
 
-plt.figure(figsize=(4, 3), dpi=N_FFT/6)
-plt.title("U-V plane image")
+        self.hour_sources = [{'el': el, 'az': -hour_hand} for el in [85, 75, 65, 55]]
+        for m in self.hour_sources:
+            sim_sky.add_src(radio_source.ArtificialSource(loc, timestamp, r=1e6, el=m['el'], az=m['az']))
 
-plt.imshow(np.abs(uv_plane), extent=[-uv_max, uv_max, -uv_max, uv_max])
+        # ############## MINUTE HAND ###########################
+        #
+        # The pattern rotates once every 1 hour
+        #
+        minute_hand = timestamp.minute*6.0 + timestamp.second/10.0
 
-plt.xlim(-uv_max, uv_max)
-plt.ylim(-uv_max, uv_max)
-plt.savefig('uv_plane.jpg')
-plt.show()
+        self.minute_sources = [{'el': el, 'az': -minute_hand} for el in [90, 80, 70, 60, 50, 40, 30]]
+        for m in self.minute_sources:
+            sim_sky.add_src(radio_source.ArtificialSource(loc, timestamp, r=1e6, el=m['el'], az=m['az']))
 
+        sources = sim_sky.gen_photons_per_src(timestamp, radio=RAD,
+                                              config=self.config, n_samp=1)
 
+        v_sim = antennas.antennas_simp_vis(
+            ANTS, ANT_MODELS, sources, timestamp, self.config, RAD.noise_level
+        )
 
-cal_ift = np.fft.fftshift(fft.ifft2(np.fft.ifftshift(uv_plane)))
+        cv = calibration.CalibratedVisibility(v_sim)
 
-# Take the absolute value to make an intensity image
-img = np.abs(cal_ift)
-# Scale it to multiples of the image standard deviation
-img /= np.std(img)
+        return cv
 
+    def test_imaging(self):
 
-# Step 5. Plot the image
+        cv = self.get_fake_vis()
+        rotation = 0.0
+        imaging.rotate_vis(
+            rotation, cv, reference_positions=deepcopy(self.ant_pos)
+        )
+        n_bin = 2 ** 8
 
-plt.figure(figsize=(4, 3), dpi=N_FFT/4)
-plt.title("Inverse FFT image")
+        cal_ift, cal_extent, n_fft, bin_width = imaging.image_from_calibrated_vis(
+            cv, nw=n_bin / 4, num_bin=n_bin
+        )
 
-print(f"Dynamic Range: {np.max(img)}")
+        img = np.abs(cal_ift)
+        max_p = np.max(img)
+        min_p = np.min(img)
+        mad_p = np.std(img)
+        ift_scaled = (img - min_p) / mad_p
 
-plt.imshow(img, extent=[-1, 1, -1, 1])
+        import matplotlib.pyplot as plt
 
-plt.xlim(-1, 1)
-plt.ylim(-1, 1)
-cb = plt.colorbar()
-plt.savefig('basic_image.jpg')
-plt.show()
+        for m in self.minute_sources:
+            src = elaz.ElAz(m['el'], m['az'])
+            x, y = src.get_px(n_bin)
+            print(x, y)
+            ift_scaled[x, y] = -1
+        plt.imshow(ift_scaled)
+
+        plt.show()
+
+        for m in self.minute_sources:
+            src = elaz.ElAz(m['el'], m['az'])
+            x, y = src.get_px(n_bin)
+            self.assertGreater(img[x, y], max_p/3)
