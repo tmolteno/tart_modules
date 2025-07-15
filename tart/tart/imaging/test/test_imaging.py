@@ -33,34 +33,15 @@ class TestSettings(unittest.TestCase):
         self.config.load_antenna_positions(
             cal_ant_positions_file=ANT_POS_FILE
         )
-        self.ant_pos = self.config.get_antenna_positions()
-        print(self.ant_pos)
 
-    def get_fake_vis(self):
-
-        loc = location.Location(angle.from_dms(self.config.get_lat()),
-                                angle.from_dms(self.config.get_lon()),
-                                self.config.get_alt())
-
-        ANTS = [antennas.Antenna(loc, pos) for pos in self.ant_pos]
-        num_ant = len(ANTS)
-        ANT_MODELS = [antenna_model.GpsPatchAntenna() for i in range(num_ant)]
-        NOISE_LVLS = np.zeros(num_ant)
-        RAD = radio.Max2769B(n_samples=2**12, noise_level=NOISE_LVLS)
-
-        sim_sky = skymodel.Skymodel(0, location=loc, gps=0, thesun=0, known_cosmic=0)
-
-        timestamp = utc.now()
-
+    def get_clock_sources(self, timestamp):
         # ############## HOUR HAND ###########################
         #
         # The pattern rotates once every 12 hours
         #
         hour_hand = timestamp.hour*30.0 + timestamp.minute/2.0
 
-        self.hour_sources = [{'el': el, 'az': -hour_hand} for el in [85, 75, 65, 55]]
-        for m in self.hour_sources:
-            sim_sky.add_src(radio_source.ArtificialSource(loc, timestamp, r=1e6, el=m['el'], az=m['az']))
+        hour_sources = [{'el': el, 'az': -hour_hand} for el in [85, 75, 65, 55]]
 
         # ############## MINUTE HAND ###########################
         #
@@ -68,8 +49,29 @@ class TestSettings(unittest.TestCase):
         #
         minute_hand = timestamp.minute*6.0 + timestamp.second/10.0
 
-        self.minute_sources = [{'el': el, 'az': -minute_hand} for el in [90, 80, 70, 60, 50, 40, 30]]
-        for m in self.minute_sources:
+        minute_sources = [{'el': el, 'az': -minute_hand} for el in [90, 80, 70, 60, 50, 40, 30]]
+
+        return hour_sources, minute_sources
+
+    def get_clock_vis(self, config, timestamp):
+
+        loc = location.Location(angle.from_dms(config.get_lat()),
+                                angle.from_dms(config.get_lon()),
+                                config.get_alt())
+
+        ant_pos = config.get_antenna_positions()
+        num_ant = len(ant_pos)
+
+        ANTS = [antennas.Antenna(loc, pos) for pos in ant_pos]
+        ANT_MODELS = [antenna_model.GpsPatchAntenna() for i in range(num_ant)]
+        RAD = radio.Max2769B(n_samples=2**12, noise_level=np.zeros(num_ant))
+
+        hour_sources, minute_sources = self.get_clock_sources(timestamp)
+
+        sim_sky = skymodel.Skymodel(0, location=loc, gps=0, thesun=0, known_cosmic=0)
+        for m in hour_sources:
+            sim_sky.add_src(radio_source.ArtificialSource(loc, timestamp, r=1e6, el=m['el'], az=m['az']))
+        for m in minute_sources:
             sim_sky.add_src(radio_source.ArtificialSource(loc, timestamp, r=1e6, el=m['el'], az=m['az']))
 
         sources = sim_sky.gen_photons_per_src(timestamp, radio=RAD,
@@ -81,15 +83,13 @@ class TestSettings(unittest.TestCase):
 
         cv = calibration.CalibratedVisibility(v_sim)
 
-        return cv
+        return cv, hour_sources, minute_sources
 
     def test_imaging(self):
 
-        cv = self.get_fake_vis()
-        rotation = 0.0
-        imaging.rotate_vis(
-            rotation, cv, reference_positions=deepcopy(self.ant_pos)
-        )
+        cv, hour_sources, minute_sources = \
+            self.get_clock_vis(timestamp=utc.now(), config=self.config)
+
         n_bin = 2 ** 8
 
         cal_ift, cal_extent, n_fft, bin_width = imaging.image_from_calibrated_vis(
@@ -104,7 +104,7 @@ class TestSettings(unittest.TestCase):
 
         import matplotlib.pyplot as plt
 
-        for m in self.minute_sources:
+        for m in minute_sources:
             src = elaz.ElAz(m['el'], m['az'])
             x, y = src.get_px(n_bin)
             print(x, y)
@@ -113,7 +113,7 @@ class TestSettings(unittest.TestCase):
 
         plt.show()
 
-        for m in self.minute_sources:
+        for m in minute_sources:
             src = elaz.ElAz(m['el'], m['az'])
             x, y = src.get_px(n_bin)
             self.assertGreater(img[x, y], max_p/3)
