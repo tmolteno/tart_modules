@@ -3,6 +3,7 @@
 import numpy as np
 
 from tart.imaging import visibility
+from tart.imaging import imaging
 from tart.simulation.simulation_source import HorizontalSource
 from tart.util import constants
 
@@ -49,8 +50,9 @@ def antennas_simplified_signal(antennas, ant_models, sources, timebase, fc0, see
 def antennas_simp_vis(antennas, ant_models, sources, utc_date, config, noise_lvl):
     """ Return visibility object without generating timeseries or filtering."""
     vis = []
-    baselines = []
     num_ant = len(antennas)
+    baseline_indices = imaging.get_baseline_indices(num_ant)
+
     # noise = np.random.uniform(0.,np.sqrt(noise_lvl),config.get_num_antenna()) * np.exp(2.0j*np.pi*np.random.uniform(-1.,1.,config.get_num_antenna()))
     if noise_lvl.__gt__(0.0).all():
         noise = np.random.normal(0.0, noise_lvl) * np.exp(
@@ -58,31 +60,30 @@ def antennas_simp_vis(antennas, ant_models, sources, utc_date, config, noise_lvl
         )
     else:
         noise = np.zeros(num_ant)
-    for i in range(num_ant):
-        for j in range(i + 1, num_ant):
-            vi = noise[i] + noise[j]
-            # print(vi)
-            for src in sources:
-                gain0 = ant_models[i].get_gain(src.elevation, src.azimuth)
-                gain1 = ant_models[j].get_gain(src.elevation, src.azimuth)
-                if gain0 <= 0.0 or gain1 <= 0.0:
-                    vi += 0.0j
-                else:
-                    dt = get_geo_delay_horizontal(antennas[i], antennas[j], src)
-                    vi += (
-                        gain0
-                        * gain1
-                        * 1.0
-                        * np.exp(1.0j * dt * constants.L1_OMEGA)
-                        * src.amplitude
-                    )
-            if np.abs(vi) >= 1.0:
-                # otherwise in case we have a signal that is almost 1. noise could cause an overflow
-                vi = 1.0 * vi / np.abs(vi)
-            vis.append(vi)
-            baselines.append([i, j])
+    for bl_idx in baseline_indices:
+        i, j = bl_idx
+        vi = noise[i] + noise[j]
+
+        for src in sources:
+            gain0 = ant_models[i].get_gain(src.elevation, src.azimuth)
+            gain1 = ant_models[j].get_gain(src.elevation, src.azimuth)
+            if gain0 <= 0.0 or gain1 <= 0.0:
+                vi += 0.0j
+            else:
+                dt = get_geo_delay_horizontal(antennas[i], antennas[j], src)
+                vi += (
+                    gain0
+                    * gain1
+                    * 1.0
+                    * np.exp(1.0j * dt * constants.L1_OMEGA)
+                    * src.amplitude
+                )
+        if np.abs(vi) >= 1.0:
+            # otherwise in case we have a signal that is almost 1. noise could cause an overflow
+            vi = 1.0 * vi / np.abs(vi)
+        vis.append(vi)
     vis_o = visibility.Visibility.from_config(config, utc_date)
-    vis_o.set_visibilities(vis, baselines)
+    vis_o.set_visibilities(vis, baseline_indices)
     return vis_o
 
 

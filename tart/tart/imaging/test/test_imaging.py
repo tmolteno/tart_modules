@@ -68,11 +68,13 @@ class TestSettings(unittest.TestCase):
 
         hour_sources, minute_sources = self.get_clock_sources(timestamp)
 
-        sim_sky = skymodel.Skymodel(0, location=loc, gps=0, thesun=0, known_cosmic=0)
-        for m in hour_sources:
-            sim_sky.add_src(radio_source.ArtificialSource(loc, timestamp, r=1e6, el=m['el'], az=m['az']))
-        for m in minute_sources:
-            sim_sky.add_src(radio_source.ArtificialSource(loc, timestamp, r=1e6, el=m['el'], az=m['az']))
+        sim_sky = skymodel.Skymodel(0, location=loc, gps=0,
+                                    thesun=0, known_cosmic=0)
+
+        for m in hour_sources + minute_sources:
+            src = radio_source.ArtificialSource(loc, timestamp, r=1e6,
+                                                el=m['el'], az=m['az'])
+            sim_sky.add_src(src)
 
         sources = sim_sky.gen_photons_per_src(timestamp, radio=RAD,
                                               config=self.config, n_samp=1)

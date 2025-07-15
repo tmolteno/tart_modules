@@ -5,6 +5,14 @@ from tart.imaging import synthesis
 from tart.operation import settings
 
 
+def get_baseline_indices(num_ant):
+    bl_indices = []
+    for i in range(num_ant-1):
+        for j in range(i + 1, num_ant):
+            bl_indices.append([i, j])
+    return bl_indices
+
+
 def ant_pos_to_uv(ant_pos, i, j):
     return ant_pos[j] - ant_pos[i]
 
