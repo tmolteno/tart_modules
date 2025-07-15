@@ -4,28 +4,26 @@
   Max Scheel 2017 - max@max.ac.nz
 """
 
-import datetime
-import json
-import os
-import logging
-import shutil
 import hashlib
-
-import urllib.request
+import json
+import logging
+import os
+import shutil
 import urllib.error
 import urllib.parse
+import urllib.request
 
 import requests
 from requests.adapters import HTTPAdapter
-from urllib3.util.retry import Retry
-
 from tart.operation import settings
 from tart.util import utc
+from urllib3.util.retry import Retry
 
 # Default timeout
 TIMEOUT = 15.0
 
 logger = logging.getLogger()
+
 
 def sha256_checksum(filename, block_size=65536):
     sha256 = hashlib.sha256()
@@ -50,7 +48,8 @@ def download_file(url, checksum=0, file_path=None):
             )
             os.remove(file_path)
 
-class APIhandler(object):
+
+class APIhandler:
     def __init__(self, api_root):
         self.root = api_root
         self.token = None
@@ -63,8 +62,10 @@ class APIhandler(object):
         lon,  # degrees
         lat,
         catalog="https://tart.elec.ac.nz/catalog",
-        datestr=utc.to_string(utc.now())
+        datestr=None
     ):
+        if datestr is None:
+            datestr = utc.to_string(utc.now())
         return f"{catalog}/catalog?lat={lat}&lon={lon}&date={datestr}"
 
     def get(self, path):
@@ -124,7 +125,7 @@ class AuthorizedAPIhandler(APIhandler):
             self.token = resp_json["access_token"]
             self.refresh_token = resp_json["refresh_token"]
         else:
-            raise Exception("Authorization failed. Wrong pw?")
+            raise RuntimeError("Authorization failed. Wrong pw?")
 
     def refresh_access_token(self):
         r = requests.post(
@@ -143,15 +144,15 @@ class AuthorizedAPIhandler(APIhandler):
 
     def __get_header(self):
         if self.token is None:
-            raise Exception("login required")
+            raise RuntimeError("login required")
         return {"Authorization": "JWT " + self.token}
 
     def __get_refresh_header(self):
         if self.refresh_token is None:
-            raise Exception("login required")
+            raise RuntimeError("login required")
         return {"Authorization": "JWT " + self.refresh_token}
 
-    # TODO catch the requests result that corresponds to a failed login (authorization expired)
+    # TODO: catch the requests result that corresponds to a failed login (authorization expired)
     # and re-authorize automatically.
     def put(self, path, **kwargs):
         r = requests.put(

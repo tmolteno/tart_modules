@@ -3,18 +3,14 @@
 
     Tim Molteno & Max Scheel 2017-2023.
 """
-import os
 import logging
-import dateutil.parser
+import os
+
 import astropy.io.fits as pyfits
-
+import dateutil.parser
 import numpy as np
-
+from tart.imaging import calibration, elaz, synthesis, visibility
 from tart.operation import settings
-from tart.imaging import visibility
-from tart.imaging import calibration
-from tart.imaging import synthesis
-from tart.imaging import elaz
 
 logger = logging.getLogger()
 
@@ -65,8 +61,7 @@ def rotate_vis(rot_degrees, cv, reference_positions):
 def image_from_calibrated_vis(cv, nw, num_bin):
     cal_syn = synthesis.Synthesis_Imaging([cv])
 
-    cal_ift, cal_extent = cal_syn.get_ift(nw=nw, num_bin=num_bin,
-                                          use_kernel=False)
+    cal_ift, cal_extent = cal_syn.get_ift(nw=nw, num_bin=num_bin)
     # beam = cal_syn.get_beam(nw=nw, num_bin=num_bin, use_kernel=False)
     n_fft = len(cal_ift)
     assert n_fft == num_bin
@@ -103,7 +98,7 @@ def make_square_image(plt, img, title, num_bins, source_json=None):
     plt.figure(figsize=(8, 6), dpi=num_bins / 6)
     plt.title(title)
 
-    print("Dynamic Range: {}".format(np.max(img)))
+    print(f"Dynamic Range: {np.max(img)}")
 
     plt.imshow(img, extent=[-1, 1, -1, 1])
 
