@@ -1,0 +1,53 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "tart_tools"
+version = "1.3.1"
+description = "Transient Array Radio Telescope Command Line Tools"
+readme = "README.md"
+license = "GPL-3.0-or-later"
+authors = [
+    { name = "Tim Molteno", email = "tim@elec.ac.nz" },
+]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Science/Research",
+    "License :: OSI Approved :: GNU General Public License v3 (GPLv3)",
+    "Programming Language :: Python :: 3",
+    "Topic :: Communications :: Ham Radio",
+    "Topic :: Scientific/Engineering",
+]
+dependencies = [
+    "minio",
+    "numpy",
+    "requests",
+    "tart",
+    "tqdm",
+]
+
+[project.urls]
+Homepage = "http://github.com/tmolteno/tart_modules"
+
+[tool.hatch.version]
+path = "tart_tools/__init__.py"
+
+[tool.hatch.build.targets.sdist]
+include = [
+    "/tart_tools",
+]
+
+[tool.hatch.envs.hatch-test]
+extra-dependencies = [
+  "pytest~=8.1",
+  "scipy",
+  "jsonrpclib",
+  "requests",
+  "ephem",
+  "pyfftw",
+  "matplotlib",
+  "astropy",
+  "healpy"
+]
+default-args = ["tart_tools"]

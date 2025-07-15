@@ -32,7 +32,7 @@ def uv_index(u, v, num_bins, uv_max):
 
 def grid_visibility(uv_plane, v_complex, baselines):
     num_bins = uv_plane.shape[0]
-    uv_max = num_bins / (np.pi)
+    uv_max = num_bins / 4   # (1.2 * np.pi)
 
     n_vis = len(v_complex)
     for i in range(n_vis):

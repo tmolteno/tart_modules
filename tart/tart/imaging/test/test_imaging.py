@@ -29,6 +29,9 @@ ant_pos = np.array(ant_pos)
 
 print(f"Visibilities time: {visibility_data['timestamp']}")
 gains_complex = np.array(gains['gain']) * np.exp(1.0j*np.array(gains['phase_offset']))
+
+
+
 wavelength = 2.99793e8 / 1.57542e9   # wavelength is speed of light / frequency
 
 vis_dat = visibility_data['data']
@@ -38,18 +41,21 @@ v_calib = np.zeros(num_vis, dtype=np.complex64)
 baselines = np.zeros((num_vis, 3), dtype=np.float32)
 
 print(visibility_data)
+
 for k in range(num_vis):
     v = vis_dat[k]
     v_complex = v['re'] + v['im']*1.0j
     i = v['i']
     j = v['j']
     v_calib[k] = imaging.apply_complex_gains(v_complex, gains_complex, i, j)
-    v['cal'] = v_calib
+    v['cal'] = v_calib[k]
 
     # Work out the baselines
-    baselines[k, :] = imaging.ant_pos_to_uv(ant_pos, i, j) / wavelength
+    bl = imaging.ant_pos_to_uv(ant_pos, i, j) / wavelength
+    print(f"Baseline: {bl}")
+    baselines[k, :] = bl
 
-N_FFT = 256
+N_FFT = 128
 uv_plane = np.zeros((N_FFT, N_FFT), dtype=np.complex64)
 
 uv_max = imaging.grid_visibility(uv_plane, v_calib, baselines)
