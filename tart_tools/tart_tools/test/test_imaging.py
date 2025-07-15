@@ -70,7 +70,7 @@ class TestApi(unittest.TestCase):
 
         timestamp = utc.now()
 
-        ############### HOUR HAND ###########################
+        # ############## HOUR HAND ###########################
         #
         # The pattern rotates once every 12 hours
         #
@@ -80,7 +80,7 @@ class TestApi(unittest.TestCase):
         for m in self.hour_sources:
             sim_sky.add_src(radio_source.ArtificialSource(loc, timestamp, r=1e6, el=m['el'], az=m['az']))
 
-        ############### MINUTE HAND ###########################
+        # ############## MINUTE HAND ###########################
         #
         # The pattern rotates once every 1 hour
         #
@@ -100,7 +100,6 @@ class TestApi(unittest.TestCase):
         cv = calibration.CalibratedVisibility(v_sim)
 
         return cv
-
 
     def test_imaging(self):
 
@@ -127,7 +126,7 @@ class TestApi(unittest.TestCase):
             src = elaz.ElAz(m['el'], m['az'])
             x, y = src.get_px(n_bin)
             print(x, y)
-            ift_scaled[y, x] = -1
+            ift_scaled[x, y] = -1
         plt.imshow(ift_scaled)
 
         plt.show()

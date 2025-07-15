@@ -6,7 +6,6 @@
 import logging
 import os
 
-import astropy.io.fits as pyfits
 import dateutil.parser
 import numpy as np
 from tart.imaging import calibration, elaz, synthesis, visibility
@@ -173,6 +172,8 @@ def save_fits_image(img, fname, timestamp, out_dir, header_dict={}):
     This method saves a 2D array as a FITS image, and adds the minimum neccessary headers
     to get the image to be processable by MORESANE
     """
+    import astropy.io.fits as pyfits
+
     hdu = pyfits.PrimaryHDU(img.astype(np.float32))
     hdulist = pyfits.HDUList([hdu])
     deg_per_pixel = 180.0 / len(img)
