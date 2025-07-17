@@ -63,15 +63,14 @@ def antennas_simp_vis(antennas, ant_models, sources, utc_date, config, noise_lvl
             vi = noise[i] + noise[j]
             # print(vi)
             for src in sources:
-                gain0 = ant_models[i].get_gain(src.elevation, src.azimuth)
-                gain1 = ant_models[j].get_gain(src.elevation, src.azimuth)
-                if gain0 <= 0.0 or gain1 <= 0.0:
+                gain_i = ant_models[i].get_gain(src.elevation, src.azimuth)
+                gain_j = ant_models[j].get_gain(src.elevation, src.azimuth)
+                if gain_i <= 0.0 or gain_j <= 0.0:
                     vi += 0.0j
                 else:
                     dt = get_geo_delay_horizontal(antennas[i], antennas[j], src)
                     vi += (
-                        gain0
-                        * gain1
+                        gain_i * gain_j
                         * 1.0
                         * np.exp(1.0j * dt * constants.L1_OMEGA)
                         * src.amplitude
