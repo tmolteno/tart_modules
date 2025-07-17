@@ -168,7 +168,6 @@ class Max2769B(Radio):
 
 
 if __name__ == "__main__":
-    import datetime
 
     import matplotlib.pyplot as plt
     import numpy as np

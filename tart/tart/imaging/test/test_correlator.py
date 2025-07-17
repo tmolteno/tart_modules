@@ -1,10 +1,9 @@
 import numpy as np
 from scipy.signal import hilbert
 
-from tart.imaging.correlator import corr_b, corr_b_pat, Correlator
+from tart.imaging.correlator import Correlator, corr_b, corr_b_pat
 from tart.operation import observation
-from tart.util import angle
-from tart.util import utc
+from tart.util import angle, utc
 
 TEST_SCOPE_CONFIG = "tart/test/test_telescope_config.json"
 
@@ -13,7 +12,6 @@ import unittest
 
 class TestCorrelator(unittest.TestCase):
     def test_correlator_simp(self):
-        import datetime
 
         import numpy as np
 

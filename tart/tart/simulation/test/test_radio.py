@@ -1,4 +1,3 @@
-import datetime
 import unittest
 
 import matplotlib.pyplot as plt
@@ -8,8 +7,7 @@ from tart.imaging import antenna_model
 from tart.operation import settings
 from tart.simulation import antennas, simulation_source, spectrum
 from tart.simulation.radio import *
-from tart.util import angle
-from tart.util import utc
+from tart.util import angle, utc
 
 
 class TestMax2769B(unittest.TestCase):

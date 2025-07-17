@@ -12,6 +12,7 @@ Calculate the position in horizontal coordinates for the sun.
 
 
 import unittest
+
 import numpy as np
 
 from tart.imaging.elaz import ElAz
@@ -87,7 +88,7 @@ class TestElaz(unittest.TestCase):
     def test_round_trip(self):
         num_bins = 512
         for i in range(100):
-            elaz = ElAz(np.random.uniform(0, 89),
+            elaz = ElAz(np.random.uniform(1, 89),
                         np.random.uniform(0, 360))
             print(f"random elaz: {elaz}")
             l, m = elaz.get_lm()

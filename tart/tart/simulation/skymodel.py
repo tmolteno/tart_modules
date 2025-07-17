@@ -1,13 +1,11 @@
 """Copyright (C) Max Scheel 2013. All rights reserved"""
 
 import json
-import requests
 
 import numpy as np
+import requests
 
-from tart.imaging import sun
-from tart.imaging import gps_satellite, location, radio_source
-from tart.imaging import synthesis
+from tart.imaging import gps_satellite, location, radio_source, sun
 from tart.simulation import simulation_source
 from tart.util import angle
 
