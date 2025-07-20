@@ -26,7 +26,7 @@ TESTCONFIG_FILENAME = os.path.join(os.path.dirname(__file__), '../../test/test_t
 ANT_POS_FILE = os.path.join(os.path.dirname(__file__), '../../test/test_calibrated_antenna_positions.json')
 
 
-class TestSettings(unittest.TestCase):
+class TestImaging(unittest.TestCase):
 
     def setUp(self):
         self.config = settings.from_file(TESTCONFIG_FILENAME)
