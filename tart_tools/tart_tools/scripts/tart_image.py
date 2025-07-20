@@ -79,7 +79,7 @@ def image_stats(img):
     return max_p, min_p, mad_p
 
 
-if __name__ == "__main__":
+def main():
     PARSER = argparse.ArgumentParser(
         description="Generate an image using the web api ofs a TART radio telescope.",
         formatter_class=argparse.ArgumentDefaultsHelpFormatter,

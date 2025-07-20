@@ -26,6 +26,20 @@ dependencies = [
     "tart",
     "tqdm",
 ]
+packages = [{include = "tart_tools"}]
+
+[project.scripts]
+tart_image = 'tart_tools.scripts.tart_image:main'
+tart_calibrate = 'tart_tools.scripts.tart_calibrate:main'
+tart_calibration_data = 'tart_tools.scripts.tart_calibration_data:main'
+tart_vis2json = 'tart_tools.scripts.tart_vis2json:main'
+tart_download_gains = 'tart_tools.scripts.tart_download_gains:main'
+tart_upload_gains ='tart_tools.scripts.tart_upload_gains:main'
+tart_download_data = 'tart_tools.scripts.tart_download_data:main'
+tart_get_archive_data = 'tart_tools.scripts.tart_get_archive_data:main'
+tart_set_mode = 'tart_tools.scripts.tart_set_mode:main'
+tart_download_antenna_positions = 'tart_tools.scripts.tart_download_antenna_positions:main'
+tart_upload_antenna_positions = 'tart_tools.scripts.tart_upload_antenna_positions:main'
 
 [project.urls]
 Homepage = "http://github.com/tmolteno/tart_modules"

@@ -8,7 +8,7 @@ import json
 
 from tart_tools.api_handler import APIhandler
 
-if __name__ == "__main__":
+def main():
     parser = argparse.ArgumentParser(
         description="Save antenna positions from api to local file",
         formatter_class=argparse.ArgumentDefaultsHelpFormatter,

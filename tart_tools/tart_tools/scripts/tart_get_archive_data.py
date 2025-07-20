@@ -19,7 +19,7 @@ MINIO_API_HOST = "s3.max.ac.nz"
 BUCKET_NAME = "tart-hdf"
 
 
-if __name__ == "__main__":
+def main():
     parser = argparse.ArgumentParser(description='Get data from the TART s3 bucket',
                                      formatter_class=argparse.ArgumentDefaultsHelpFormatter)
 

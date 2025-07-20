@@ -17,7 +17,7 @@ from tart_tools.api_handler import APIhandler, download_file, sha256_checksum
 logger = logging.getLogger()
 
 
-if __name__ == "__main__":
+def main():
     parser = argparse.ArgumentParser(
         description="Download data from the telescope",
         formatter_class=argparse.ArgumentDefaultsHelpFormatter,

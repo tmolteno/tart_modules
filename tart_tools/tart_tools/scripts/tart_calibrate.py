@@ -3,7 +3,7 @@
     Calibrate the Telescope from the RESTful API
 
     Copyright (c) Tim Molteno 2017-2022.
-    
+
     This tool uses  high-dimensional optimisation to calculate the gains and phases of the 24 antennas
     of the telescope.
 """
@@ -264,7 +264,7 @@ def de_callback(xk, convergence):
     output_param(xk)
 
 
-if __name__ == "__main__":
+def main():
     parser = argparse.ArgumentParser(
         description="Calibrate the tart telescope from API.",
         formatter_class=argparse.ArgumentDefaultsHelpFormatter,
@@ -281,14 +281,14 @@ if __name__ == "__main__":
         default="calibration_data.json",
         help="Calibration Output JSON file.",
     )
-    
+
     #parser.add_argument(
         #"--influx",
         #required=False,
         #default=None,
         #help="Use an influxdb  (https://tartinflux.max.ac.nz/) for cal data.",
     #)
-    
+
     parser.add_argument("--show", action="store_true", help="show instead of save.")
     parser.add_argument(
         "--cold-start", action="store_true", help="Start from zero knowledge of gains."

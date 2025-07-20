@@ -7,7 +7,7 @@ import argparse
 
 from tart_tools.api_handler import AuthorizedAPIhandler
 
-if __name__ == "__main__":
+def main():
     parser = argparse.ArgumentParser(
         description="Change telescope mode",
         formatter_class=argparse.ArgumentDefaultsHelpFormatter,
@@ -19,7 +19,7 @@ if __name__ == "__main__":
         help="Telescope API server URL.",
     )
     parser.add_argument("--pw", default="password", type=str, help="API password")
-    
+
     mode_group = parser.add_mutually_exclusive_group()
     mode_group.add_argument('--raw', action="store_true", help="Set raw data mode.")
     mode_group.add_argument('--vis', action="store_true", help="Set vis mode")
@@ -32,10 +32,10 @@ if __name__ == "__main__":
         mode = "raw"
     if ARGS.vis:
         mode = "vis"
-        
+
     if ARGS.mode is not None:
         mode = ARGS.mode
-        
+
     if mode is None:
         raise RuntimeError("Either --mode, --raw or --vis must be specified")
 

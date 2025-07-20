@@ -8,7 +8,7 @@ import json
 
 from tart_tools.api_handler import AuthorizedAPIhandler, upload_gain
 
-if __name__ == "__main__":
+def main():
     parser = argparse.ArgumentParser(
         description="Upload gains from local file to api",
         formatter_class=argparse.ArgumentDefaultsHelpFormatter,

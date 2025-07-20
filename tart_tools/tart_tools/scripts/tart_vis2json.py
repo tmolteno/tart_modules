@@ -26,7 +26,7 @@ def create_direct_vis_dict(vis):
     return vis_dicts
 
 
-if __name__ == "__main__":
+def main():
     PARSER = argparse.ArgumentParser(
         description="Generate offline json files from a list of visibility objects files."
     )

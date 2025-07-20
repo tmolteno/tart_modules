@@ -12,7 +12,7 @@ import numpy as np
 from tart.operation import settings
 from tart_tools.api_handler import AuthorizedAPIhandler
 
-if __name__ == "__main__":
+def main():
     parser = argparse.ArgumentParser(
         description="Upload antenna positions from local file to remote telescope",
         formatter_class=argparse.ArgumentDefaultsHelpFormatter,
@@ -32,17 +32,17 @@ if __name__ == "__main__":
     with open(ARGS.file, "r") as f:
         data = f.read()
     positions_dict = json.loads(data)
-    
+
 
 
     if "antenna_positions" in positions_dict:
-        
+
         if (ARGS.rotate != 0.0):
             original_positions = positions_dict['antenna_positions']
-            
+
             print(f"Rotating positions by {ARGS.rotate} degrees")
             rot_rad = np.radians(ARGS.rotate)
-            
+
             new_positions = settings.rotate_location(
                 np.degrees(rot_rad), np.array(original_positions).T
             )

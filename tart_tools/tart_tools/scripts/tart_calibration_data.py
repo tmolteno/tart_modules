@@ -43,7 +43,7 @@ def load_data(api, config):
     return vis_json, src_json
 
 
-if __name__ == "__main__":
+def main():
     PARSER = argparse.ArgumentParser(
         description="Generate Calibration Data.",
         formatter_class=argparse.ArgumentDefaultsHelpFormatter,
