@@ -1,14 +1,21 @@
 # Python packages for the TART radio telescope
 
-There are three python packages that are used for various parts of the TART telescope. The low-level hardware interface is done via an SPI bus, and the tart_hardware_interface package is used to provide a python library to access this hardware.
-
-The tart_web_api provides an HTTP server that implements an high-level API for managing the telescope. This API can change configuration, retrieve data and facilitate calibration.
-
-Finally there is a general-use package in the tart-package directory. This contains imaging routines and many useful utilities for handling coordinate transformations e.t.c.
+There are three python packages that are used for various parts of the TART telescope.
+In the  directory `tart/` is a general-use package. This contains imaging routines and many useful utilities for handling coordinate transformations e.t.c.
+Meanwhile `tart_tools/` is a package that contains tools for the TART telescope. This contains tools for controlling and retrieving data from the TART telescope via CLI.
 
 For everyday use, these can simply be installed using PyPi
+```
+     sudo pip install tart[all] tart_tools
+```
 
-     sudo pip install tart tart_web_api tart_hardware_interface
+or with [Astral.sh UV](https://docs.astral.sh/uv/getting-started/installation/)
+
+```bash
+    uv venv
+    source .venv/bin/activate
+    uv pip install tart tart_tools
+```
 
 ## Authors
 
