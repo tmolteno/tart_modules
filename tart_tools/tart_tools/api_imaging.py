@@ -9,6 +9,7 @@ import os
 import dateutil.parser
 import numpy as np
 from tart.imaging import calibration, elaz, synthesis, visibility
+from tart.imaging import imaging
 from tart.operation import settings
 
 logger = logging.getLogger()
@@ -45,29 +46,11 @@ def vis_calibrated(vis_json, config, gains, phase_offset, flag_list=[]):
 
 
 def rotate_vis(rot_degrees, cv, reference_positions):
-    '''
-        Note. This rotates counter_clockwise
-        (antennas in the north move towards the east)
-    '''
-    conf = cv.vis.config
-
-    new_positions = settings.rotate_location(
-        rot_degrees, np.array(reference_positions).T
-    )
-    conf.set_antenna_positions((np.array(new_positions).T).tolist())
+    return imaging.rotate_vis(rot_degrees, cv, reference_positions)
 
 
 def image_from_calibrated_vis(cv, nw, num_bin):
-    cal_syn = synthesis.Synthesis_Imaging([cv])
-
-    cal_ift, cal_extent = cal_syn.get_ift(nw=nw, num_bin=num_bin)
-    # beam = cal_syn.get_beam(nw=nw, num_bin=num_bin, use_kernel=False)
-    n_fft = len(cal_ift)
-    assert n_fft == num_bin
-
-    bin_width = (max(cal_extent) - min(cal_extent)) / float(n_fft)
-
-    return cal_ift, cal_extent, n_fft, bin_width
+    return imaging.image_from_calibrated_vis(cv, nw, num_bin)
 
 
 def beam_from_calibrated_vis(cv, nw, num_bin):

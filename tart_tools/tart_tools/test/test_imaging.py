@@ -64,7 +64,6 @@ class TestApi(unittest.TestCase):
         ANT_MODELS = [antenna_model.GpsPatchAntenna() for i in range(num_ant)]
         NOISE_LVLS = np.zeros(num_ant)
         RAD = radio.Max2769B(n_samples=2**12, noise_level=NOISE_LVLS)
-        COR = correlator.Correlator()
 
         sim_sky = skymodel.Skymodel(0, location=loc, gps=0, thesun=0, known_cosmic=0)
 
