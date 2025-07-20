@@ -6,16 +6,9 @@ Meanwhile `tart_tools/` is a package that contains tools for the TART telescope.
 
 For everyday use, these can simply be installed using PyPi
 ```
-     sudo pip install tart[all] tart_tools
+     pip install tart[all] tart_tools
 ```
 
-or with [Astral.sh UV](https://docs.astral.sh/uv/getting-started/installation/)
-
-```bash
-    uv venv
-    source .venv/bin/activate
-    uv pip install tart tart_tools
-```
 
 ## Authors
 

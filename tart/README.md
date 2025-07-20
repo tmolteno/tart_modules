@@ -46,6 +46,7 @@ in which case changes to the source-code will be immediately available to projec
 
 Changelog:
 
+* 1.3.3   Keep in sync with tart_tools.
 * 1.3.1   Added minimal dependency option excluding scipy. Spectrum analysis now uses numpy.fft for better minimal compatibility.
 * 1.3.0   Huge refactor to get tests going again.
 * 1.2.0b4 Fix up the loading of config data.
