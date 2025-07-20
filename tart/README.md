@@ -9,6 +9,30 @@ For more information see the [TART Github repository](https://github.com/tmolten
 * Tim Molteno (tim@elec.ac.nz)
 * Max Scheel (max@max.ac.nz)
 
+## Installation
+
+Default installation (includes all features):
+```
+pip install tart
+```
+
+For minimal installation (without scipy simulation features):
+```
+pip install tart[minimal]
+```
+
+For installation with plotting support:
+```
+pip install tart[plotting]
+```
+
+For complete installation (all optional features including networking and performance enhancements):
+```
+pip install tart[all]
+```
+
+**Note:** The `[all]` option includes jsonrpclib, matplotlib, pyfftw, requests, and scipy for complete functionality. Some simulation features require scipy and plotting features require matplotlib. These are optional dependencies that will provide helpful error messages if missing. The spectrum analysis feature now works in minimal installations using numpy.fft instead of scipy.fft.
+
 ## Development work
 
 If you are developing this package, this should be installed using
@@ -22,6 +46,7 @@ in which case changes to the source-code will be immediately available to projec
 
 Changelog:
 
+* 1.3.1   Added minimal dependency option excluding scipy. Spectrum analysis now uses numpy.fft for better minimal compatibility.
 * 1.3.0   Huge refactor to get tests going again.
 * 1.2.0b4 Fix up the loading of config data.
 * 1.2.0b1 TART tools update (new tart_get_archive_data super-handy tool)

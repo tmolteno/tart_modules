@@ -24,8 +24,13 @@ dependencies = [
     "h5py",
     "numpy",
     "python-dateutil",
-    "scipy"
+    "scipy; extra != 'minimal'"
 ]
+
+[project.optional-dependencies]
+minimal = []
+plotting = ["matplotlib"]
+all = ["jsonrpclib", "matplotlib", "pyfftw", "requests", "scipy"]
 
 [project.urls]
 Homepage = "http://github.com/tmolteno/tart_modules"

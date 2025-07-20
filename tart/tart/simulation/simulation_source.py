@@ -26,13 +26,10 @@ class SimulationSource(HorizontalSource):
         max_time = max_baseline / constants.V_LIGHT
         F_noise = 1.0e6 * np.power(np.pi, 3) / 2.9 / 3.7123 * 2.5
 
-
         noisetime = np.arange(-max_time, self.duration + max_time, 1.0 / (F_noise))
         randnoise = np.random.uniform(-1.0, 1.0, len(noisetime))
 
-        self.f = interpolate.InterpolatedUnivariateSpline(
-            noisetime, self.amplitude * randnoise
-        )
+        self.f = interpolate.InterpolatedUnivariateSpline(noisetime, self.amplitude * randnoise)
 
     def s_baseband(self, t):
         return self.f(t)

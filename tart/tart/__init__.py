@@ -2,7 +2,7 @@
 # Tim Molteno 2013. tim@elec.ac.nz
 #
 #
-VERSION='1.2.3.1'
-#import operation
-#import simulation
-#import imaging
+VERSION = "1.3.1"
+# import operation
+# import simulation
+# import imaging
