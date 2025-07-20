@@ -2,7 +2,13 @@
 # X independent random sources of required amplitudes and sample length n
 
 import numpy as np
-from scipy import interpolate
+
+try:
+    from scipy import interpolate
+
+    SCIPY_AVAILABLE = True
+except ImportError:
+    SCIPY_AVAILABLE = False
 
 from tart.util import constants
 
@@ -16,6 +22,10 @@ class HorizontalSource:
 
 class SimulationSource(HorizontalSource):
     def __init__(self, r, amplitude, azimuth, elevation, sample_duration):
+        if not SCIPY_AVAILABLE:
+            raise ImportError(
+                "scipy is required for SimulationSource. Install with: pip install scipy"
+            )
         super(SimulationSource, self).__init__(r, azimuth, elevation)
         self.omega = constants.L1_OMEGA
         self.duration = sample_duration
