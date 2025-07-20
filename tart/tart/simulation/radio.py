@@ -2,7 +2,13 @@
 # Copyright (c) Tim Molteno 2013. tim@elec.ac.nz
 
 import numpy as np
-import scipy.signal
+
+try:
+    import scipy.signal
+
+    SCIPY_AVAILABLE = True
+except ImportError:
+    SCIPY_AVAILABLE = False
 
 from tart.operation import observation
 from tart.simulation import antennas, butter_filter
@@ -39,7 +45,7 @@ class Max2769B(Radio):
     def __init__(
         self,
         noise_level,
-        n_samples=2 ** 15,
+        n_samples=2**15,
         ref_freq=16.368e6,
         freq_mult=256,
         ref_div=16,
@@ -126,9 +132,7 @@ class Max2769B(Radio):
         num_ant = len(ant_sigs)
         sampled_signals = np.zeros((num_ant, num_radio_samples))
         for i in range(num_ant):
-            sampled_signals[i, :] = self.sampled_signal(
-                ant_sigs[i], i, self.sample_duration
-            )
+            sampled_signals[i, :] = self.sampled_signal(ant_sigs[i], i, self.sample_duration)
         sampled_signals = np.asarray(
             (sampled_signals + 1) / 2, dtype=bool
         )  # turn into boolean array
@@ -138,9 +142,7 @@ class Max2769B(Radio):
     def get_simplified_obs(self, baseband_signals, utc_date, config, seed=None):
         np.random.seed(seed=seed)
         s_signals = []
-        if_sig = baseband_signals * np.exp(
-            -2.0j * np.pi * self.int_freq * self.baseband_timebase
-        )
+        if_sig = baseband_signals * np.exp(-2.0j * np.pi * self.int_freq * self.baseband_timebase)
         num_ant = len(baseband_signals)
         for i in range(num_ant):
             if self.noise_level[i] > 0.0:
@@ -168,7 +170,6 @@ class Max2769B(Radio):
 
 
 if __name__ == "__main__":
-
     import matplotlib.pyplot as plt
     import numpy as np
 
@@ -182,7 +183,7 @@ if __name__ == "__main__":
     num_ant = config.get_num_antenna()
 
     noiselvls = 0.1 * np.ones(num_ant)
-    rad = Max2769B(n_samples=2 ** 14, noise_level=noiselvls)
+    rad = Max2769B(n_samples=2**14, noise_level=noiselvls)
     sources = [
         simulation_source.SimulationSource(
             amplitude=1.0,

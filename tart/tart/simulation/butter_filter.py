@@ -1,10 +1,17 @@
 # Code reproduced from
 # http://www.scipy.org/Cookbook/ButterworthBandpass
 
-from scipy.signal import butter, lfilter
+try:
+    from scipy.signal import butter, lfilter
+
+    SCIPY_AVAILABLE = True
+except ImportError:
+    SCIPY_AVAILABLE = False
 
 
 def butter_bandpass(lowcut, highcut, fs, order=5):
+    if not SCIPY_AVAILABLE:
+        raise ImportError("scipy is required for butter_bandpass. Install with: pip install scipy")
     nyq = 0.5 * fs
     low = lowcut / nyq
     high = highcut / nyq
@@ -13,6 +20,10 @@ def butter_bandpass(lowcut, highcut, fs, order=5):
 
 
 def butter_bandpass_filter(data, lowcut, highcut, fs, order=5):
+    if not SCIPY_AVAILABLE:
+        raise ImportError(
+            "scipy is required for butter_bandpass_filter. Install with: pip install scipy"
+        )
     b, a = butter_bandpass(lowcut, highcut, fs, order=order)
     y = lfilter(b, a, data)
     return y

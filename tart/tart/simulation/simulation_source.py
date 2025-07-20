@@ -2,7 +2,13 @@
 # X independent random sources of required amplitudes and sample length n
 
 import numpy as np
-from scipy import interpolate
+
+try:
+    from scipy import interpolate
+
+    SCIPY_AVAILABLE = True
+except ImportError:
+    SCIPY_AVAILABLE = False
 
 from tart.util import constants
 
@@ -26,15 +32,18 @@ class SimulationSource(HorizontalSource):
         max_time = max_baseline / constants.V_LIGHT
         F_noise = 1.0e6 * np.power(np.pi, 3) / 2.9 / 3.7123 * 2.5
 
-
-        noisetime = np.arange(-max_time, self.duration + max_time, 1.0 / (F_noise))
-        randnoise = np.random.uniform(-1.0, 1.0, len(noisetime))
-
-        self.f = interpolate.InterpolatedUnivariateSpline(
-            noisetime, self.amplitude * randnoise
-        )
+        self.noisetime = np.arange(-max_time, self.duration + max_time, 1.0 / (F_noise))
+        self.randnoise = np.random.uniform(-1.0, 1.0, len(self.noisetime))
 
     def s_baseband(self, t):
+        if not SCIPY_AVAILABLE:
+            raise ImportError(
+                "scipy is required for SimulationSource. Install with: pip install scipy"
+            )
+
+        self.f = interpolate.InterpolatedUnivariateSpline(
+            self.noisetime, self.amplitude * self.randnoise
+        )
         return self.f(t)
 
     def s(self, t):

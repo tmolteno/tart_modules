@@ -1,12 +1,20 @@
 import numpy as np
-from pylab import plot, show, subplot, xlabel, ylabel
-from scipy import fft
+
+try:
+    from pylab import plot, show, subplot, xlabel, ylabel
+
+    PYLAB_AVAILABLE = True
+except ImportError:
+    PYLAB_AVAILABLE = False
+
+import numpy.fft as fft
 
 
 def getSpectrum(y, Fs):
     """
     Get a Single-Sided Amplitude Spectrum of y(t)
     """
+
     n = len(y)  # length of the signal
     k = np.arange(n)
     T = n / Fs
@@ -23,6 +31,11 @@ def plotSpectrum(y, Fs, c="red", label="powerspectrum", doPlot=False):
     """
     Plots a Single-Sided Amplitude Spectrum of y(t)
     """
+    if not PYLAB_AVAILABLE:
+        raise ImportError(
+            "matplotlib/pylab is required for plotSpectrum. Install with: pip install matplotlib"
+        )
+
     frq, absY = getSpectrum(y, Fs)
 
     plot(frq, absY, c=c, label=label)  # plotting the spectrum
@@ -32,6 +45,10 @@ def plotSpectrum(y, Fs, c="red", label="powerspectrum", doPlot=False):
 
 
 if __name__ == "__main__":
+    if not PYLAB_AVAILABLE:
+        print("matplotlib/pylab is required for plotting examples")
+        exit(1)
+
     Fs = 150.0
     # sampling rate
     Ts = 1.0 / Fs
