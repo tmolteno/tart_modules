@@ -1,6 +1,7 @@
 import numpy as np
 
 from tart.imaging import visibility
+from tart.imaging import imaging
 from tart.util import angle
 
 # import pyfftw
@@ -36,7 +37,6 @@ class Correlator:
     def compute_complex_vis(self, obs, debug=False, mode="roll"):
         """Return an array of baselines and visibilities from this observation"""
         v = []
-        baselines = []
         data = []
         data_hilb = []
         num_antenna = obs.config.get_num_antenna()
@@ -58,10 +58,10 @@ class Correlator:
                 h_i = -np.sign(fftw_hilbert(d))
                 data_hilb.append(h_i)
 
-        for i in range(num_antenna):
-            for j in range(i + 1, num_antenna):
-                v.append(self.V(data[i], data[j], data_hilb[j]))
-                baselines.append([i, j])
+        baselines = imaging.get_baseline_indices(num_antenna)
+        for bl in baselines:
+            i, j = bl
+            v.append(self.V(data[i], data[j], data_hilb[j]))
         return v, baselines
 
     def V(self, x, y, yhilb):
@@ -72,41 +72,6 @@ class Correlator:
             v_imag = van_vleck_correction(v_imag)
         return combine_real_imag(v_real, v_imag)
 
-    # def correlate_roll(self, obs, debug=False):
-    # v = []
-    # baselines = []
-    # num_ant = obs.config.get_num_antenna()
-    # data = obs.data # use obs.data[i] instead of get_antenna to keep mem usage low
-    # means = obs.get_means()
-    # cos_str = []
-    # sin_str = []
-    # for a in data:
-    # cos_str.append(a[1:].tostring())
-    # sin_str.append(a[:-1].tostring())
-    # n = len(data[0][1:])
-    # for i in range(0, num_ant):
-    # for j in range(i+1, num_ant):
-    # if debug:
-    # progress = len(baselines)
-    # if (progress%10==0):
-    # print(progress)
-    ##cos_i = data[i][1:]
-    ##cos_j = data[j][1:]
-    ##sin_j = data[j][:-1]
-    ##v_real =    -means[i]*means[j] + corr_b(cos_i, cos_j, n)
-    ##v_imag =    -means[i]*means[j] + corr_b(cos_i, sin_j, n)
-    # v_real =    -means[i]*means[j] + corr_b_cpp(cos_str[i], cos_str[j], n)
-    # v_imag =    -means[i]*means[j] + corr_b_cpp(cos_str[i], sin_str[j], n)
-
-    # if self.vv:
-    # v_real = van_vleck_correction(v_real)
-    # v_imag = van_vleck_correction(v_imag)
-    # v_com = combine_real_imag(v_real,v_imag)
-    # v.append(v_com)
-    # baselines.append([i,j])
-    # vis = visibility.Visibility.from_config(obs.config, obs.timestamp)
-    # vis.set_visibilities(v, baselines)
-    # return vis
 
 
 def corr_b(x, y, n):

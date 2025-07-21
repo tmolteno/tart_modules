@@ -62,7 +62,7 @@ class TestImaging(unittest.TestCase):
         ant_pos = config.get_antenna_positions()
         num_ant = len(ant_pos)
 
-        ANTS = [antennas.Antenna(loc, pos) for pos in ant_pos]
+        ANTS = [antennas.Antenna(loc, enu=pos) for pos in ant_pos]
         ANT_MODELS = [antenna_model.GpsPatchAntenna() for i in range(num_ant)]
         RAD = radio.Max2769B(n_samples=2**12, noise_level=np.zeros(num_ant))
 
@@ -102,7 +102,7 @@ class TestImaging(unittest.TestCase):
         max_p = np.max(img)
         min_p = np.min(img)
         mad_p = np.std(img)
-        ift_scaled = (img - min_p) / mad_p
+        ift_scaled = (img) / mad_p
 
         import matplotlib.pyplot as plt
 
@@ -111,8 +111,8 @@ class TestImaging(unittest.TestCase):
             x, y = src.get_px(n_bin)
             print(x, y)
             ift_scaled[x, y] = -1
-        plt.imshow(ift_scaled)
 
+        plt.imshow(ift_scaled)
         plt.show()
 
         for m in minute_sources:

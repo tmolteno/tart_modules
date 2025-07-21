@@ -61,7 +61,6 @@ def antennas_simp_vis(antennas, ant_models, sources, utc_date, config, noise_lvl
     else:
         noise = np.zeros(num_ant)
 
-
     for bl_idx in baseline_indices:
         i, j = bl_idx
         vi = noise[i] + noise[j]
@@ -100,7 +99,7 @@ class Antenna:
         self.dxdydz = self.loc.get_ecef_delta_from_enu(enu[0], enu[1], enu[2])
 
     def __repr__(self):
-        return "[%s]" % self.enu
+        return f"Antenna: enu={self.enu}"
 
     def get_geo_delay(self, sloc, utc_time):
         """

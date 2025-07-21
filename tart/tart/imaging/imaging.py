@@ -10,9 +10,6 @@ def deg_to_pix(num_bins, deg):
     d = deg*pix_per_degree
     return d
 
-        # x_px = int(np.round(self.l * n2 + n2))
-        # y_px = num_bins - int(np.round(self.m * n2 + n2))
-
 
 def get_l_index(l, image_size):
     image_radius = image_size / 2
@@ -24,13 +21,21 @@ def get_m_index(m, image_size):
     return image_size - int(np.round(m * image_radius + image_radius))
 
 
-
 def get_baseline_indices(num_ant):
     bl_indices = []
     for i in range(num_ant-1):
         for j in range(i + 1, num_ant):
             bl_indices.append([i, j])
     return bl_indices
+
+
+def get_baselines(ant_pos):
+    num_ant = ant_pos.shape[0]
+    bl_indices = get_baseline_indices(num_ant)
+    i_indices = bl_indices[:, 0]
+    j_indices = bl_indices[:, 1]
+
+    return ant_pos[j_indices, :] - ant_pos[i_indices, :]
 
 
 def ant_pos_to_uv(ant_pos, i, j):
