@@ -42,14 +42,14 @@ class TestElaz(unittest.TestCase):
         elaz = ElAz(90, 0)
 
         x_min, x_max, y_min, y_max, area = elaz.get_px_window(num_bins=128, window_deg=6)
+        self.assertAlmostEqual(x_min, 59)
+        self.assertAlmostEqual(x_max, 69)
+        x_min, x_max, y_min, y_max, area = elaz.get_px_window(num_bins=128, window_deg=3)
         self.assertAlmostEqual(x_min, 61)
         self.assertAlmostEqual(x_max, 67)
-        x_min, x_max, y_min, y_max, area = elaz.get_px_window(num_bins=128, window_deg=3)
-        self.assertAlmostEqual(x_min, 62)
-        self.assertAlmostEqual(x_max, 66)
 
-        self.assertAlmostEqual(y_min, 62)
-        self.assertAlmostEqual(y_max, 66)
+        self.assertAlmostEqual(y_min, 61)
+        self.assertAlmostEqual(y_max, 67)
 
     def test_elaz_px_vertical(self):
 

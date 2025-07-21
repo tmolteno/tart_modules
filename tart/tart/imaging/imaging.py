@@ -5,6 +5,26 @@ from tart.imaging import synthesis
 from tart.operation import settings
 
 
+def deg_to_pix(num_bins, deg):
+    pix_per_degree = num_bins / 180.0
+    d = deg*pix_per_degree
+    return d
+
+        # x_px = int(np.round(self.l * n2 + n2))
+        # y_px = num_bins - int(np.round(self.m * n2 + n2))
+
+
+def get_l_index(l, image_size):
+    image_radius = image_size / 2
+    return int(np.round(l * image_radius + image_radius))
+
+
+def get_m_index(m, image_size):
+    image_radius = image_size / 2
+    return image_size - int(np.round(m * image_radius + image_radius))
+
+
+
 def get_baseline_indices(num_ant):
     bl_indices = []
     for i in range(num_ant-1):

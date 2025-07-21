@@ -8,6 +8,8 @@
 import numpy as np
 
 from tart.util.angle import wrap_180
+from tart.imaging import imaging
+
 
 
 class ElAz:
@@ -37,21 +39,16 @@ class ElAz:
     def get_lm_area(self, dS=1.0):
         return dS * np.sqrt(1.0 - self.l * self.l - self.m * self.m)
 
+
     def get_px(self, num_bins):
         ''' Get source location in pixels from it's direction
             cosines. These should be image coordinates in an
             image num_bins x num_bins essentially used as array
             indices.
         '''
-        n2 = num_bins // 2
-        x_px = int(np.round(self.l * n2 + n2))
-        y_px = num_bins - int(np.round(self.m * n2 + n2))
+        x_px = imaging.get_l_index(self.l, image_size = num_bins)
+        y_px = imaging.get_m_index(self.m, image_size = num_bins)
         return x_px, y_px
-
-    def deg_to_pix(self, num_bins, deg):
-        pix_per_rad = num_bins / np.pi
-        d = np.radians(deg) * pix_per_rad / 2
-        return d
 
     @classmethod
     def from_pixels(cls, x_pix, y_pix, num_bins):
@@ -86,7 +83,7 @@ class ElAz:
         '''
         x_i, y_i = self.get_px(num_bins)
 
-        d = self.deg_to_pix(num_bins, window_deg)
+        d = imaging.deg_to_pix(num_bins, window_deg)
 
         x_min = int(np.floor(x_i - d))
         x_max = int(np.ceil(x_i + d))
