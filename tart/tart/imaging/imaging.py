@@ -11,14 +11,25 @@ def deg_to_pix(num_bins, deg):
     return d
 
 
-def get_l_index(l, image_size):
-    image_radius = image_size / 2
-    return int(np.round(l * image_radius + image_radius))
+def get_lm_index(l, m, image_size):
+    ''' The l axis is along the +x in the image plane.
+        The numpy array index for this is the second index. For example
+        the point [image_size , 0] is in the LOWER LEFT of the image when displayed
+        by imshow.
 
+        https://matplotlib.org/stable/users/explain/artists/imshow_extent.html#imshow-extent
 
-def get_m_index(m, image_size):
-    image_radius = image_size / 2
-    return image_size - int(np.round(m * image_radius + image_radius))
+         0, 0  -> [image_size // 2, image_size // 2]
+        -1, 1  -> [0 , 0]
+        -1, -1 -> [image_size-1, 0]
+        1, -1  -> [image_size-1, image_size-1]
+        1,  1  -> [0, image_size-1]
+    '''
+    x0 = image_size // 2
+    max_index = image_size - 1
+    index0 = x0 - np.ceil(m*max_index/2)
+    index1 = x0 + np.floor(l*max_index/2)
+    return int(index0), int(index1)
 
 
 def get_baseline_indices(num_ant):
@@ -109,3 +120,25 @@ def image_from_calibrated_vis(cv, nw, num_bin):
     bin_width = (max(cal_extent) - min(cal_extent)) / float(n_fft)
 
     return cal_ift, cal_extent, n_fft, bin_width
+
+
+def get_clock_hands(timestamp):
+    # ############## HOUR HAND ###########################
+    #
+    # The pattern rotates once every 12 hours
+    #
+    hour_azimuth = timestamp.hour*30.0 + timestamp.minute/2.0
+
+    hour_sources = [{'el': el, 'az': -hour_azimuth} for el in [85, 75, 65, 55]]
+
+    # ############## MINUTE HAND ###########################
+    #
+    # The pattern rotates once every 1 hour
+    #
+    minute_azimuth = timestamp.minute*6.0 + timestamp.second/10.0
+
+    minute_sources = [{'el': el, 'az': -minute_azimuth} for el in [90, 80, 70, 60, 50, 40, 30]]
+
+    return hour_sources, minute_sources
+
+

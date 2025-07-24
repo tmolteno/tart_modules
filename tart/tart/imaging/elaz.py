@@ -11,7 +11,6 @@ from tart.util.angle import wrap_180
 from tart.imaging import imaging
 
 
-
 class ElAz:
     def __init__(self, el, az):
 
@@ -39,26 +38,23 @@ class ElAz:
     def get_lm_area(self, dS=1.0):
         return dS * np.sqrt(1.0 - self.l * self.l - self.m * self.m)
 
-
     def get_px(self, num_bins):
         ''' Get source location in pixels from it's direction
             cosines. These should be image coordinates in an
             image num_bins x num_bins essentially used as array
             indices.
         '''
-        x_px = imaging.get_l_index(self.l, image_size = num_bins)
-        y_px = imaging.get_m_index(self.m, image_size = num_bins)
-        return x_px, y_px
+        return imaging.get_lm_index(self.l, self.m, image_size=num_bins)
 
     @classmethod
-    def from_pixels(cls, x_pix, y_pix, num_bins):
+    def from_pixel_indices(cls, x_pix, y_pix, num_bins):
         ''' Create from pixel coordinates. The center (0,0) is
             in the middle.
         '''
         # print(f"from_pixels({x_pix}, {y_pix})")
         n2 = num_bins // 2
-        x = x_pix - n2
-        y = num_bins - y_pix - n2    # y_px = num_bins - int(np.round(self.m * n2 + n2))
+        x = y_pix - n2
+        y = num_bins - x_pix - n2    # y_px = num_bins - int(np.round(self.m * n2 + n2))
                                      # num_bins - y_px - n2 =  mn2
                                      # num_bins - y_px - n2 =  mn2
         # print(f"centred_pixels({x}, {y})")

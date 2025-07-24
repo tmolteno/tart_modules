@@ -34,24 +34,32 @@ class TestImaging(unittest.TestCase):
             cal_ant_positions_file=ANT_POS_FILE
         )
 
-    def get_clock_sources(self, timestamp):
-        # ############## HOUR HAND ###########################
-        #
-        # The pattern rotates once every 12 hours
-        #
-        hour_hand = timestamp.hour*30.0 + timestamp.minute/2.0
+    def test_clock_sources(self):
+        hour_sources, minute_sources = imaging.get_clock_hands(timestamp=utc.now())
 
-        hour_sources = [{'el': el, 'az': -hour_hand} for el in [85, 75, 65, 55]]
+        n_bin = 2 ** 6
+        img = np.zeros((n_bin, n_bin))
+        img[n_bin-1, 0] = 1
+        import matplotlib.pyplot as plt
 
-        # ############## MINUTE HAND ###########################
-        #
-        # The pattern rotates once every 1 hour
-        #
-        minute_hand = timestamp.minute*6.0 + timestamp.second/10.0
+        for m in minute_sources:
+            src = elaz.ElAz(m['el'], m['az'])
+            x, y = src.get_px(n_bin)
+            img[x, y] = 1
 
-        minute_sources = [{'el': el, 'az': -minute_hand} for el in [90, 80, 70, 60, 50, 40, 30]]
+        for m in hour_sources:
+            src = elaz.ElAz(m['el'], m['az'])
+            x, y = src.get_px(n_bin)
+            img[x, y] = 1
 
-        return hour_sources, minute_sources
+        plt.imshow(img)
+        plt.show()
+
+        for m in minute_sources:
+            src = elaz.ElAz(m['el'], m['az'])
+            x, y = src.get_px(n_bin)
+            self.assertGreater(img[x, y], 0.5)
+
 
     def get_clock_vis(self, config, timestamp):
 
@@ -66,7 +74,7 @@ class TestImaging(unittest.TestCase):
         ANT_MODELS = [antenna_model.GpsPatchAntenna() for i in range(num_ant)]
         RAD = radio.Max2769B(n_samples=2**12, noise_level=np.zeros(num_ant))
 
-        hour_sources, minute_sources = self.get_clock_sources(timestamp)
+        hour_sources, minute_sources = imaging.get_clock_hands(timestamp)
 
         sim_sky = skymodel.Skymodel(0, location=loc, gps=0,
                                     thesun=0, known_cosmic=0)
@@ -119,3 +127,35 @@ class TestImaging(unittest.TestCase):
             src = elaz.ElAz(m['el'], m['az'])
             x, y = src.get_px(n_bin)
             self.assertGreater(img[x, y], max_p/3)
+
+    def test_lm_to_index(self):
+        image_size = 256
+
+        # Center
+        i0, i1 = imaging.get_lm_index(0.0, 0.0, image_size)
+        self.assertEqual(i0, image_size // 2)
+        self.assertEqual(i1, image_size // 2)
+
+        # Upper right corner
+        i0, i1 = imaging.get_lm_index(1.0, 1.0, image_size)
+        self.assertEqual(i0, 0)
+        self.assertEqual(i1, image_size-1)
+
+        # Upper left corner
+        i0, i1 = imaging.get_lm_index(-1.0, 1.0, image_size)
+        self.assertEqual(i0, 0)
+        self.assertEqual(i1, 0)
+
+        # Lower right corner
+        i0, i1 = imaging.get_lm_index(1.0, -1.0, image_size)
+        self.assertEqual(i0, image_size-1)
+        self.assertEqual(i1, image_size-1)
+
+        # Lower left corner
+        i0, i1 = imaging.get_lm_index(-1.0, -1.0, image_size)
+        self.assertEqual(i0, image_size-1)
+        self.assertEqual(i1, 0)
+
+
+
+

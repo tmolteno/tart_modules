@@ -66,7 +66,7 @@ class TestElaz(unittest.TestCase):
 
     def test_elaz_px_horizontal(self):
 
-        elaz = ElAz(0, 0)    # Due north (straight up, center) 0, 1
+        elaz = ElAz(0, 0)    # Due north (straight up, center) l=0, m=1
         elaz2 = ElAz(0, 90)  # Due west (-1,0)
 
         x, y = elaz.get_px(num_bins=128)
@@ -81,7 +81,7 @@ class TestElaz(unittest.TestCase):
         self.assertAlmostEqual(x, 0)
         self.assertAlmostEqual(y, 64)
 
-        elaz_r = ElAz.from_pixels(x, y, num_bins=128)
+        elaz_r = ElAz.from_pixel_indices(x, y, num_bins=128)
         self.assertEqual(elaz_r.el_r, 0)
         self.assertEqual(elaz_r.az_r, np.radians(90))
 
@@ -97,7 +97,7 @@ class TestElaz(unittest.TestCase):
             print(f"    x={x}, y={y}")
             # Now construct elaz from x,y
 
-            elaz2 = ElAz.from_pixels(x, y, num_bins)
+            elaz2 = ElAz.from_pixel_indices(x, y, num_bins)
             print(f"reconstructed elaz: {elaz2}")
 
             self.assertAlmostEqual(elaz.el_r, elaz2.el_r, 1)
