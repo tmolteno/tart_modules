@@ -46,6 +46,7 @@ in which case changes to the source-code will be immediately available to projec
 
 Changelog:
 
+* 1.3.5   Fix bugs in x,y array indices.
 * 1.3.4   Add routines for converting l,m to x,y and use them.
 * 1.3.3   Keep in sync with tart_tools.
 * 1.3.1   Added minimal dependency option excluding scipy. Spectrum analysis now uses numpy.fft for better minimal compatibility.

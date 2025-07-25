@@ -26,9 +26,9 @@ def get_lm_index(l, m, image_size):
         1,  1  -> [0, image_size-1]
     '''
     x0 = image_size // 2
-    max_index = image_size - 1
-    index0 = x0 - np.ceil(m*max_index/2)
-    index1 = x0 + np.floor(l*max_index/2)
+    max_index = image_size - 0.5
+    index0 = np.floor(x0 - (m*max_index/2))
+    index1 = np.floor(x0 + (l*max_index/2))
     return int(index0), int(index1)
 
 

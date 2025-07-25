@@ -29,7 +29,7 @@ class ElAz:
         return self.l, self.m
 
     def __repr__(self):
-        return f"tart.imaging.ElAz(el={self.el:5.2f}, az={self.az:5.2f})"
+        return f"tart.imaging.ElAz(el={self.el:5.2f}, az={self.az:5.2f}, l={self.l}, m={self.m})"
 
     '''
         Return the area of a unit-solid area of source dS
@@ -53,10 +53,19 @@ class ElAz:
         '''
         # print(f"from_pixels({x_pix}, {y_pix})")
         n2 = num_bins // 2
-        x = y_pix - n2
-        y = num_bins - x_pix - n2    # y_px = num_bins - int(np.round(self.m * n2 + n2))
-                                     # num_bins - y_px - n2 =  mn2
-                                     # num_bins - y_px - n2 =  mn2
+        max_index = num_bins - 0.5
+
+        x0 = n2
+        # x_pix = np.floor(x0 - (m*max_index/2))
+        # -2*(x_pix - x0)/max_index = m
+        m = -2*(x_pix - x0)/max_index
+
+        # y_px = np.floor(x0 + (l*max_index/2))
+        # 2*(y_pix - x0) = l*max_index
+        l = 2*(y_pix - x0) / max_index
+
+        x = l*max_index/2
+        y = m*max_index/2
         # print(f"centred_pixels({x}, {y})")
         r = np.sqrt(x*x + y*y)
         # print(f"r=({r}, {n2})")

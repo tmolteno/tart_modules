@@ -136,6 +136,28 @@ class TestImaging(unittest.TestCase):
         self.assertEqual(i0, image_size // 2)
         self.assertEqual(i1, image_size // 2)
 
+
+        # North (top center)
+        i0, i1 = imaging.get_lm_index(0.0, 1.0, image_size)
+        self.assertEqual(i0, 0)
+        self.assertEqual(i1, image_size // 2)
+
+        # West (left center)
+        i0, i1 = imaging.get_lm_index(-1.0, 0.0, image_size)
+        self.assertEqual(i0, image_size // 2)
+        self.assertEqual(i1, 0)
+
+        # East (right center)
+        i0, i1 = imaging.get_lm_index(1.0, 0.0, image_size)
+        self.assertEqual(i0, image_size // 2)
+        self.assertEqual(i1, image_size - 1)
+
+        # South (bottom center)
+        i0, i1 = imaging.get_lm_index(0.0, -1.0, image_size)
+        self.assertEqual(i0, image_size - 1)
+        self.assertEqual(i1, image_size // 2)
+
+
         # Upper right corner
         i0, i1 = imaging.get_lm_index(1.0, 1.0, image_size)
         self.assertEqual(i0, 0)
