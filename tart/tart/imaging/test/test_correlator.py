@@ -1,29 +1,28 @@
+import os
+import unittest
+
 import numpy as np
 from scipy.signal import hilbert
 
 from tart.imaging.correlator import Correlator, corr_b, corr_b_pat
+
 from tart.operation import observation
+from tart.operation import settings
+
+from tart.simulation import radio, simulation_source
 from tart.util import angle, utc
 
-TEST_SCOPE_CONFIG = "tart/test/test_telescope_config.json"
-
-import unittest
+TEST_SCOPE_CONFIG = os.path.join(os.path.dirname(__file__), "../../test/test_telescope_config.json")
 
 
 class TestCorrelator(unittest.TestCase):
+
     def test_correlator_simp(self):
-
-        import numpy as np
-
-        from tart.operation import settings
-        from tart.simulation import radio, simulation_source
 
         N = 20
         a0 = np.random.randint(0, 2, 2 ** N)
         a1 = np.random.randint(0, 2, 2 ** N)
         self.assertAlmostEqual(corr_b(a0, a1, 2**N), corr_b_pat(a0, a1))
-
-
 
         t = utc.now()
         c = settings.from_file(TEST_SCOPE_CONFIG)
@@ -38,7 +37,7 @@ class TestCorrelator(unittest.TestCase):
         # print(vis_a.vis(0,1), vis_b.vis(0,1), vis_c.vis(0,1))
 
         sample_duration = 16.02e-1
-        sample_duration = 4e-1
+        # sample_duration = 4e-1
         config = settings.from_file(TEST_SCOPE_CONFIG)
         rad = radio.Max2769B(noise_level=np.ones(config.get_num_antenna()))
         src = simulation_source.SimulationSource(

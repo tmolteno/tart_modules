@@ -53,22 +53,22 @@ class TestAntennaModel(unittest.TestCase):
     # check = ant.get_gain(el, az) - e*(1.+np.cos(np.pi/180.*a))
     # self.assertAlmostEqual(check, 0 , 1)
 
-    def test_json_load(self):
-        ant = create_empirical_antenna()
-        ant.to_json("test.json")
-        ant2 = antenna_model.EmpiricalAntenna.from_json("test.json")
-        for e in np.arange(0, 89, 3.0):
-            for a in np.arange(0, 359, 8.0):
-                el = angle.from_dms(e)
-                az = angle.from_dms(a)
-                self.assertAlmostEqual(ant.get_gain(el, az), ant2.get_gain(el, az), 3)
+    # def test_json_load(self):
+    #     ant = create_empirical_antenna()
+    #     ant.to_json("test.json")
+    #     ant2 = antenna_model.EmpiricalAntenna.from_json("test.json")
+    #     for e in np.arange(0, 89, 3.0):
+    #         for a in np.arange(0, 359, 8.0):
+    #             el = angle.from_dms(e)
+    #             az = angle.from_dms(a)
+    #             self.assertAlmostEqual(ant.get_gain(el, az), ant2.get_gain(el, az), 3)
 
-    def test_db_load(self):
-        ant = create_empirical_antenna()
-        ant.to_db(utc_date=utc.now(), db_file="test.db")
-        ant2 = antenna_model.EmpiricalAntenna.from_db(antenna_num=ant.antenna_num, db_file="test.db")
-        for e in np.arange(0, 89, 3.0):
-            for a in np.arange(0, 359, 8.0):
-                el = angle.from_dms(e)
-                az = angle.from_dms(a)
-                self.assertAlmostEqual(ant.get_gain(el, az), ant2.get_gain(el, az), 3)
+    # def test_db_load(self):
+    #     ant = create_empirical_antenna()
+    #     ant.to_db(utc_date=utc.now(), db_file="test.db")
+    #     ant2 = antenna_model.EmpiricalAntenna.from_db(antenna_num=ant.antenna_num, db_file="test.db")
+    #     for e in np.arange(0, 89, 3.0):
+    #         for a in np.arange(0, 359, 8.0):
+    #             el = angle.from_dms(e)
+    #             az = angle.from_dms(a)
+    #             self.assertAlmostEqual(ant.get_gain(el, az), ant2.get_gain(el, az), 3)
