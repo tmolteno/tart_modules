@@ -52,7 +52,7 @@ def main():
         api = AuthorizedAPIhandler(ARGS.api, ARGS.pw)
         print(f"Uploading {api_dict}")
         resp = api.post_payload_with_token(
-            "calibration/antenna_positions", api_dict)
+            "calibration/antenna_positions", api_dict["antenna_positions"])
         print(f"SUCCESS {resp}")
     else:
         raise Exception("JSON file should have an element called 'antenna_positions'")

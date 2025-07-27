@@ -56,9 +56,10 @@ def test_antpos(config, ARGS):
     api = api_handler.AuthorizedAPIhandler(ARGS.api, ARGS.pw)
 
     resp = api.post_payload_with_token(
-        "calibration/antenna_positions", api_dict)
+        "calibration/antenna_positions", api_dict['antenna_positions'])
 
     ant_pos = api.get("imaging/antenna_positions")
+    print("Recovered Antenna Positions")
     print(ant_pos)
 
     recovered_ant_pos = np.array(ant_pos)
