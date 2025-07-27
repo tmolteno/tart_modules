@@ -31,14 +31,14 @@ def test_gains(config, ARGS):
 
     test_gsum = np.sum(recovered_gain - new_gain)
     if test_gsum != 0:
-        print("FAIL sum of differences = {test_gsum}")
+        print(f"FAIL sum of differences = {test_gsum}")
         print(f"uploaded:  {new_gain}")
         print(f"recovered: {recovered_gain}")
         return
 
     test_gsum = np.sum(recovered_phase - new_phase)
     if test_gsum != 0:
-        print("PHASE FAIL sum of differences = {test_gsum}")
+        print(f"PHASE FAIL sum of differences = {test_gsum}")
         print(f"uploaded:  {new_phase}")
         print(f"recovered: {recovered_phase}")
         return
@@ -65,7 +65,7 @@ def test_antpos(config, ARGS):
 
     test_gsum = np.sum(recovered_ant_pos - new_ant_pos)
     if test_gsum != 0:
-        print("FAIL sum of differences = {test_gsum}")
+        print(f"FAIL sum of differences = {test_gsum}")
         print(f"uploaded:  {new_ant_pos}")
         print(f"recovered: {recovered_ant_pos}")
     else:
