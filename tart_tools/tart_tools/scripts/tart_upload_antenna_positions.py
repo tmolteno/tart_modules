@@ -50,8 +50,9 @@ def main():
             api_dict["antenna_positions"] = pos_list
 
         api = AuthorizedAPIhandler(ARGS.api, ARGS.pw)
+        print(f"Uploading {api_dict}")
         resp = api.post_payload_with_token(
             "calibration/antenna_positions", api_dict)
-        print("SUCCESS")
+        print(f"SUCCESS {resp}")
     else:
         raise Exception("JSON file should have an element called 'antenna_positions'")

@@ -4,10 +4,11 @@ build-backend = "hatchling.build"
 
 [project]
 name = "tart_tools"
-version = "1.3.4"
+version = "1.3.5"
 description = "Transient Array Radio Telescope Command Line Tools"
 readme = "README.md"
 license = "GPL-3.0-or-later"
+requires-python = ">= 3.11"
 authors = [
     { name = "Tim Molteno", email = "tim@elec.ac.nz" },
 ]
@@ -30,6 +31,7 @@ packages = [{include = "tart_tools"}]
 
 [project.scripts]
 tart_image = 'tart_tools.scripts.tart_image:main'
+tart_test_api = 'tart_tools.scripts.tart_test_api:main'
 tart_calibrate = 'tart_tools.scripts.tart_calibrate:main'
 tart_calibration_data = 'tart_tools.scripts.tart_calibration_data:main'
 tart_vis2json = 'tart_tools.scripts.tart_vis2json:main'
