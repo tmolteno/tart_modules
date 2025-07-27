@@ -28,5 +28,9 @@ def main():
         data = f.read()
     gains_dict = json.loads(data)
 
+    api_dict = {}
+    api_dict['gain'] = gains_dict['gain']
+    api_dict['phase_offset'] = gains_dict['phase_offset']
     api = AuthorizedAPIhandler(ARGS.api, ARGS.pw)
-    resp = upload_gain(api, gains_dict)
+    resp = upload_gain(api, api_dict)
+    print("SUCCESS")

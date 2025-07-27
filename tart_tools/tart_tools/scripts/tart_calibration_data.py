@@ -90,7 +90,7 @@ def main():
     for i in range(ARGS.n):
         vis_json, src_json = load_data(api, config)
         data.append([vis_json, src_json])
-        if i != ARGS.n - 1:
+        if i < (ARGS.n - 1):
             print("Sleeping {} minutes".format(ARGS.interval))
             time.sleep(ARGS.interval * 60)
     ret["data"] = data

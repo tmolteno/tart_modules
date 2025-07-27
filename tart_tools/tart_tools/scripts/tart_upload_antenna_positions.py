@@ -33,12 +33,12 @@ def main():
         data = f.read()
     positions_dict = json.loads(data)
 
-
-
     if "antenna_positions" in positions_dict:
+        api_dict = {}
+        api_dict['antenna_positions'] = positions_dict['antenna_positions']
 
         if (ARGS.rotate != 0.0):
-            original_positions = positions_dict['antenna_positions']
+            original_positions = api_dict['antenna_positions']
 
             print(f"Rotating positions by {ARGS.rotate} degrees")
             rot_rad = np.radians(ARGS.rotate)
@@ -47,12 +47,11 @@ def main():
                 np.degrees(rot_rad), np.array(original_positions).T
             )
             pos_list = (np.array(new_positions).T).tolist()
-            positions_dict["antenna_positions"] = pos_list
+            api_dict["antenna_positions"] = pos_list
 
         api = AuthorizedAPIhandler(ARGS.api, ARGS.pw)
         resp = api.post_payload_with_token(
-            "calibration/antenna_positions", positions_dict["antenna_positions"]
-        )
+            "calibration/antenna_positions", api_dict)
         print("SUCCESS")
     else:
         raise Exception("JSON file should have an element called 'antenna_positions'")
