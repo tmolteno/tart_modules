@@ -121,6 +121,18 @@ class Visibility:
             ret += " V(%s)=%g, I%g" % (str(b), np.abs(self.v[i]), np.angle(self.v[i]))
         return ret
 
+    def to_json(self):
+        ret = {}
+        vlist = []
+        for i, b in enumerate(self.baselines):
+            vlist.append({'i': b[0],
+                          'j': b[1],
+                          're': float(np.real(self.v[i])),
+                          'im': float(np.imag(self.v[i]))})
+        ret['data'] = vlist
+        ret['timestamp'] = self.timestamp.isoformat()
+        return ret
+
     def __repr__(self):
         return f"vis(ts={self.timestamp})"
 

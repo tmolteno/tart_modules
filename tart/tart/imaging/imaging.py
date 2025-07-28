@@ -133,7 +133,7 @@ def get_clock_hands(timestamp):
 
     # ############## MINUTE HAND ###########################
     #
-    # The pattern rotates once every 1 hour
+    # The pattern rotates 360 deg once every 1 hour
     #
     minute_azimuth = timestamp.minute*6.0 + timestamp.second/10.0
 

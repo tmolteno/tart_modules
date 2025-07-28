@@ -61,7 +61,10 @@ class Settings:
 
     def set_antenna_positions(self, ant_pos):
         self.Dict['antenna_positions'] = {'calibrated': ant_pos}
-        assert (self.Dict['num_antenna'] == len(ant_pos))
+        if (self.Dict['num_antenna'] != len(ant_pos)):
+            msg = f"Antenna positions do not match {len(ant_pos)} != {self.Dict['num_antenna']}"
+            print(ant_pos)
+            raise ValueError(msg)
 
     def load_antenna_positions(self,
                                cal_ant_positions_file='calibrated_antenna_positions.json',

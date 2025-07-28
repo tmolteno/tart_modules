@@ -13,12 +13,17 @@ from tart.imaging import imaging
 
 class ElAz:
     def __init__(self, el, az):
-
+        # Azimuth is measured fo
         self.el = el
         self.az = wrap_180(az)
         self.el_r = np.radians(self.el)
         self.az_r = np.radians(self.az)
 
+        # Unit direction vector for the source un (u,v,w) where
+        # u is east-west    u_hat = [1, 0, 0]
+        # v is south-north  v_hat = [0, 1, 0]
+        # w is straight up  w_hat = [0, 0, 1]
+        self.s = 3
         # l,m are the cosines of the angle between the source vector and the
         # u and v axes respectively.
         self.l = -np.sin(self.az_r) * np.cos(self.el_r)
@@ -106,12 +111,11 @@ class ElAz:
         return [-x, y]
 
 
-def from_json(source_json, el_limit=0.0, jy_limit=1e5):
+def from_json(source_json, el_limit_deg=0.0, jy_limit=1e5):
     src_list = []
-
     for src in source_json:
         try:
-            if (src["el"] > el_limit) and (src["jy"] > jy_limit):
+            if (src["el"] > el_limit_deg) and (src["jy"] > jy_limit):
                 src_list.append(ElAz(src["el"], src["az"]))
         except:
             print(f"ERROR in catalog src={src}")
@@ -120,11 +124,11 @@ def from_json(source_json, el_limit=0.0, jy_limit=1e5):
 
 
 def get_source_coordinates(source_list):
-    x_list = []
-    y_list = []
+    l_list = []
+    m_list = []
 
     for src in source_list:
-        x_list.append(src.l)
-        y_list.append(src.m)
+        l_list.append(src.l)
+        m_list.append(src.m)
 
-    return [x_list, y_list]
+    return [l_list, m_list]
