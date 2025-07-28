@@ -1,23 +1,22 @@
 """
     Image from the HTTP API
 
-    Tim Molteno & Max Scheel 2017-2023.
+    Tim Molteno & Max Scheel 2017-2025.
 """
 import logging
 import os
 
-import dateutil.parser
 import numpy as np
 from tart.imaging import calibration, elaz, synthesis, visibility
 from tart.imaging import imaging
-from tart.operation import settings
+from tart.util import utc
 
 logger = logging.getLogger()
 
 
 def vis_json_timestamp(vis_json):
     logger.info(f"Parsing {vis_json['timestamp']}")
-    return dateutil.parser.parse(vis_json["timestamp"])
+    return utc.from_string(vis_json["timestamp"])
 
 
 def vis_object_from_json(vis_json, config):

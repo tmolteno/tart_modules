@@ -44,6 +44,7 @@ in which case changes to the source-code will be immediately available to projec
 
 
 ## NEWS
+* 1.4.0 Add an archive_handler
 * 1.3.0 Huge refactor to get tests going again.
 * 1.2.2 Add a backoff factor. So that failed requests are delayed
 * 1.2.1 Add retry logic to the requests.get methods.
