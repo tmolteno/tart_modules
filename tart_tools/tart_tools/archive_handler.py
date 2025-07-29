@@ -37,12 +37,12 @@ def handle_archive_request(target, num_observations, output_dir,
 
         start_datetime = utc_now - delta_t
     else:
-        start_datetime = datetime.datetime.strptime(start_str,
-                                                    '%Y-%m-%dT%H:%M:%S').replace(tzinfo=datetime.timezone.utc)
+        start_datetime = utc.from_string(start_str)
 
     stop_datetime = start_datetime + duration_dt
     print(f"start: {start_datetime}")
-    print(f"stop: {stop_datetime}")
+    print(f"stop:  {stop_datetime}")
+
     # Do some logic to avoid boundaries and get the prefix as long as possible
     # This saves us from downloading the entire year's worth of objects just to
     # get some within the same day...

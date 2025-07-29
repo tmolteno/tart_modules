@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "tart_tools"
-version = "1.4.0"
+version = "1.4.1"
 description = "Transient Array Radio Telescope Command Line Tools"
 readme = "README.md"
 license = "GPL-3.0-or-later"
