@@ -7,10 +7,14 @@ from dateutil import parser
 
 UTC = timezone.utc
 
+
 def utc_datetime(year, month, day, hour=0, minute=0, second=0.0):
     s = int(second)
     us = int((second - int(second)) * 1000000)
-    return datetime(year=year, month=month, day=day, hour=hour, minute=minute, second=s, microsecond=us, tzinfo=timezone.utc)
+    return datetime(year=year, month=month, day=day,
+                    hour=hour, minute=minute, second=s,
+                    microsecond=us, tzinfo=timezone.utc)
+
 
 def to_utc(dt):
     if dt.tzinfo is None:
@@ -21,11 +25,14 @@ def to_utc(dt):
         raise RuntimeError(err)
     return dt
 
+
 def now():
     return datetime.now(timezone.utc)
 
+
 def from_string(repr):
     return to_utc(parser.parse(repr))
+
 
 def to_string(timestamp):
     return timestamp.isoformat()
