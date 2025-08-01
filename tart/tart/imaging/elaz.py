@@ -23,12 +23,12 @@ class ElAz:
         # u is east-west    u_hat = [1, 0, 0]
         # v is south-north  v_hat = [0, 1, 0]
         # w is straight up  w_hat = [0, 0, 1]
-        self.s = 3
         # l,m are the cosines of the angle between the source vector and the
         # u and v axes respectively.
         self.l = -np.sin(self.az_r) * np.cos(self.el_r)
         self.m = np.cos(self.az_r) * np.cos(self.el_r)
         self.n = np.sin(self.el_r)
+        self.s = np.array([self.l, self.m, self.n])
 
     def get_lm(self):
         return self.l, self.m
@@ -78,6 +78,7 @@ class ElAz:
         if r < n2:
             el_r = np.arccos(r/n2)
         else:
+            raise ValueError(f"Source {x_pix}, {y_pix} is not in the sky.")
             el_r = 0.0
         # print(f"    el_r = {el_r}")
         atn = np.arctan2(y, x)
