@@ -34,7 +34,7 @@ class ElAz:
         return self.l, self.m
 
     def __repr__(self):
-        return f"tart.imaging.ElAz(el={self.el:5.2f}, az={self.az:5.2f}, l={self.l}, m={self.m})"
+        return f"ElAz(el={self.el:5.2f}, az={self.az:5.2f})"
 
     '''
         Return the area of a unit-solid area of source dS
