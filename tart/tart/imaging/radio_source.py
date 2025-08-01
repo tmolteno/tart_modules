@@ -18,10 +18,10 @@ class RadioSource:
         self.width = width
         self.r = r
 
-    def radec(self, utc_date):  # Get the RA and Declination
+    def radec(self, utc_date) -> tuple[angle.Angle, angle.Angle]:  # Get the RA and Declination
         raise RuntimeError("Use a class derived from RadioSource")
 
-    def jansky(self, utc_date):
+    def jansky(self, utc_date) -> float:
         """ Spectral flux density S. This is the spectral radiance B(theta, phi) integrated over the solid angle of the source. """
         return self.flux
 
