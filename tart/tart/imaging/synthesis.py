@@ -64,30 +64,15 @@ class Synthesis_Imaging:
             save_ptr.close()
         return self.grid_idx
 
-    def get_uvplane_zenith(
-        self,
-        num_bin=1600,
-        nw=36,
-    ):
+    def get_uvplane_zenith(self, num_bin=1600, nw=36):
         uu_a, vv_a, ww_a, vis_l = self.get_uuvvwwvis_zenith()
         arr = np.zeros((num_bin, num_bin), dtype=np.complex64)
         # place complex visibilities in the UV grid and prepare averaging by counting entries.
         grid_idxs = self.get_grid_idxs(uu_a, vv_a, num_bin, nw)
         count_arr = np.zeros((num_bin, num_bin), dtype=np.int16)
-        # for k, v_l in enumerate(vis_l):
-        #    i,j,i2,j2 = grid_idxs[k]
-        #    count_arr[j, i] += 1
-        #    count_arr[j2, i2] += 1
-        if count_arr.max() > 1:
-            # apply the masked array and divide by number of entries
-            for k, v_l in enumerate(vis_l):
-                i, j, i2, j2 = grid_idxs[k]
-                arr[j, i] += v_l
-                arr[j2, i2] += np.conjugate(v_l)
-            n_arr = n_arr / (count_arr)
-        else:
-            arr[grid_idxs[:, 1], grid_idxs[:, 0]] = vis_l
-            arr[grid_idxs[:, 3], grid_idxs[:, 2]] = np.conjugate(vis_l)
+
+        arr[grid_idxs[:, 1], grid_idxs[:, 0]] = vis_l
+        arr[grid_idxs[:, 3], grid_idxs[:, 2]] = np.conjugate(vis_l)
         n_arr = np.ma.masked_array(arr[:, :], count_arr.__lt__(1.0))
         return n_arr
 
