@@ -60,45 +60,10 @@ class TestImaging(unittest.TestCase):
             x, y = src.get_px(n_bin)
             self.assertGreater(img[x, y], 0.5)
 
-
-    def get_clock_vis(self, config, timestamp):
-
-        loc = location.Location(angle.from_dms(config.get_lat()),
-                                angle.from_dms(config.get_lon()),
-                                config.get_alt())
-
-        ant_pos = config.get_antenna_positions()
-        num_ant = len(ant_pos)
-
-        ANTS = [antennas.Antenna(loc, enu=pos) for pos in ant_pos]
-        ANT_MODELS = [antenna_model.GpsPatchAntenna() for i in range(num_ant)]
-        RAD = radio.Max2769B(n_samples=2**12, noise_level=np.zeros(num_ant))
-
-        hour_sources, minute_sources = imaging.get_clock_hands(timestamp)
-
-        sim_sky = skymodel.Skymodel(0, location=loc, gps=0,
-                                    thesun=0, known_cosmic=0)
-
-        for m in hour_sources + minute_sources:
-            src = radio_source.ArtificialSource(loc, timestamp, r=1e6,
-                                                el=m['el'], az=m['az'])
-            sim_sky.add_src(src)
-
-        sources = sim_sky.gen_photons_per_src(timestamp, radio=RAD,
-                                              config=self.config, n_samp=1)
-
-        v_sim = antennas.antennas_simp_vis(
-            ANTS, ANT_MODELS, sources, timestamp, self.config, RAD.noise_level
-        )
-
-        cv = calibration.CalibratedVisibility(v_sim)
-
-        return cv, hour_sources, minute_sources
-
     def test_imaging(self):
 
         cv, hour_sources, minute_sources = \
-            self.get_clock_vis(timestamp=utc.now(), config=self.config)
+            imaging.get_clock_vis(timestamp=utc.now(), config=self.config)
 
         n_bin = 2 ** 8
 
