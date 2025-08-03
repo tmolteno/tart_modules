@@ -3,8 +3,16 @@ import numpy as np
 
 from tart.imaging import synthesis
 from tart.operation import settings
+
+# Following for simulation only
 from tart.util import angle
-from tart.util import utc
+from tart.imaging import antenna_model
+from tart.imaging import radio_source
+from tart.imaging import location
+from tart.simulation import antennas
+from tart.simulation import radio
+from tart.simulation import skymodel
+from tart.imaging import calibration
 
 
 def deg_to_pix(num_bins, deg):
@@ -142,15 +150,6 @@ def get_clock_hands(timestamp):
     minute_sources = [{'el': el, 'az': -minute_azimuth} for el in [90, 80, 70, 60, 50, 40, 30]]
 
     return hour_sources, minute_sources
-
-
-from tart.imaging import antenna_model
-from tart.imaging import radio_source
-from tart.imaging import location
-from tart.simulation import antennas
-from tart.simulation import radio
-from tart.simulation import skymodel
-from tart.imaging import calibration
 
 
 # Helper function for testbenches
