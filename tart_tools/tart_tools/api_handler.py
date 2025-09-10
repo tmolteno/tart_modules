@@ -12,6 +12,7 @@ import shutil
 import urllib.error
 import urllib.parse
 import urllib.request
+import tempfile
 
 import requests
 from requests.adapters import HTTPAdapter
@@ -36,9 +37,10 @@ def sha256_checksum(filename, block_size=65536):
 def download_file(url, checksum=0, file_path=None):
     logger.info(f"Download_file({url}, {checksum}) -> {file_path}")
 
-    # Download the file from `url` and save it locally under `file_path`:
-    with urllib.request.urlopen(url) as response, open(file_path, "wb") as out_file:
-        shutil.copyfileobj(response, out_file)
+    # Download the file from `url` to a temporary file and save it locally under `file_path`:
+    with urllib.request.urlopen(url) as response, tempfile.NamedTemporaryFile(delete=False) as temp_file:
+        shutil.copyfileobj(response, temp_file)
+    shutil.move(temp_file.name, file_path)
 
     if checksum:
         downloaded_checksum = sha256_checksum(file_path)

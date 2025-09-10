@@ -4,14 +4,12 @@ build-backend = "hatchling.build"
 
 [project]
 name = "tart_tools"
-version = "1.4.1"
+version = "1.4.2"
 description = "Transient Array Radio Telescope Command Line Tools"
 readme = "README.md"
 license = "GPL-3.0-or-later"
 requires-python = ">= 3.11"
-authors = [
-    { name = "Tim Molteno", email = "tim@elec.ac.nz" },
-]
+authors = [{ name = "Tim Molteno", email = "tim@elec.ac.nz" }]
 classifiers = [
     "Development Status :: 4 - Beta",
     "Intended Audience :: Science/Research",
@@ -20,14 +18,8 @@ classifiers = [
     "Topic :: Communications :: Ham Radio",
     "Topic :: Scientific/Engineering",
 ]
-dependencies = [
-    "minio",
-    "numpy",
-    "requests",
-    "tart",
-    "tqdm",
-]
-packages = [{include = "tart_tools"}]
+dependencies = ["minio", "numpy", "requests", "tart", "tqdm"]
+packages = [{ include = "tart_tools" }]
 
 [project.scripts]
 tart_image = 'tart_tools.scripts.tart_image:main'
@@ -36,7 +28,7 @@ tart_calibrate = 'tart_tools.scripts.tart_calibrate:main'
 tart_calibration_data = 'tart_tools.scripts.tart_calibration_data:main'
 tart_vis2json = 'tart_tools.scripts.tart_vis2json:main'
 tart_download_gains = 'tart_tools.scripts.tart_download_gains:main'
-tart_upload_gains ='tart_tools.scripts.tart_upload_gains:main'
+tart_upload_gains = 'tart_tools.scripts.tart_upload_gains:main'
 tart_download_data = 'tart_tools.scripts.tart_download_data:main'
 tart_get_archive_data = 'tart_tools.scripts.tart_get_archive_data:main'
 tart_set_mode = 'tart_tools.scripts.tart_set_mode:main'
@@ -50,20 +42,18 @@ Homepage = "http://github.com/tmolteno/tart_modules"
 path = "tart_tools/__init__.py"
 
 [tool.hatch.build.targets.sdist]
-include = [
-    "/tart_tools",
-]
+include = ["/tart_tools"]
 
 [tool.hatch.envs.hatch-test]
 extra-dependencies = [
-  "pytest~=8.1",
-  "scipy",
-  "jsonrpclib",
-  "requests",
-  "ephem",
-  "pyfftw",
-  "matplotlib",
-  "astropy",
-  "healpy"
+    "pytest~=8.1",
+    "scipy",
+    "jsonrpclib",
+    "requests",
+    "ephem",
+    "pyfftw",
+    "matplotlib",
+    "astropy",
+    "healpy",
 ]
 default-args = ["tart_tools"]
