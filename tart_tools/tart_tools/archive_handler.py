@@ -13,8 +13,8 @@ from minio import Minio
 
 from tart.util import utc
 
-MINIO_API_HOST = "s3.max.ac.nz"
-BUCKET_NAME = "tart-hdf"
+MINIO_API_HOST = "s3.us-west-2.amazonaws.com" # "s3.max.ac.nz"
+BUCKET_NAME = "tart"
 
 
 def handle_archive_request(target, num_observations, output_dir,
