@@ -36,26 +36,27 @@ class ElAz:
     def __repr__(self):
         return f"ElAz(el={self.el:5.2f}, az={self.az:5.2f})"
 
-    '''
+    """
         Return the area of a unit-solid area of source dS
         in the l,m plane
-    '''
+    """
+
     def get_lm_area(self, dS=1.0):
         return dS * np.sqrt(1.0 - self.l * self.l - self.m * self.m)
 
     def get_px(self, num_bins):
-        ''' Get source location in pixels from it's direction
-            cosines. These should be image coordinates in an
-            image num_bins x num_bins essentially used as array
-            indices.
-        '''
+        """Get source location in pixels from it's direction
+        cosines. These should be image coordinates in an
+        image num_bins x num_bins essentially used as array
+        indices.
+        """
         return imaging.get_lm_index(self.l, self.m, image_size=num_bins)
 
     @classmethod
     def from_pixel_indices(cls, x_pix, y_pix, num_bins):
-        ''' Create from pixel coordinates. The center (0,0) is
-            in the middle.
-        '''
+        """Create from pixel coordinates. The center (0,0) is
+        in the middle.
+        """
         # print(f"from_pixels({x_pix}, {y_pix})")
         n2 = num_bins // 2
         max_index = num_bins - 0.5
@@ -63,20 +64,20 @@ class ElAz:
         x0 = n2
         # x_pix = np.floor(x0 - (m*max_index/2))
         # -2*(x_pix - x0)/max_index = m
-        m = -2*(x_pix - x0)/max_index
+        m = -2 * (x_pix - x0) / max_index
 
         # y_px = np.floor(x0 + (l*max_index/2))
         # 2*(y_pix - x0) = l*max_index
-        l = 2*(y_pix - x0) / max_index
+        l = 2 * (y_pix - x0) / max_index
 
-        x = l*max_index/2
-        y = m*max_index/2
+        x = l * max_index / 2
+        y = m * max_index / 2
         # print(f"centred_pixels({x}, {y})")
-        r = np.sqrt(x*x + y*y)
+        r = np.sqrt(x * x + y * y)
         # print(f"r=({r}, {n2})")
 
         if r < n2:
-            el_r = np.arccos(r/n2)
+            el_r = np.arccos(r / n2)
         else:
             raise ValueError(f"Source {x_pix}, {y_pix} is not in the sky.")
             el_r = 0.0
@@ -89,9 +90,9 @@ class ElAz:
         return ElAz(np.degrees(el_r), np.degrees(az_r))
 
     def get_px_window(self, num_bins, window_deg):
-        ''' Get a pixel window around a source with width window_deg
-            This is assumed to be an inverse FFT image with num_bins x num_bins
-        '''
+        """Get a pixel window around a source with width window_deg
+        This is assumed to be an inverse FFT image with num_bins x num_bins
+        """
         x_i, y_i = self.get_px(num_bins)
 
         d = imaging.deg_to_pix(num_bins, window_deg)
