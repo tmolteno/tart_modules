@@ -13,7 +13,7 @@ from minio import Minio
 
 from tart.util import utc
 
-MINIO_API_HOST = "s3.us-west-2.amazonaws.com" # "s3.max.ac.nz"
+MINIO_API_HOST = "s3.us-west-2.amazonaws.com"
 BUCKET_NAME = "tart"
 
 
@@ -54,10 +54,10 @@ def handle_archive_request(target, num_observations, output_dir,
     if stop_datetime.day == start_datetime.day:
         prefix += f"/{start_datetime.day}"
 
-    print(f"Getting data from path {prefix}")
+    print(f"Getting data from path {MINIO_API_HOST}/{prefix}")
 
-    client = Minio(MINIO_API_HOST, secure=True)
-    objects = client.list_objects(BUCKET_NAME, prefix=prefix, recursive=True,
+    client = Minio(endpoint=MINIO_API_HOST, secure=True)
+    objects = client.list_objects(bucket_name=BUCKET_NAME, prefix=prefix, recursive=True,
                                   include_user_meta=True)
 
     desired_objects = []
@@ -81,4 +81,6 @@ def handle_archive_request(target, num_observations, output_dir,
         fname = f"obs_{index:05d}.hdf"
         fname_out = os.path.join(output_dir, fname)
         index = index+1
-        client.fget_object(BUCKET_NAME, item.object_name, fname_out)
+        client.fget_object(bucket_name=BUCKET_NAME,
+                           object_name=item.object_name,
+                           file_path=fname_out)

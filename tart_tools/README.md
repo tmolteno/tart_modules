@@ -44,6 +44,7 @@ in which case changes to the source-code will be immediately available to projec
 
 
 ## NEWS
+* 1.4.4 Use explicit parameter names for all minio calls.
 * 1.4.3 Use the new TART s3 public bucket for archive access
 * 1.4.2 Make download_file download to a temporary file before copying to actual file.
 * 1.4.0 Add an archive_handler
