@@ -17,6 +17,7 @@ from tart.imaging import calibration
 from tart_tools import api_handler
 from tart_tools import api_imaging
 from tart.util import utc
+from tart_tools.common_api import *
 
 
 def split_param(x):
@@ -48,12 +49,7 @@ def main():
         description="Generate Calibration Data.",
         formatter_class=argparse.ArgumentDefaultsHelpFormatter,
     )
-    PARSER.add_argument(
-        "--api",
-        required=False,
-        default="https://tart.elec.ac.nz/signal",
-        help="Telescope API server URL.",
-    )
+    api_parameter(PARSER)
     PARSER.add_argument(
         "--file",
         required=False,

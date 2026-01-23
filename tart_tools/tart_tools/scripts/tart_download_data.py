@@ -13,6 +13,7 @@ import urllib.parse
 import time
 
 from tart_tools.api_handler import APIhandler, download_file, sha256_checksum
+from tart_tools.common_api import *
 
 logger = logging.getLogger()
 
@@ -22,12 +23,7 @@ def main():
         description="Download data from the telescope",
         formatter_class=argparse.ArgumentDefaultsHelpFormatter,
     )
-    parser.add_argument(
-        "--api",
-        required=False,
-        default="https://tart.elec.ac.nz/signal",
-        help="Telescope API server URL.",
-    )
+    api_parameter(parser)
     parser.add_argument(
         "--pw", default="password", required=False, type=str, help="API password"
     )

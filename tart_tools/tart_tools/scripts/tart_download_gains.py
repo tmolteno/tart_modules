@@ -7,18 +7,15 @@ import argparse
 import json
 
 from tart_tools.api_handler import APIhandler, download_current_gain
+from tart_tools.common_api import *
 
 def main():
     parser = argparse.ArgumentParser(
         description="Save gains from api to local file",
         formatter_class=argparse.ArgumentDefaultsHelpFormatter,
     )
-    parser.add_argument(
-        "--api",
-        required=False,
-        default="https://tart.elec.ac.nz/signal",
-        help="Telescope API server URL.",
-    )
+    api_parameter(parser)
+
     parser.add_argument(
         "--file", default="gains.json", type=str, help="local file to dump gains"
     )

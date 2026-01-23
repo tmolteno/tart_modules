@@ -30,6 +30,7 @@ from tart.util.angle import from_rad
 
 from tart_tools import api_imaging
 from tart_tools import api_handler
+from tart_tools.common_api import *
 
 triplets = None
 ij_index = None
@@ -269,12 +270,7 @@ def main():
         description="Calibrate the tart telescope from API.",
         formatter_class=argparse.ArgumentDefaultsHelpFormatter,
     )
-    parser.add_argument(
-        "--api",
-        required=False,
-        default="https://tart.elec.ac.nz/signal",
-        help="Telescope API server URL.",
-    )
+    api_parameter(parser)
     parser.add_argument(
         "--file",
         required=False,

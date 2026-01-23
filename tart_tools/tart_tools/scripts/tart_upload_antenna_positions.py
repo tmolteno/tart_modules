@@ -11,18 +11,14 @@ import numpy as np
 
 from tart.operation import settings
 from tart_tools.api_handler import AuthorizedAPIhandler
+from tart_tools.common_api import *
 
 def main():
     parser = argparse.ArgumentParser(
         description="Upload antenna positions from local file to remote telescope",
         formatter_class=argparse.ArgumentDefaultsHelpFormatter,
     )
-    parser.add_argument(
-        "--api",
-        required=False,
-        default="https://tart.elec.ac.nz/signal",
-        help="Telescope API server URL.",
-    )
+    api_parameter(parser)
     parser.add_argument("--pw", default="password", type=str, help="API password")
     parser.add_argument("--file", type=str, required=True, help="JSON file  of 'antenna_positions' to upload")
     parser.add_argument("--rotate", type=float, default=0.0, help="Rotate the antenna positions (degrees)")
