@@ -14,6 +14,12 @@ def main():
     parser = argparse.ArgumentParser(description='Get data from the TART s3 bucket',
                                      formatter_class=argparse.ArgumentDefaultsHelpFormatter)
 
+    parser.add_argument('--start', required=False, default="-60",
+                        help="Start time (negative integer means offset in minutes from now). Can also be an ISO-8601 formatted date with UTC offset 2026-01-20T01:30:08+00:00")
+
+    parser.add_argument('--duration', required=True,
+                        help="Number of minutes to sample for after the start argument.")
+
     parser.add_argument('--dir', required=False, default=".",
                         help="Output directory")
 
@@ -27,10 +33,6 @@ def main():
     parser.add_argument('--n', required=False, type=int,
                         default=-1, help="Number of HDF vis files. (-1 means all)")
 
-    parser.add_argument('--start', required=False, default="-60",
-                        help="Start time (negative means offset from now).")
-    parser.add_argument('--duration', required=False,  default="0",
-                        help="Number of minutes to sample for")
 
     ARGS = parser.parse_args()
 
