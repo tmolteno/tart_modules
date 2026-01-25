@@ -46,6 +46,7 @@ in which case changes to the source-code will be immediately available to projec
 
 Changelog:
 
+* 1.4.5   Keep in sync with tart_tools.
 * 1.4.3   Keep in sync with tart_tools.
 * 1.4.0   Add a to_json method to visibilty.
 * 1.3.5   Fix bugs in x,y array indices.
