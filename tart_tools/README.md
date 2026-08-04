@@ -44,6 +44,15 @@ in which case changes to the source-code will be immediately available to projec
 
 
 ## NEWS
+* 1.4.6 Bug fixes
+        - tart_download_data: default --n -1 no longer skips the newest entry.
+          Negative n now means "download everything" (previously [0:-1] slicing
+          dropped the most recent file on each pass).
+        - tart_get_archive_data: --name is now honoured as the output file name
+          prefix (it was previously parsed but ignored). The default prefix
+          remains 'obs_', producing files like 'obs_00000.hdf'.
+        - Replace 'from tart_tools.common_api import *' with an explicit import of
+          api_parameter in all command line tools to remove undefined-name warnings.
 * 1.4.5 Use common command line parameter functions for api to allow better documentation.
 * 1.4.4 Use explicit parameter names for all minio calls.
 * 1.4.3 Use the new TART s3 public bucket for archive access

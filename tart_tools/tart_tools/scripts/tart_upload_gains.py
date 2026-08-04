@@ -7,7 +7,7 @@ import argparse
 import json
 
 from tart_tools.api_handler import AuthorizedAPIhandler, upload_gain
-from tart_tools.common_api import *
+from tart_tools.common_api import api_parameter
 
 
 def main():

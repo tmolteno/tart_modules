@@ -24,8 +24,8 @@ def main():
                         help="Output directory")
 
     parser.add_argument('--name', required=False,
-                        default=None,
-                        help="Output file name prefix - eg 'out_' would produce files 'out_1.hdf', out_2.hdf ...")
+                        default='obs_',
+                        help="Output file name prefix - eg 'out_' would produce files 'out_00000.hdf', 'out_00001.hdf' ...")
 
     parser.add_argument('--target', required=False,
                         default='signal', help="Telescope name in s3 bucket.")
@@ -40,4 +40,5 @@ def main():
                            num_observations=ARGS.n,
                            output_dir=ARGS.dir,
                            start_str=ARGS.start,
-                           duration_str=ARGS.duration)
+                           duration_str=ARGS.duration,
+                           file_prefix=ARGS.name)

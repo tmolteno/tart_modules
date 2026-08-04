@@ -11,7 +11,7 @@ import numpy as np
 
 from tart.operation import settings
 from tart_tools.api_handler import AuthorizedAPIhandler
-from tart_tools.common_api import *
+from tart_tools.common_api import api_parameter
 
 def main():
     parser = argparse.ArgumentParser(

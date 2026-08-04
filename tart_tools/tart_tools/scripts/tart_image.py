@@ -21,7 +21,7 @@ import numpy as np
 
 from tart_tools import api_imaging
 from tart_tools import api_handler
-from tart_tools.common_api import *
+from tart_tools.common_api import api_parameter
 
 from tart.operation import settings
 from tart.imaging import elaz

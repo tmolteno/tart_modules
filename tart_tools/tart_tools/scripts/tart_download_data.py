@@ -13,7 +13,7 @@ import urllib.parse
 import time
 
 from tart_tools.api_handler import APIhandler, download_file, sha256_checksum
-from tart_tools.common_api import *
+from tart_tools.common_api import api_parameter
 
 logger = logging.getLogger()
 
@@ -81,7 +81,12 @@ def main():
             resp_raw = api.get("raw/data")
 
         try:
-            for entry in (resp_raw + resp_vis)[0:ARGS.n]:
+            entries = resp_raw + resp_vis
+            if ARGS.n > 0:
+                # n<0 means "download everything" (continuous mode by default).
+                # Plain [0:n] slicing with n=-1 would wrongly drop the newest entry.
+                entries = entries[0:ARGS.n]
+            for entry in entries:
                 if "filename" in entry:
 
                     data_url = urllib.parse.urljoin(tart_endpoint, entry["filename"])

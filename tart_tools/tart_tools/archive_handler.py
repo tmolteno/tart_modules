@@ -18,7 +18,7 @@ BUCKET_NAME = "tart"
 
 
 def handle_archive_request(target, num_observations, output_dir,
-                           start_str, duration_str):
+                           start_str, duration_str, file_prefix="obs_"):
     #
     # Used by the command line utility (tart_get_archive_data), as well as to get calibration data
     #
@@ -76,9 +76,7 @@ def handle_archive_request(target, num_observations, output_dir,
     index = 0
     for item in tqdm(data_to_get):
         # print(item.object_name)
-        #
-        dirname, fname = os.path.split(item.object_name)
-        fname = f"obs_{index:05d}.hdf"
+        fname = f"{file_prefix}{index:05d}.hdf"
         fname_out = os.path.join(output_dir, fname)
         index = index+1
         client.fget_object(bucket_name=BUCKET_NAME,

@@ -30,7 +30,7 @@ from tart.util.angle import from_rad
 
 from tart_tools import api_imaging
 from tart_tools import api_handler
-from tart_tools.common_api import *
+from tart_tools.common_api import api_parameter
 
 triplets = None
 ij_index = None
