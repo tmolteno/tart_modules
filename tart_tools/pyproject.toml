@@ -44,12 +44,14 @@ path = "tart_tools/__init__.py"
 [tool.hatch.build.targets.sdist]
 include = ["/tart_tools"]
 
-[tool.hatch.envs.hatch-test]
-extra-dependencies = [
-    "pytest~=8.1",
-    "scipy",
-    "jsonrpclib",
+[tool.hatch.envs.test]
+dependencies = [
+    "numpy",
+    "tart",
     "requests",
+    "scipy",
+    "pytest~=8.1",
+    "jsonrpclib",
     "ephem",
     "pyfftw",
     "matplotlib",
@@ -57,3 +59,18 @@ extra-dependencies = [
     "healpy",
 ]
 default-args = ["tart_tools"]
+
+[dependency-groups]
+test = [
+    "numpy",
+    "tart",
+    "requests",
+    "scipy",
+    "pytest~=8.1",
+    "jsonrpclib",
+    "ephem",
+    "pyfftw",
+    "matplotlib",
+    "astropy",
+    "healpy",
+]
