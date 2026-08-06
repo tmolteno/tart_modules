@@ -47,6 +47,7 @@ class TestImaging(unittest.TestCase):
         plt.show(block=False)
         plt.pause(0.2)
         plt.close("all")
+        plt.pause(0.1)  # Let the GUI process the close so the window disappears
 
         for m in minute_sources:
             src = elaz.ElAz(m['el'], m['az'])
@@ -82,6 +83,7 @@ class TestImaging(unittest.TestCase):
         plt.show(block=False)
         plt.pause(0.2)
         plt.close("all")
+        plt.pause(0.1)  # Let the GUI process the close so the window disappears
 
         for m in minute_sources:
             src = elaz.ElAz(m['el'], m['az'])

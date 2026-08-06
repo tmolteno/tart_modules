@@ -13,6 +13,12 @@ from tart.util import angle, utc
 class TestGpsSatellite(unittest.TestCase):
     def setUp(self):
         self.t = utc.utc_datetime(2002, 10, 31, 0, 2, 2)
+        try:
+            from tart.imaging.ephemerides_proxy import EphemeridesProxy
+
+            EphemeridesProxy.Instance().server.get_ephemeris(self.t.isoformat(), 1)
+        except Exception:
+            self.skipTest("Ephemeris server (localhost:8876) not available")
 
     def test_gps(self):
 

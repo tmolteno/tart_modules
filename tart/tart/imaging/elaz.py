@@ -76,8 +76,11 @@ class ElAz:
         r = np.sqrt(x * x + y * y)
         # print(f"r=({r}, {n2})")
 
-        if r < n2:
-            el_r = np.arccos(r / n2)
+        # Allow a one-pixel tolerance on the sky boundary: pixel rounding
+        # can map a horizon point to a radius up to ~n2 + 1. Genuinely
+        # out-of-sky pixels (e.g. image corners) have r > n2 + 1.
+        if r <= n2 + 1.0:
+            el_r = np.arccos(np.clip(r / n2, 0.0, 1.0))
         else:
             raise ValueError(f"Source {x_pix}, {y_pix} is not in the sky.")
             el_r = 0.0

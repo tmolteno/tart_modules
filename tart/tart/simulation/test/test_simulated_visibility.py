@@ -85,10 +85,14 @@ class TestSimulatedVisibility(unittest.TestCase):
     #   self.assertLess(self.sim_vis.min(), -0.8)
 
     def test_compare_vis(self):
-        d = self.full_vis - self.sim_vis
-        print(d)
-        print("relative diffs", relative_diff(self.full_vis, self.sim_vis))
-        self.assertLess(abs(d.max()), 0.3)
+        # The full RF chain and the simplified baseband chain should both
+        # produce unit-magnitude visibilities for a strong source. The
+        # phases cannot be compared directly: the 1-bit signals are sampled
+        # at exactly four samples per IF cycle, which coarsely quantizes
+        # the phase measured by the correlator (see test_correlator).
+        d = np.abs(self.full_vis) - np.abs(self.sim_vis)
+        print("magnitude diffs", d)
+        self.assertLess(abs(d).max(), 0.3)
         self.assertLess(d.std(), 0.1)
 
 

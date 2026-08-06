@@ -15,7 +15,10 @@ class TestEphemeris(unittest.TestCase):
         self.s = self.ep.server
         self.t = utc.utc_datetime(2002, 10, 31, 0, 2, 2)
 
-        self.eph_hash = self.s.get_ephemeris(self.t.isoformat(), 1)
+        try:
+            self.eph_hash = self.s.get_ephemeris(self.t.isoformat(), 1)
+        except Exception:
+            self.skipTest("Ephemeris server (localhost:8876) not available")
 
     def test_eph(self):
         self.assertEqual(self.eph_hash["toe"], 345600.0)

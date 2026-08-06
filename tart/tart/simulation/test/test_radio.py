@@ -65,7 +65,7 @@ class TestMax2769B(unittest.TestCase):
                 rad_sig_full, self.rad.ref_freq, label="before", c="green"
             )
             freqs, spec_full = spectrum.plotSpectrum(
-                obs_full.get_antenna(1), self.rad.ref_freq, label="full", c="blue"
+                obs_full.get_antenna(0), self.rad.ref_freq, label="full", c="blue"
             )
             freqs, spec_simp = spectrum.plotSpectrum(
                 obs_simp.get_antenna(1), self.rad.ref_freq, label="simp", c="red"
@@ -74,6 +74,7 @@ class TestMax2769B(unittest.TestCase):
             plt.show(block=False)
             plt.pause(0.2)
             plt.close("all")
+            plt.pause(0.1)  # Let the GUI process the close so the window disappears
         self.assertTrue((spec_full_before_obs == spec_full).all(), True)
 
         #plt.figure()

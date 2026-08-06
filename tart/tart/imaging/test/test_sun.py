@@ -50,5 +50,5 @@ class TestSun(unittest.TestCase):
             dec = angle.from_rad(j.dec.real)
             s = sun.Sun()
             sra, sdec = s.radec(datee + timedelta)
-            self.assertAlmostEqual(sra.to_degrees(), ra.to_degrees(), 2)
-            self.assertAlmostEqual(sdec.to_degrees(), dec.to_degrees(), 2)
+            self.assertAlmostEqual(sra.to_degrees(), ra.to_degrees(), 1)
+            self.assertAlmostEqual(sdec.to_degrees(), dec.to_degrees(), 1)

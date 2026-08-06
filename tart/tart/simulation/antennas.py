@@ -53,6 +53,8 @@ def antennas_simp_vis(antennas, ant_models, sources, utc_date, config, noise_lvl
     num_ant = len(antennas)
     baseline_indices = imaging.get_baseline_indices(num_ant)
 
+    noise_lvl = np.asarray(noise_lvl)
+
     # noise = np.random.uniform(0.,np.sqrt(noise_lvl),config.get_num_antenna()) * np.exp(2.0j*np.pi*np.random.uniform(-1.,1.,config.get_num_antenna()))
     if noise_lvl.__gt__(0.0).all():
         noise = np.random.normal(0.0, noise_lvl) * np.exp(
@@ -116,8 +118,8 @@ class Antenna:
         t_antenna - t_origin
         """
         el_0, az_0, r_0 = src_0.elevation, src_0.azimuth, src_0.r
-        if src_0.r > 1e4:
-            src_0.r = 1.0e4
+        if r_0 > 1e4:
+            r_0 = 1.0e4  # Clamp locally; do not mutate the source object
 
         # el_0 and az_0 from the PoV of the antenna, corrected for the distance of the source.
         # if source is far away: el = el_0 and az = az_0
