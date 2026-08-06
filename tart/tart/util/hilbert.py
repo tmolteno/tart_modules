@@ -1,4 +1,5 @@
 
+import pickle
 import time
 
 import numpy as np
@@ -30,9 +31,9 @@ def hilbert(s, debug=False):
     n = len(s)
     h = np.zeros(n)
     h[0] = 1.
-    h[n/2] = 1.
-    h[1:n/2] = 2.
-    #h[n/2+1:] = 0.
+    h[n // 2] = 1.
+    h[1:n // 2] = 2.
+    #h[n//2+1:] = 0.
     if debug:
         print('setup', time.time()-s_1)
     s_2 = time.time()
@@ -102,8 +103,8 @@ def hilbert_fftw(s, debug=False, dtype='complex64'):
     s_1 = time.time()
     h = np.zeros(n)
     h[0] = 1.
-    h[n/2] = 1.
-    h[1:n/2] = 2.
+    h[n // 2] = 1.
+    h[1:n // 2] = 2.
     if debug:
         print('setup', time.time()-s_1)
     s_2 = time.time()

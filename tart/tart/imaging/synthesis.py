@@ -77,12 +77,19 @@ class Synthesis_Imaging:
         return n_arr
 
     def get_uvplane(self, num_bin=1600, nw=36, grid_kernel_r_pixels=0.5):
+        uu_list = []
+        vv_list = []
+        vis_list_ = []
         for cal_vis in self.cal_vis_list:
             uu_a, vv_a, ww_a = cal_vis.get_all_uvw()
-            uu_a = uu_a / constants.L1_WAVELENGTH
-            vv_a = vv_a / constants.L1_WAVELENGTH
-            ww_a = ww_a / constants.L1_WAVELENGTH
+            uu_list.append(uu_a / constants.L1_WAVELENGTH)
+            vv_list.append(vv_a / constants.L1_WAVELENGTH)
             vis_l, bls = cal_vis.get_all_visibility()
+            vis_list_.append(vis_l)
+
+        uu_a = np.concatenate(uu_list)
+        vv_a = np.concatenate(vv_list)
+        vis_l = np.concatenate(vis_list_)
 
         uu_edges = np.linspace(-nw, nw, num_bin + 1)
         vv_edges = np.linspace(-nw, nw, num_bin + 1)

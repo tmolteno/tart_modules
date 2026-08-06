@@ -45,7 +45,7 @@ class Observation:
 
     def get_antenna(self, ant_num):
         if ant_num >= self.config.get_num_antenna():
-            raise "Antenna %d doesn't exist" % ant_num
+            raise ValueError("Antenna %d doesn't exist" % ant_num)
         return self.data[ant_num]*2-1. # Return to bipolar binary
 
     def get_sampling_rate(self):

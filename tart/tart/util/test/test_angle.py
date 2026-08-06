@@ -34,3 +34,8 @@ class TestAngle(unittest.TestCase):
         self.assertEqual(h, 180)
         self.assertEqual(m, 20)
         self.assertEqual(s, 11)
+
+    def test_to_elevation_range(self):
+        self.assertRaises(ValueError, from_dms(120.0).to_elevation)
+        self.assertRaises(ValueError, from_dms(-120.0).to_elevation)
+        self.assertEqual(from_dms(45.0).to_elevation().to_degrees(), 45.0)

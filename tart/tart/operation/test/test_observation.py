@@ -28,6 +28,15 @@ class TestObservation(unittest.TestCase):
         self.assertEqual(self.obs.get_julian_date(), nobs.get_julian_date())
         self.assertTrue((self.data == nobs.data).all())
 
+    def test_get_antenna_out_of_range(self):
+        class FakeConfig:
+            def get_num_antenna(self):
+                return 2
+
+        obs = Observation(timestamp=utc.now(), config=FakeConfig(),
+                          data=[np.zeros(8), np.zeros(8)])
+        self.assertRaises(ValueError, obs.get_antenna, 2)
+
 
     #def test_str2bits(self):
         #init = '101000'

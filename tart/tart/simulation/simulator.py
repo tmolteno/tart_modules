@@ -30,8 +30,8 @@ def get_vis_parallel(sky, cor, rad, ants, ant_models, config, time, mode="simp")
                         get_vis, (sky, cor, rad, ants, ant_models, config, t, mode)
                     )
                 )
-        p.close
-        p.join
+        p.close()
+        p.join()
         for thread in resultList:
             vis = thread.get()
             if vis is not None:
@@ -64,7 +64,7 @@ def get_vis(
         timebase = np.arange(0, rad.sample_duration, 1.0 / rad.sampling_rate)
         ant_sigs_full = antennas.antennas_signal(ants, ant_models, sources, timebase)
         obs = rad.get_full_obs(ant_sigs_full, timestamp, config, timebase)
-        v = cor.correlate_roll(obs)
+        v = cor.correlate(obs, mode="roll")
 
     elif mode == "mini":
         v = antennas.antennas_simp_vis(
@@ -75,7 +75,7 @@ def get_vis(
             ants, ant_models, sources, rad.baseband_timebase, rad.int_freq, seed=seed
         )
         obs = rad.get_simplified_obs(ant_sigs_simp, timestamp, config=config, seed=seed)
-        v = cor.correlate_roll(obs)
+        v = cor.correlate(obs, mode="roll")
     return v
 
 

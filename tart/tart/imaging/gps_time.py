@@ -10,7 +10,7 @@ class GpsTime:
 
     def __init__(self, y, m, d, h, minutes, seconds):
         if y < 1980:
-            raise Exception("Year #{y} must >= 1980")
+            raise Exception(f"Year {y} must be >= 1980")
 
         in_time = utc.utc_datetime(
             year=y, month=m, day=d, hour=h, minute=minutes, second=0

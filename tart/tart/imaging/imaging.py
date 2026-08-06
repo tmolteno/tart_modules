@@ -100,7 +100,7 @@ def grid_visibility(uv_plane, v_complex, baselines):
         uv_plane[u_idx, v_idx] += v
 
         # Place the conjugate visibility at -uu, -vv
-        u_idx, v_idx = uv_index(--uu, --vv, num_bins, uv_max)
+        u_idx, v_idx = uv_index(-uu, -vv, num_bins, uv_max)
         uv_plane[u_idx, v_idx] += np.conj(v)
 
     return uv_max

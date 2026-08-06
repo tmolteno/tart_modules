@@ -45,19 +45,33 @@ include = [
 
 [tool.hatch.envs.test]
 dependencies = [
-    "pytest",
-]
-
-[tool.hatch.envs.hatch-test]
-extra-dependencies = [
-  "pytest~=8.1",
-  "scipy",
-  "jsonrpclib",
-  "requests",
-  "ephem",
-  "pyfftw",
-  "matplotlib",
-  "astropy",
-  "healpy"
+    "numpy >= 2.0.0",
+    "h5py",
+    "python-dateutil",
+    "scipy",
+    "pytest~=8.1",
+    "jsonrpclib",
+    "requests",
+    "ephem",
+    "pyfftw",
+    "matplotlib",
+    "astropy",
+    "healpy",
 ]
 default-args = ["tart"]
+
+[dependency-groups]
+test = [
+    "numpy >= 2.0.0",
+    "h5py",
+    "python-dateutil",
+    "scipy",
+    "pytest~=8.1",
+    "jsonrpclib",
+    "requests",
+    "ephem",
+    "pyfftw",
+    "matplotlib",
+    "astropy",
+    "healpy",
+]

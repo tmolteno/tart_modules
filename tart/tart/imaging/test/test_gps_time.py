@@ -19,3 +19,6 @@ class TestGpsTime(unittest.TestCase):
         g2 = GpsTime(2013, 9, 21, 0, 59, 3)
         self.assertEqual(g1.m_week, g2.m_week)
         self.assertEqual(g1.sec_of_week, g2.sec_of_week)
+
+    def test_year_too_early(self):
+        self.assertRaises(Exception, GpsTime, 1979, 1, 1, 0, 0, 0)

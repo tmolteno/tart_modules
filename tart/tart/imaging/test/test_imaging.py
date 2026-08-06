@@ -134,6 +134,24 @@ class TestImaging(unittest.TestCase):
         self.assertEqual(i0, image_size-1)
         self.assertEqual(i1, 0)
 
+    def test_grid_visibility_conjugate_placement(self):
+        num_bins = 16
+        uv_max = num_bins / 4.0
+        uv_plane = np.zeros((num_bins, num_bins), dtype=np.complex128)
+        v = 1.0 + 2.0j
+        # baselines are passed as (uu, vv, ww) tuples
+        baselines = [(2.0, 1.0, 0.0)]
+        imaging.grid_visibility(uv_plane, [v], baselines)
+
+        # Only the +uu/+vv and -uu/-vv cells should be occupied.
+        self.assertEqual(np.count_nonzero(uv_plane), 2)
+
+        u_idx, v_idx = imaging.uv_index(2.0, 1.0, num_bins, uv_max)
+        self.assertEqual(uv_plane[u_idx, v_idx], v)
+
+        u_idx2, v_idx2 = imaging.uv_index(-2.0, -1.0, num_bins, uv_max)
+        self.assertEqual(uv_plane[u_idx2, v_idx2], np.conj(v))
+
 
 
 

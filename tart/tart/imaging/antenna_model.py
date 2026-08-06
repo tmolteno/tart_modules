@@ -90,6 +90,8 @@ class GpsPatchAntenna(AntennaModel):
 
 
 def gen_interpolation_map(points, values, antenna_num, nside_exp):
+    import healpy as hp
+
     nside = np.power(2, nside_exp)
     npix = hp.nside2npix(nside)
     hp_map_avg = np.ones(npix) * hp.UNSEEN
@@ -157,6 +159,8 @@ class EmpiricalAntenna(AntennaModel):
         interpolate="default",
     ):
         if self.recalculate:
+            import healpy as hp
+
             self.recalculate = False
             self.values = np.array(self.values)
             self.distances = np.array(self.distances)
@@ -269,7 +273,7 @@ class EmpiricalAntenna(AntennaModel):
         values = []
         times = []
         for _el, _az, _gain, _date, _sv in zip(el, az, gain, dates, svs):
-            if ~np.isnan(_gain):
+            if not np.isnan(_gain):
                 points.append((_el, _az))
                 values.append(_gain)
                 times.append(_date)
@@ -306,7 +310,7 @@ class EmpiricalAntenna(AntennaModel):
         times = []
         distances = []
         for p in pval:
-            if ~np.isnan(p[2]):
+            if not np.isnan(p[2]):
                 points.append((p[0], p[1]))
                 values.append(p[2])
                 times.append(p[3])

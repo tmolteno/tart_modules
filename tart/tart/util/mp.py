@@ -8,8 +8,8 @@ def parallelized_for_i_in(ilist, func):
     try:
         for iarg in ilist:
             result_list.append(pool.apply_async(func, (iarg,)))
-        pool.close
-        pool.join
+        pool.close()
+        pool.join()
 
         for thread in result_list:
             result = thread.get()
