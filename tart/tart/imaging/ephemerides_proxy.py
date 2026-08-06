@@ -1,9 +1,69 @@
+import json
 import os
+import urllib.error
+import urllib.request
 
 import numpy as np
 
 from tart.imaging import ephemeris, gps_time, sp3_interpolator
 from tart.util.singleton import Singleton
+
+
+class ProtocolError(Exception):
+    """Raised when the JSON-RPC server returns an error response."""
+
+    def __init__(self, code, message):
+        super().__init__(f"JSON-RPC error {code}: {message}")
+        self.code = code
+        self.message = message
+
+
+class ServerProxy:
+    """A minimal JSON-RPC 2.0 client.
+
+    This replaces the abandoned jsonrpclib package. It sends JSON-RPC 2.0
+    POST requests with positional parameters - the same wire format that
+    jsonrpclib used - so it remains compatible with the TART ephemeris
+    server.
+    """
+
+    def __init__(self, url, timeout=15.0):
+        self._url = url
+        self._timeout = timeout
+        self._id = 0
+
+    def __getattr__(self, name):
+        def method(*args, **kwargs):
+            if kwargs:
+                params = kwargs
+            else:
+                params = list(args)
+            return self._call(name, params)
+
+        return method
+
+    def _call(self, method, params):
+        self._id += 1
+        payload = {
+            "jsonrpc": "2.0",
+            "method": method,
+            "params": params,
+            "id": self._id,
+        }
+        data = json.dumps(payload).encode("utf-8")
+        req = urllib.request.Request(
+            self._url, data=data, headers={"Content-Type": "application/json"}
+        )
+        try:
+            with urllib.request.urlopen(req, timeout=self._timeout) as response:
+                body = response.read().decode("utf-8")
+        except urllib.error.HTTPError as e:
+            body = e.read().decode("utf-8")
+        result = json.loads(body)
+        if "error" in result:
+            err = result["error"]
+            raise ProtocolError(err.get("code"), err.get("message"))
+        return result["result"]
 
 
 @Singleton
@@ -15,8 +75,7 @@ class EphemeridesProxy:
         else:
             server_host = "localhost"
 
-        import jsonrpclib
-        self.server = jsonrpclib.Server("http://%s:8876/rpc/gps" % server_host)
+        self.server = ServerProxy("http://%s:8876/rpc/gps" % server_host)
         self.cache = {}
         self.sp3_cache = {}
 
@@ -94,7 +153,7 @@ class EphemeridesProxy:
                 eph = self.get_ephemeris(utc_date, sv)
                 pos = eph.get_sv_position(gpst)
                 ret.append([sv, pos])
-            except jsonrpclib.ProtocolError:
+            except ProtocolError:
                 pass
         return ret
 

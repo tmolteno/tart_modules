@@ -452,15 +452,6 @@ wheels = [
 ]
 
 [[package]]
-name = "jsonrpclib"
-version = "0.2.1"
-source = { registry = "https://pypi.org/simple" }
-sdist = { url = "https://files.pythonhosted.org/packages/55/03/1b8b9f4514a7904c2511448cb04523f3123b31c6cd6ece968dacc8ea100d/jsonrpclib-0.2.1.tar.gz", hash = "sha256:8138078fd0f2a5b1df7925e4fa0b82a7c17a4be75bf5634af20463172f44f5c0", size = 18096, upload-time = "2021-03-31T08:33:57.008Z" }
-wheels = [
-    { url = "https://files.pythonhosted.org/packages/2a/7f/e303c32b29ff1ad93b0c106ba148a49006a624e7c8ce65b73f2ff14a4493/jsonrpclib-0.2.1-py3-none-any.whl", hash = "sha256:5a571d3e46fe4f2fe7e607e1732b8a9ad6b7255f53bfbf465822fe1100baf538", size = 15955, upload-time = "2021-03-31T08:33:55.617Z" },
-]
-
-[[package]]
 name = "kiwisolver"
 version = "1.5.0"
 source = { registry = "https://pypi.org/simple" }
@@ -1194,7 +1185,6 @@ dependencies = [
 
 [package.optional-dependencies]
 all = [
-    { name = "jsonrpclib" },
     { name = "matplotlib" },
     { name = "pyfftw" },
     { name = "requests" },
@@ -1211,7 +1201,6 @@ test = [
     { name = "ephem" },
     { name = "h5py" },
     { name = "healpy" },
-    { name = "jsonrpclib" },
     { name = "matplotlib" },
     { name = "numpy", version = "2.4.6", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version < '3.12'" },
     { name = "numpy", version = "2.5.1", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version >= '3.12'" },
@@ -1226,7 +1215,6 @@ test = [
 [package.metadata]
 requires-dist = [
     { name = "h5py" },
-    { name = "jsonrpclib", marker = "extra == 'all'" },
     { name = "matplotlib", marker = "extra == 'all'" },
     { name = "matplotlib", marker = "extra == 'plotting'" },
     { name = "numpy", specifier = ">=2.0.0" },
@@ -1244,7 +1232,6 @@ test = [
     { name = "ephem" },
     { name = "h5py" },
     { name = "healpy" },
-    { name = "jsonrpclib" },
     { name = "matplotlib" },
     { name = "numpy", specifier = ">=2.0.0" },
     { name = "pyfftw" },

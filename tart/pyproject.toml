@@ -30,7 +30,7 @@ dependencies = [
 [project.optional-dependencies]
 minimal = []
 plotting = ["matplotlib"]
-all = ["jsonrpclib", "matplotlib", "pyfftw", "requests", "scipy"]
+all = ["matplotlib", "pyfftw", "requests", "scipy"]
 
 [project.urls]
 Homepage = "http://github.com/tmolteno/tart_modules"
@@ -50,7 +50,6 @@ dependencies = [
     "python-dateutil",
     "scipy",
     "pytest~=8.1",
-    "jsonrpclib",
     "requests",
     "ephem",
     "pyfftw",
@@ -67,7 +66,6 @@ test = [
     "python-dateutil",
     "scipy",
     "pytest~=8.1",
-    "jsonrpclib",
     "requests",
     "ephem",
     "pyfftw",

@@ -31,7 +31,7 @@ For complete installation (all optional features including networking and perfor
 pip install tart[all]
 ```
 
-**Note:** The `[all]` option includes jsonrpclib, matplotlib, pyfftw, requests, and scipy for complete functionality. Some simulation features require scipy and plotting features require matplotlib. These are optional dependencies that will provide helpful error messages if missing. The spectrum analysis feature now works in minimal installations using numpy.fft instead of scipy.fft.
+**Note:** The `[all]` option includes matplotlib, pyfftw, requests, and scipy for complete functionality. Some simulation features require scipy and plotting features require matplotlib. These are optional dependencies that will provide helpful error messages if missing. The spectrum analysis feature now works in minimal installations using numpy.fft instead of scipy.fft.
 
 ## Development work
 
