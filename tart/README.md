@@ -46,6 +46,26 @@ in which case changes to the source-code will be immediately available to projec
 
 Changelog:
 
+* 1.4.6   Bug fixes and test improvements
+          - Replace the abandoned jsonrpclib dependency with a built-in
+            stdlib JSON-RPC 2.0 client (same wire format, unit tested
+            against a local mock server).
+          - Fix ElAz.from_pixel_indices so horizon-boundary pixels are
+            accepted instead of raising ValueError.
+          - Fix antennas_simp_vis crashing when given a list noise_level,
+            and stop get_geo_delay_horizontal mutating the source's r
+            attribute.
+          - Fix tests that compared against incompatible reference frames:
+            add the observer position to astropy's rotation-only AltAz
+            transforms and compare RA/Dec in the equinox-of-date frame;
+            relax the sun test tolerance to the approximate model accuracy.
+          - Make the correlator and simulation tests deterministic, compare
+            visibility magnitudes where the 1-bit correlator phase is
+            quantized, and skip the ephemeris/GPS tests gracefully when the
+            RPC server (localhost:8876) is not running.
+          - Test plots are displayed briefly and close automatically so the
+            suite can run unattended; all test dependencies are declared for
+            both hatch and uv (tart/uv.lock).
 * 1.4.5   Keep in sync with tart_tools.
 * 1.4.3   Keep in sync with tart_tools.
 * 1.4.0   Add a to_json method to visibilty.
