@@ -128,7 +128,9 @@ class TestApi(unittest.TestCase):
             ift_scaled[x, y] = -1
         plt.imshow(ift_scaled)
 
-        plt.show()
+        plt.show(block=False)
+        plt.pause(0.2)
+        plt.close("all")
 
         for m in self.minute_sources:
             src = elaz.ElAz(m['el'], m['az'])

@@ -71,7 +71,9 @@ class TestMax2769B(unittest.TestCase):
                 obs_simp.get_antenna(1), self.rad.ref_freq, label="simp", c="red"
             )
             plt.legend()
-            plt.show()
+            plt.show(block=False)
+            plt.pause(0.2)
+            plt.close("all")
         self.assertTrue((spec_full_before_obs == spec_full).all(), True)
 
         #plt.figure()

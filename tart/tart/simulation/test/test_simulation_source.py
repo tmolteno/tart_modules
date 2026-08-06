@@ -46,7 +46,9 @@ class TestSimulationSource(unittest.TestCase):
         plt.plot(samp_time2, crab_s_baseband2, label="sampled")
 
         plt.legend()
-        plt.show()
+        plt.show(block=False)
+        plt.pause(0.2)
+        plt.close("all")
 
     def test_signal_deterministic(self):
         samp_freq = 16.0e6
