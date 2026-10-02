@@ -31,7 +31,12 @@ def main():
         "--dir", type=str, default=".", help="local directory to download"
     )
     parser.add_argument(
-        "--n", type=int, default=-1, help="Stop after downloading this many files."
+        "--n",
+        type=int,
+        default=-1,
+        help="Stop after downloading this many files. The default (-1) never "
+        "stops: the tool keeps polling the telescope and downloads new files "
+        "as they appear.",
     )
     parser.add_argument(
         "--raw", action="store_true", help="Download Raw Data in HDF format"
@@ -40,7 +45,12 @@ def main():
         "--vis", action="store_true", help="Download Visibility Data in HDF format"
     )
     parser.add_argument(
-        "--file", type=str, default=None, help="Set the name of the output file"
+        "--file",
+        type=str,
+        default=None,
+        help="Set the name of the output file. Implies --n 1: download a "
+        "single file under this name, then stop. Cannot be combined with "
+        "--n > 1.",
     )
 
     ARGS = parser.parse_args()
@@ -72,6 +82,12 @@ def main():
     if (ARGS.n > 1) and (ARGS.file is not None):
         raise RuntimeError("Cannot specify both --n > 1 and --file")
 
+    if (ARGS.file is not None) and (ARGS.n <= 0):
+        # --file names a single output file, so it is equivalent to --n 1 plus
+        # renaming the output (tmolteno/tart_modules#4). Without this, --file
+        # was silently ignored at the default --n -1.
+        ARGS.n = 1
+
     while True:
         resp_vis = []
         resp_raw = []
@@ -92,7 +108,7 @@ def main():
                     data_url = urllib.parse.urljoin(tart_endpoint, entry["filename"])
 
                     file_name = data_url.split("/")[-1]
-                    if ((ARGS.n == 1) and (ARGS.file is not None)):
+                    if ARGS.file is not None:
                         file_name = ARGS.file
 
                     file_path = os.path.join(ARGS.dir, file_name)
@@ -109,8 +125,11 @@ def main():
 
         except Exception as e:
             logger.exception(e)
-        finally:
-            if ARGS.n > 0:
-                break
-            logger.info("Pausing.")
-            time.sleep(2)
+
+        if ARGS.n > 0:
+            # A positive --n is a "stop after this many files" count, so one
+            # pass is enough.
+            break
+        # --n <= 0 (the default) means keep following the feed.
+        logger.info("Pausing.")
+        time.sleep(2)
