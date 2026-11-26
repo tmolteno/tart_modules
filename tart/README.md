@@ -46,6 +46,9 @@ in which case changes to the source-code will be immediately available to projec
 
 Changelog:
 
+* 1.4.7   Document simulation of observations from external RF signals
+          (SIMULATION.md), adding unit tests that cover the
+          external-signal to .h5 observation path.
 * 1.4.6   Bug fixes and test improvements
           - Replace the abandoned jsonrpclib dependency with a built-in
             stdlib JSON-RPC 2.0 client (same wire format, unit tested

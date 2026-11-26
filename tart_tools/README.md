@@ -44,6 +44,16 @@ in which case changes to the source-code will be immediately available to projec
 
 
 ## NEWS
+* 1.4.7 Fix tart_vis2json failing on HDF5 input with
+        AttributeError: 'str' object has no attribute 'baselines'
+        (visibility.list_load() returns the from_hdf5() dictionary for
+        HDF5 files, not a list of Visibility objects). The script now
+        loads HDF5 and deprecated pickle inputs by extension, accepts
+        in-memory inputs, and writes filesystem-safe output names, with
+        regression tests.
+        tart_download_data: honour the --file option as the output file
+        name, and document the poller behaviour (after N downloads vs
+        keeping the feed open).
 * 1.4.6 Bug fixes
         - tart_download_data: default --n -1 no longer skips the newest entry.
           Negative n now means "download everything" (previously [0:-1] slicing
