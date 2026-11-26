@@ -148,7 +148,7 @@ def Observation_Load(filename):
             # this is an array of unipolar 0,1 radio signals.
 
         return Observation(timestamp=d['timestamp'], config=settings.from_dict(d['config']), data=unipolar_data)
-    if (file_extension == '.hdf'):
+    if file_extension in ('.hdf', '.h5'):
         return Observation.from_hdf5(filename)
 
     raise RuntimeError(f"Unknown file extension {file_extension}")
